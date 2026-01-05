@@ -216,9 +216,9 @@ export function Timeline({ data, onProjectClick, onVisibleRangeChange }: Timelin
         const centerPositionRatio = viewportCenter / currentScrollWidth;
 
         // Calculate zoom change (zoom in on scroll up, zoom out on scroll down)
-        const zoomSpeed = 0.02;
+        const zoomSpeed = 0.05;
         const zoomDelta = e.deltaY > 0 ? -zoomSpeed : zoomSpeed;
-        const newZoom = Math.max(0.5, Math.min(3, zoomLevel + zoomDelta));
+        const newZoom = Math.max(0.5, Math.min(20, zoomLevel + zoomDelta));
         
         if (newZoom !== zoomLevel) {
           setZoomLevel(newZoom);
@@ -306,6 +306,16 @@ export function Timeline({ data, onProjectClick, onVisibleRangeChange }: Timelin
           const position = getDatePosition(guideDateStr);
           const isCenterGridline = centerGridlineDate === guideDateStr && centerTimestampId === null;
 
+          // Calculate actual pixel position within timeline content area
+          // Timeline content area: from 160px to (2000 * zoomLevel - 32)px
+          const timelineContentWidth = 2000 * zoomLevel - 160 - 32;
+          const pixelPosition = 160 + (position / 100) * timelineContentWidth;
+          
+          // Only render if within visible bounds (with small margin for rounding)
+          if (pixelPosition < 0 || pixelPosition > 2000 * zoomLevel - 32) {
+            return null;
+          }
+
           const regularGuideHalfHeight = parseInt(regularGuideHeight) / 2;
           const dateLabel = guideDate.toLocaleDateString('en-US', { 
             month: 'short', 
@@ -317,7 +327,7 @@ export function Timeline({ data, onProjectClick, onVisibleRangeChange }: Timelin
               key={`regular-${index}`}
               className="absolute"
               style={{
-                left: `calc(160px + ${position}%)`,
+                left: `${pixelPosition}px`,
                 top: 0,
                 bottom: 0,
                 transform: 'translateX(-50%)',
@@ -354,6 +364,16 @@ export function Timeline({ data, onProjectClick, onVisibleRangeChange }: Timelin
         {/* Timestamp markers with thumbnails (prominent) */}
         {sortedTimestamps.map((timestamp, index) => {
           const position = getDatePosition(timestamp.date);
+          
+          // Calculate actual pixel position within timeline content area
+          const timelineContentWidth = 2000 * zoomLevel - 160 - 32;
+          const pixelPosition = 160 + (position / 100) * timelineContentWidth;
+          
+          // Only render if within visible bounds (with small margin for rounding)
+          if (pixelPosition < 0 || pixelPosition > 2000 * zoomLevel - 32) {
+            return null;
+          }
+          
           const isAbove = index % 2 === 0; // Alternate above/below
           
           // Check if this timestamp is at the center
@@ -382,7 +402,7 @@ export function Timeline({ data, onProjectClick, onVisibleRangeChange }: Timelin
               key={timestamp.id}
               className="absolute"
               style={{
-                left: `calc(160px + ${position}%)`,
+                left: `${pixelPosition}px`,
                 top: 0,
                 bottom: 0,
                 transform: 'translateX(-50%)',
