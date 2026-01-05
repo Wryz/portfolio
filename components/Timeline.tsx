@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useRef, useMemo, useCallback, useState } from 'react';
 import Image from 'next/image';
 
 export interface Timestamp {
@@ -11,44 +12,249 @@ export interface Timestamp {
 interface TimelineProps {
   data: Timestamp[];
   onProjectClick: (projectId: string) => void;
+  onVisibleRangeChange?: (visibleTimestamps: Timestamp[], visibleMonth: number, visibleYear: number) => void;
 }
 
-export function Timeline({ data, onProjectClick }: TimelineProps) {
+export function Timeline({ data, onProjectClick, onVisibleRangeChange }: TimelineProps) {
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const timelineContainerRef = useRef<HTMLDivElement>(null);
+  const [centerGridlineDate, setCenterGridlineDate] = useState<string | null>(null);
+  const [centerTimestampId, setCenterTimestampId] = useState<string | null>(null);
+  const [zoomLevel, setZoomLevel] = useState<number>(1);
+
+  // Sort timestamps by date
+  const sortedTimestamps = useMemo(() => {
+    if (!data || data.length === 0) return [];
+    return [...data].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+  }, [data]);
+
+  // Get year range from timestamps
+  const years = useMemo(() => {
+    if (sortedTimestamps.length === 0) return [new Date().getFullYear()];
+    return sortedTimestamps.map(t => new Date(t.date).getFullYear());
+  }, [sortedTimestamps]);
+  
+  const minYear = Math.min(...years);
+  const maxYear = Math.max(...years);
+  
+  // Extend timeline 1 year before first timestamp and 1 year after last timestamp
+  const extendedMinYear = minYear - 1;
+  const extendedMaxYear = maxYear + 1;
+  
+  // Calculate date range
+  const minDate = useMemo(() => new Date(extendedMinYear, 0, 1), [extendedMinYear]);
+  const maxDate = useMemo(() => new Date(extendedMaxYear, 11, 31), [extendedMaxYear]);
+  const totalDays = useMemo(() => 
+    (maxDate.getTime() - minDate.getTime()) / (1000 * 60 * 60 * 24),
+    [maxDate, minDate]
+  );
+
+  // Calculate position for a date based on percentage
+  const getDatePosition = useCallback((date: string) => {
+    const timestampDate = new Date(date);
+    const timestampDays = (timestampDate.getTime() - minDate.getTime()) / (1000 * 60 * 60 * 24);
+    return (timestampDays / totalDays) * 100;
+  }, [minDate, totalDays]);
+
+  // Calculate date from position percentage
+  const getDateFromPosition = useCallback((positionPercent: number) => {
+    const days = (positionPercent / 100) * totalDays;
+    return new Date(minDate.getTime() + days * 24 * 60 * 60 * 1000);
+  }, [totalDays, minDate]);
+
+  // Track scroll to determine visible date range
+  useEffect(() => {
+    if (!onVisibleRangeChange) {
+      return;
+    }
+
+    let rafId: number | null = null;
+    let timeoutId: NodeJS.Timeout | null = null;
+
+    const updateVisibleRange = () => {
+      if (!scrollContainerRef.current || !timelineContainerRef.current) {
+        return;
+      }
+
+      const scrollContainer = scrollContainerRef.current;
+      const timelineContainer = timelineContainerRef.current;
+      
+      const scrollLeft = scrollContainer.scrollLeft;
+      const viewportWidth = scrollContainer.clientWidth;
+      const containerWidth = timelineContainer.offsetWidth;
+      const paddingLeft = 160; // Match the paddingLeft value
+      const paddingRight = 32;
+      
+      // Calculate visible range in container coordinates
+      const viewportStart = scrollLeft;
+      const viewportEnd = scrollLeft + viewportWidth;
+      
+      // Timeline starts at paddingLeft and ends at containerWidth - paddingRight
+      const timelineStartPx = paddingLeft;
+      const timelineEndPx = containerWidth - paddingRight;
+      const timelineWidthPx = timelineEndPx - timelineStartPx;
+      
+      if (timelineWidthPx <= 0) {
+        return;
+      }
+      
+      // Find intersection of viewport and timeline
+      const visibleTimelineStart = Math.max(timelineStartPx, viewportStart);
+      const visibleTimelineEnd = Math.min(timelineEndPx, viewportEnd);
+      
+      // Convert to percentage of timeline (0-100%)
+      const startPercent = Math.max(0, ((visibleTimelineStart - timelineStartPx) / timelineWidthPx) * 100);
+      const endPercent = Math.min(100, ((visibleTimelineEnd - timelineStartPx) / timelineWidthPx) * 100);
+      
+      // Use center of viewport for month/year display
+      const centerPercent = (startPercent + endPercent) / 2;
+      const centerDate = getDateFromPosition(centerPercent);
+      const visibleMonth = centerDate.getMonth();
+      const visibleYear = centerDate.getFullYear();
+      
+      // Find the closest gridline to the center (month boundary)
+      const centerMonthStart = new Date(visibleYear, visibleMonth, 1);
+      const centerMonthStartStr = centerMonthStart.toISOString().split('T')[0];
+      const centerMonthStartPercent = getDatePosition(centerMonthStartStr);
+      const gridlineDistance = Math.abs(centerPercent - centerMonthStartPercent);
+      
+      // Find the closest timestamp to the center
+      let closestTimestamp: { id: string; distance: number } | null = null;
+      for (const timestamp of sortedTimestamps) {
+        const timestampPercent = getDatePosition(timestamp.date);
+        const distance = Math.abs(centerPercent - timestampPercent);
+        if (!closestTimestamp || distance < closestTimestamp.distance) {
+          closestTimestamp = { id: timestamp.id, distance };
+        }
+      }
+      
+      // Only highlight the closest one (gridline or timestamp)
+      if (closestTimestamp && closestTimestamp.distance < gridlineDistance) {
+        // Timestamp is closer - highlight timestamp, not gridline
+        setCenterTimestampId(closestTimestamp.id);
+        setCenterGridlineDate(null);
+      } else {
+        // Gridline is closer - highlight gridline, not timestamp
+        setCenterGridlineDate(centerMonthStartStr);
+        setCenterTimestampId(null);
+      }
+      
+      // Find timestamps from the visible month/year only
+      const visibleTimestamps = sortedTimestamps.filter(timestamp => {
+        const timestampDate = new Date(timestamp.date);
+        return timestampDate.getMonth() === visibleMonth && timestampDate.getFullYear() === visibleYear;
+      });
+      
+      onVisibleRangeChange(visibleTimestamps, visibleMonth, visibleYear);
+    };
+
+    const handleScroll = () => {
+      // Cancel any pending updates
+      if (rafId !== null) {
+        cancelAnimationFrame(rafId);
+      }
+      if (timeoutId !== null) {
+        clearTimeout(timeoutId);
+      }
+      
+      // Use requestAnimationFrame for smooth updates
+      rafId = requestAnimationFrame(() => {
+        updateVisibleRange();
+      });
+    };
+
+    const handleResize = () => {
+      // Debounce resize events
+      if (timeoutId !== null) {
+        clearTimeout(timeoutId);
+      }
+      timeoutId = setTimeout(() => {
+        updateVisibleRange();
+      }, 100);
+    };
+
+    const scrollContainer = scrollContainerRef.current;
+    if (scrollContainer) {
+      scrollContainer.addEventListener('scroll', handleScroll, { passive: true });
+      window.addEventListener('resize', handleResize);
+      // Initial call after a short delay to ensure layout is ready
+      setTimeout(() => {
+        updateVisibleRange();
+      }, 100);
+      
+      return () => {
+        scrollContainer.removeEventListener('scroll', handleScroll);
+        window.removeEventListener('resize', handleResize);
+        if (rafId !== null) {
+          cancelAnimationFrame(rafId);
+        }
+        if (timeoutId !== null) {
+          clearTimeout(timeoutId);
+        }
+      };
+    }
+  }, [sortedTimestamps, onVisibleRangeChange, totalDays, minDate, getDateFromPosition, getDatePosition]);
+
+  // Handle zoom with wheel events
+  useEffect(() => {
+    const handleWheel = (e: WheelEvent) => {
+      // Only handle vertical scroll for zoom
+      if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+        e.preventDefault();
+        
+        const scrollContainer = scrollContainerRef.current;
+        const timelineContainer = timelineContainerRef.current;
+        if (!scrollContainer || !timelineContainer) return;
+
+        // Get current scroll position and viewport center
+        const scrollLeft = scrollContainer.scrollLeft;
+        const viewportWidth = scrollContainer.clientWidth;
+        const viewportCenter = scrollLeft + viewportWidth / 2;
+        
+        // Calculate the position of the center relative to the total scrollable width (0-1)
+        const currentScrollWidth = scrollContainer.scrollWidth;
+        const centerPositionRatio = viewportCenter / currentScrollWidth;
+
+        // Calculate zoom change (zoom in on scroll up, zoom out on scroll down)
+        const zoomSpeed = 0.02;
+        const zoomDelta = e.deltaY > 0 ? -zoomSpeed : zoomSpeed;
+        const newZoom = Math.max(0.5, Math.min(3, zoomLevel + zoomDelta));
+        
+        if (newZoom !== zoomLevel) {
+          setZoomLevel(newZoom);
+          
+          // Maintain center position after zoom
+          // Use double requestAnimationFrame to ensure DOM has updated
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              if (scrollContainer && timelineContainerRef.current) {
+                const newScrollWidth = scrollContainer.scrollWidth;
+                const newCenterX = newScrollWidth * centerPositionRatio;
+                scrollContainer.scrollLeft = newCenterX - viewportWidth / 2;
+              }
+            });
+          });
+        }
+      }
+    };
+
+    const scrollContainer = scrollContainerRef.current;
+    if (scrollContainer) {
+      scrollContainer.addEventListener('wheel', handleWheel, { passive: false });
+      return () => {
+        scrollContainer.removeEventListener('wheel', handleWheel);
+      };
+    }
+  }, [zoomLevel]);
+
+  // Early return after all hooks
   if (!data || data.length === 0) {
     return null;
   }
 
-  // Sort timestamps by date
-  const sortedTimestamps = [...data].sort((a, b) => 
-    new Date(a.date).getTime() - new Date(b.date).getTime()
-  );
-
-  // Get year range from timestamps
-  const years = sortedTimestamps.map(t => new Date(t.date).getFullYear());
-  const minYear = Math.min(...years);
-  const maxYear = Math.max(...years);
-  
-  // Calculate date range
-  const minDate = new Date(minYear, 0, 1);
-  const maxDate = new Date(maxYear, 11, 31);
-  const totalDays = (maxDate.getTime() - minDate.getTime()) / (1000 * 60 * 60 * 24);
-
-  // Calculate position for a date based on percentage
-  const getDatePosition = (date: string) => {
-    const timestampDate = new Date(date);
-    const timestampDays = (timestampDate.getTime() - minDate.getTime()) / (1000 * 60 * 60 * 24);
-    return (timestampDays / totalDays) * 100;
-  };
-
-  // Generate year markers
-  const yearMarkers = [];
-  for (let year = minYear; year <= maxYear; year++) {
-    yearMarkers.push(year);
-  }
-
-  // Generate regular guide lines (monthly intervals)
+  // Generate regular guide lines (monthly intervals) - include extended range
   const regularGuides = [];
-  for (let year = minYear; year <= maxYear; year++) {
+  for (let year = extendedMinYear; year <= extendedMaxYear; year++) {
     for (let month = 0; month < 12; month++) {
       const guideDate = new Date(year, month, 1);
       if (guideDate >= minDate && guideDate <= maxDate) {
@@ -60,17 +266,22 @@ export function Timeline({ data, onProjectClick }: TimelineProps) {
   // Timeline configuration
   const timelineHeight = '2px'; // Main horizontal line thickness
   const regularGuideHeight = '100px'; // Height of regular guide lines
-  const yearGuideHeight = '150px'; // Height of year guide lines
-  const timestampGuideHeight = '200px'; // Height of timestamp guide lines
-  const thumbnailSize = 80; // Size of thumbnail circles
-  const thumbnailOffset = 120; // Distance from timeline to thumbnail center
+  const timestampGuideHeight = '150px'; // Height of timestamp guide lines
+  const thumbnailSize = 45; // Size of thumbnail circles
+  const thumbnailOffset = 80; // Distance from timeline to thumbnail center
 
   return (
-    <div className="fixed inset-0 overflow-x-auto overflow-y-hidden scrollbar-hide">
+    <div 
+      ref={scrollContainerRef} 
+      className="fixed inset-0 overflow-x-auto overflow-y-hidden scrollbar-hide"
+      style={{ overscrollBehaviorX: 'none' }}
+    >
       {/* Container with minimum width to ensure proper spacing */}
       <div 
-        className="relative min-w-[2000px]" 
+        ref={timelineContainerRef}
+        className="relative" 
         style={{ 
+          minWidth: `${2000 * zoomLevel}px`,
           paddingLeft: '160px', 
           paddingRight: '32px',
           height: '100vh',
@@ -91,62 +302,50 @@ export function Timeline({ data, onProjectClick }: TimelineProps) {
 
         {/* Regular guide lines (monthly intervals) */}
         {regularGuides.map((guideDate, index) => {
-          const position = getDatePosition(guideDate.toISOString().split('T')[0]);
-          const isYearMark = guideDate.getMonth() === 0; // January marks
-          
-          // Skip if it's a year mark (will be rendered separately)
-          if (isYearMark) return null;
+          const guideDateStr = guideDate.toISOString().split('T')[0];
+          const position = getDatePosition(guideDateStr);
+          const isCenterGridline = centerGridlineDate === guideDateStr && centerTimestampId === null;
 
           const regularGuideHalfHeight = parseInt(regularGuideHeight) / 2;
+          const dateLabel = guideDate.toLocaleDateString('en-US', { 
+            month: 'short', 
+            day: 'numeric' 
+          });
 
           return (
             <div
               key={`regular-${index}`}
-              className="absolute bg-white opacity-20"
-              style={{
-                left: `calc(160px + ${position}%)`,
-                top: `calc(50% - ${regularGuideHalfHeight}px)`,
-                width: '1px',
-                height: regularGuideHeight,
-                transform: 'translateX(-50%)',
-              }}
-            />
-          );
-        })}
-
-        {/* Year guide lines (larger) */}
-        {yearMarkers.map((year) => {
-          const yearDate = new Date(year, 0, 1);
-          const position = getDatePosition(yearDate.toISOString().split('T')[0]);
-          
-          return (
-            <div
-              key={`year-${year}`}
               className="absolute"
               style={{
                 left: `calc(160px + ${position}%)`,
+                top: 0,
+                bottom: 0,
                 transform: 'translateX(-50%)',
               }}
             >
-              {/* Vertical year guide line - full height */}
+              {/* Guide line */}
               <div
-                className="absolute bg-white opacity-40"
+                className="absolute bg-white"
                 style={{
-                  top: 0,
-                  bottom: 0,
-                  width: '2px',
+                  left: '50%',
+                  top: `calc(50% - ${regularGuideHalfHeight}px)`,
+                  width: isCenterGridline ? '2px' : '1px',
+                  height: regularGuideHeight,
+                  opacity: isCenterGridline ? 1 : 0.2,
+                  transform: 'translateX(-50%)',
                 }}
               />
-              {/* Year label */}
+              {/* Date label */}
               <div
-                className="absolute text-white text-sm font-medium whitespace-nowrap"
+                className="absolute text-[10px] font-medium whitespace-nowrap text-white"
                 style={{
-                  top: `calc(50% - ${parseInt(yearGuideHeight) / 2}px - 30px)`,
                   left: '50%',
+                  top: `calc(50% - ${regularGuideHalfHeight}px - 20px)`,
+                  opacity: isCenterGridline ? 1 : 0.4,
                   transform: 'translateX(-50%)',
                 }}
               >
-                {year}
+                {dateLabel}
               </div>
             </div>
           );
@@ -156,6 +355,9 @@ export function Timeline({ data, onProjectClick }: TimelineProps) {
         {sortedTimestamps.map((timestamp, index) => {
           const position = getDatePosition(timestamp.date);
           const isAbove = index % 2 === 0; // Alternate above/below
+          
+          // Check if this timestamp is at the center
+          const isCenterTimestamp = centerTimestampId === timestamp.id;
           
           const thumbnailRadius = thumbnailSize / 2;
           const timestampGuideHalfHeight = parseInt(timestampGuideHeight) / 2;
@@ -192,28 +394,13 @@ export function Timeline({ data, onProjectClick }: TimelineProps) {
                 style={{
                   left: '50%',
                   top: guideLineTop,
-                  width: '2px',
+                  width: isCenterTimestamp ? '3px' : '2px',
                   height: guideLineHeight,
-                  backgroundColor: 'rgba(255, 255, 255, 0.4)',
+                  backgroundColor: 'rgba(255, 255, 255, 1)',
+                  opacity: isCenterTimestamp ? 1 : 0.4,
                   transform: 'translateX(-50%)',
                 }}
               />
-              
-              {/* Date label */}
-              <div
-                className="absolute text-[10px] font-medium whitespace-nowrap"
-                style={{
-                  left: '50%',
-                  top: `calc(50% - 20px)`,
-                  color: 'rgba(255, 255, 255, 0.4)',
-                  transform: 'translateX(-50%)',
-                }}
-              >
-                {new Date(timestamp.date).toLocaleDateString('en-US', { 
-                  month: 'short', 
-                  day: 'numeric' 
-                })}
-              </div>
               
               {/* Line connecting to thumbnail */}
               <div
@@ -221,9 +408,10 @@ export function Timeline({ data, onProjectClick }: TimelineProps) {
                 style={{
                   left: '50%',
                   top: connectionLineTop,
-                  width: '2px',
+                  width: '1px',
                   height: connectionLineHeight,
-                  backgroundColor: 'rgba(255, 255, 255, 0.4)',
+                  backgroundColor: 'rgba(255, 255, 255, 1)',
+                  opacity: isCenterTimestamp ? 1 : 0.4,
                   transform: 'translateX(-50%)',
                 }}
               />

@@ -14,6 +14,9 @@
 
 body {
   background: var(--background);
+  background-image: url('/background/topography.svg');
+  background-repeat: repeat;
+  background-size: 600px 600px;
   color: var(--foreground);
   font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
 }
@@ -25,4 +28,35 @@ body {
 
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
+}
+
+/* Project Modal Styles */
+.project-title {
+  color: rgb(255, 255, 255);
+}
+
+.project-date {
+  color: rgb(255, 255, 255);
+}
+
+.project-tag {
+  background-color: rgb(255, 255, 255);
+  color: rgb(0, 0, 0);
+}
+
+.project-content p {
+  color: rgb(255, 255, 255);
+  transition: color 0.2s ease;
+}
+
+/* Desktop styles */
+@media (min-width: 640px) {
+  .project-content p {
+    color: rgba(255, 255, 255, 0.4);
+    cursor: default;
+  }
+
+  .project-content p:hover {
+    color: rgb(255, 255, 255);
+  }
 }

@@ -1,14 +1,18 @@
 'use client';
 
-import { Suspense, useMemo } from 'react';
+import { Suspense, useMemo, useState, useCallback, useRef } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Timeline, Timestamp } from "@/components/Timeline";
 import { ProjectModal } from "@/components/ProjectModal";
 import { projects } from "@/data/projects";
+import Image from 'next/image';
 
 function HomeContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const [visibleTimestamps, setVisibleTimestamps] = useState<Timestamp[]>([]);
+  const [visibleMonth, setVisibleMonth] = useState<number>(0);
+  const [visibleYear, setVisibleYear] = useState<number>(new Date().getFullYear());
   
   // Transform projects into timestamps for Timeline component
   const timestamps: Timestamp[] = useMemo(() => {
@@ -40,17 +44,112 @@ function HomeContent() {
     router.push('/', { scroll: false });
   };
 
+  // Use refs to track previous values and prevent unnecessary updates
+  const prevMonthRef = useRef<number>(-1);
+  const prevYearRef = useRef<number>(-1);
+  const prevTimestampsRef = useRef<string>('');
+
+  const handleVisibleRangeChange = useCallback((timestamps: Timestamp[], month: number, year: number) => {
+    // Only update if values actually changed
+    const timestampsKey = timestamps.map(t => t.id).join(',');
+    
+    if (
+      prevMonthRef.current !== month ||
+      prevYearRef.current !== year ||
+      prevTimestampsRef.current !== timestampsKey
+    ) {
+      prevMonthRef.current = month;
+      prevYearRef.current = year;
+      prevTimestampsRef.current = timestampsKey;
+      
+      setVisibleTimestamps(timestamps);
+      setVisibleMonth(month);
+      setVisibleYear(year);
+    }
+  }, []);
+
+  const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 
+    'July', 'August', 'September', 'October', 'November', 'December'];
+
   return (
     <>
       {/* Full-screen timeline that can be scrolled from anywhere */}
-      <Timeline data={timestamps} onProjectClick={handleProjectClick} />
+      <Timeline 
+        data={timestamps} 
+        onProjectClick={handleProjectClick}
+        onVisibleRangeChange={handleVisibleRangeChange}
+      />
+      
+      {/* Top-right indicator showing visible month/year and timestamps */}
+      <div className="fixed top-0 right-0 px-4 py-8 z-20 pointer-events-none hidden sm:block">
+        <div className="text-right pointer-events-auto">
+          {/* Month and Year */}
+          <div className="text-white text-lg font-medium mb-4">
+            {monthNames[visibleMonth]} {visibleYear}
+          </div>
+          
+          {/* Visible Timestamps */}
+          {visibleTimestamps.length > 0 && (
+            <div className="flex flex-col gap-2 items-end">
+              {visibleTimestamps.map((timestamp) => (
+                <button
+                  key={timestamp.id}
+                  onClick={() => handleProjectClick(timestamp.id)}
+                  className="flex items-center gap-2 group cursor-pointer"
+                >
+                  <span className="text-white text-xs opacity-60 group-hover:opacity-100 transition-opacity">
+                    {new Date(timestamp.date).toLocaleDateString('en-US', { 
+                      month: 'short', 
+                      day: 'numeric',
+                      year: 'numeric'
+                    })}
+                  </span>
+                  <div
+                    className="relative rounded-full overflow-hidden transition-all duration-200 bg-black"
+                    style={{ 
+                      width: '32px', 
+                      height: '32px',
+                      border: '2px solid rgba(255, 255, 255, 0.4)',
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.borderColor = 'white';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.4)';
+                    }}
+                  >
+                    <Image
+                      src={timestamp.thumbnail}
+                      alt={`Timestamp ${timestamp.id}`}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
       
       {/* Header overlay on top of timeline */}
-      <header className="fixed top-0 left-0 right-0 text-center px-4 py-8 z-20 pointer-events-none">
-        <h1 className="text-5xl sm:text-6xl text-white mb-6" style={{ fontFamily: 'cursive' }}>
-          My Phung
-        </h1>
-        <div className="flex items-center justify-center gap-6 pointer-events-auto">
+      <header className="fixed top-0 left-0 right-0 px-4 py-8 z-20 pointer-events-none">
+        <div className="text-center sm:text-left">
+          <h1 className="text-5xl sm:text-6xl text-white mb-6" style={{ fontFamily: 'cursive' }}>
+            My Phung
+          </h1>
+          <div className="flex items-center justify-center sm:justify-start gap-3 mb-6 flex-wrap">
+            <span className="text-white text-xs sm:text-sm px-3 py-1 border border-white rounded">
+              HARDWARE
+            </span>
+            <span className="text-white text-xs sm:text-sm px-3 py-1 border border-white rounded">
+              SOFTWARE
+            </span>
+            <span className="text-white text-xs sm:text-sm px-3 py-1 border border-white rounded">
+              EVENTS
+            </span>
+          </div>
+          <div className="flex items-center justify-center sm:justify-start gap-6 pointer-events-auto">
           {/* LinkedIn Icon */}
           <a 
             href="https://www.linkedin.com/in/my-phung/" 
@@ -89,24 +188,21 @@ function HomeContent() {
               <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005 20.1a6.34 6.34 0 0010.86-4.43v-7a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1-.1z"/>
             </svg>
           </a>
+          </div>
         </div>
       </header>
       
       {/* Fade overlays for left and right edges - viewport relative */}
       <div 
-        className="fixed left-0 top-0 bottom-0 w-12 pointer-events-none z-10"
+        className="fixed left-0 top-0 bottom-0 w-24 pointer-events-none z-10"
         style={{
-          background: 'linear-gradient(to right, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.95) 20%, rgba(0, 0, 0, 0.7) 40%, rgba(0, 0, 0, 0.3) 60%, rgba(0, 0, 0, 0) 100%)',
-          backdropFilter: 'blur(1px)',
-          WebkitBackdropFilter: 'blur(1px)'
+          background: 'linear-gradient(to right, rgba(0, 0, 0, 0.25) 0%, rgba(0, 0, 0, 0.12) 33%, rgba(0, 0, 0, 0.04) 66%, rgba(0, 0, 0, 0) 100%)',
         }}
       ></div>
       <div 
-        className="fixed right-0 top-0 bottom-0 w-12 pointer-events-none z-10"
+        className="fixed right-0 top-0 bottom-0 w-24 pointer-events-none z-10"
         style={{
-          background: 'linear-gradient(to left, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.95) 20%, rgba(0, 0, 0, 0.7) 40%, rgba(0, 0, 0, 0.3) 60%, rgba(0, 0, 0, 0) 100%)',
-          backdropFilter: 'blur(1px)',
-          WebkitBackdropFilter: 'blur(1px)'
+          background: 'linear-gradient(to left, rgba(0, 0, 0, 0.25) 0%, rgba(0, 0, 0, 0.12) 33%, rgba(0, 0, 0, 0.04) 66%, rgba(0, 0, 0, 0) 100%)',
         }}
       ></div>
       
@@ -119,10 +215,19 @@ function HomeContent() {
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-black">
+   
       <Suspense fallback={<div className="min-h-screen flex items-center justify-center text-white">Loading...</div>}>
+         <div 
+          className="min-h-screen absolute top-0 left-0 right-0 bottom-0 z-0"
+          style={{
+            backgroundColor: '#1a1a1a',
+            opacity: 0.5,
+            backgroundImage: 'url(/background/topography.svg)',
+            backgroundRepeat: 'repeat',
+            backgroundSize: '600px 600px',
+          }}
+        />
         <HomeContent />
       </Suspense>
-    </div>
   );
 }
