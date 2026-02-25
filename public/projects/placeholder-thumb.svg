@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="450" viewBox="0 0 800 450">
+  <rect width="800" height="450" fill="#1e1e1e"/>
+  <circle cx="400" cy="200" r="50" fill="none" stroke="#555" stroke-width="3"/>
+  <polygon points="385,175 385,225 425,200" fill="#555"/>
+  <text x="400" y="300" text-anchor="middle" fill="#666" font-family="system-ui,sans-serif" font-size="16">Video Thumbnail</text>
+</svg>

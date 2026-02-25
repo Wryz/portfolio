@@ -29,7 +29,7 @@ export function ContactSection() {
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <a
-              href="mailto:your.email@example.com"
+              href="mailto:myphungquoc@gmail.com"
               className="inline-flex items-center gap-2 px-8 py-3 rounded-full text-base font-semibold transition-all duration-200"
               style={{
                 backgroundColor: '#D4834A',

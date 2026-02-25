@@ -1,8 +1,11 @@
 'use client';
 
 import Image from 'next/image';
-import { motion } from 'framer-motion';
-
+import { motion, AnimatePresence } from 'framer-motion';
+import { useCareer } from '@/lib/CareerContext';
+import { useReveal } from '@/lib/RevealContext';
+import { useTheme } from '@/lib/ThemeContext';
+import { getItemsForSection } from '@/lib/revealData';
 const socialLinks = [
   {
     label: 'GitHub',
@@ -24,7 +27,18 @@ const socialLinks = [
   },
 ];
 
+const heroRevealItems = getItemsForSection('hero');
+
+const heroOverlays = {
+  dark: 'linear-gradient(to top, rgba(30, 30, 30, 0.85) 0%, rgba(30, 30, 30, 0.85) 10%, transparent 100%)',
+  light: 'linear-gradient(to top, rgba(255, 255, 255, 0.92) 0%, rgba(255, 255, 255, 0.92) 20%, transparent 100%)',
+} as const;
+
 export function Hero() {
+  const { career, setCareer } = useCareer();
+  const { revealed } = useReveal();
+  const { mode } = useTheme();
+
   return (
     <section className="relative">
       {/* Banner */}
@@ -38,14 +52,14 @@ export function Hero() {
           style={{ filter: 'blur(2px)' }}
         />
         <div
-          className="absolute inset-0"
-          style={{ backgroundColor: 'rgba(0, 0, 0, 0.4)' }}
+          className="absolute inset-0 pointer-events-none"
+          style={{ background: heroOverlays[mode] }}
+          aria-hidden
         />
       </div>
 
       {/* Profile + Info */}
       <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Profile picture overlapping the banner */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -53,15 +67,14 @@ export function Hero() {
           className="flex flex-col items-center -mt-20 sm:-mt-24"
         >
           <div
-            className="relative w-40 h-40 sm:w-48 sm:h-48 rounded-full overflow-hidden border-4"
-            style={{ borderColor: 'var(--bg)' }}
+            className="relative w-40 h-40 sm:w-48 sm:h-48 rounded-full overflow-hidden"
           >
             <Image
-              src="/LinkedIn.jpeg"
+              src="/Linkedin.png"
               alt="My Phung"
               fill
               priority
-              className="object-cover"
+              className="object-cover scale-[1.3]"
             />
           </div>
 
@@ -75,22 +88,48 @@ export function Hero() {
             My Phung
           </motion.h1>
 
-          <motion.p
+          {/* Career switch */}
+          <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3, duration: 0.5 }}
-            className="mt-3 text-lg sm:text-xl max-w-lg text-center"
-            style={{ color: 'var(--text-secondary)' }}
+            transition={{ delay: 0.35, duration: 0.5 }}
+            className="mt-6 flex items-center gap-3"
           >
-            Software Engineer based in Austin, TX
-          </motion.p>
+            <span
+              className="text-sm font-medium cursor-pointer"
+              style={{ color: career === 'software' ? 'var(--text)' : 'var(--text-muted)' }}
+              onClick={() => setCareer('software')}
+            >
+              Software Engineer
+            </span>
+            <button
+              onClick={() => setCareer(career === 'software' ? 'community' : 'software')}
+              className="relative w-12 h-7 rounded-full cursor-pointer shrink-0"
+              style={{ backgroundColor: career === 'software' ? 'var(--bg-muted)' : '#D4834A' }}
+              aria-label="Toggle career mode"
+            >
+              <motion.div
+                className="absolute top-1 w-5 h-5 rounded-full"
+                style={{ backgroundColor: career === 'software' ? '#D4834A' : '#ffffff' }}
+                animate={{ left: career === 'software' ? '4px' : '28px' }}
+                transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+              />
+            </button>
+            <span
+              className="text-sm font-medium cursor-pointer"
+              style={{ color: career === 'community' ? 'var(--text)' : 'var(--text-muted)' }}
+              onClick={() => setCareer('community')}
+            >
+              Community Manager
+            </span>
+          </motion.div>
 
           {/* Social badges */}
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.5 }}
-            className="mt-6 flex items-center gap-3"
+            transition={{ delay: 0.45, duration: 0.5 }}
+            className="mt-5 flex items-center gap-3"
           >
             {socialLinks.map((link) => (
               <a
@@ -121,6 +160,34 @@ export function Hero() {
               </a>
             ))}
           </motion.div>
+
+          {/* Reveal chips */}
+          <AnimatePresence>
+            {revealed && (
+              <div className="mt-4 flex flex-wrap justify-center gap-2">
+                {heroRevealItems.map((item) => (
+                  <motion.span
+                    key={item.content}
+                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: -8, scale: 0.95 }}
+                    transition={{ delay: item.globalIndex * 0.12, duration: 0.35 }}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs sm:text-sm font-medium"
+                    style={{
+                      backgroundColor: 'rgba(212, 131, 74, 0.1)',
+                      color: '#D4834A',
+                      border: '1px solid rgba(212, 131, 74, 0.25)',
+                    }}
+                  >
+                    <svg className="w-3 h-3 shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M12 2l2.09 6.26L20 10l-5.91 1.74L12 18l-2.09-6.26L4 10l5.91-1.74L12 2z" />
+                    </svg>
+                    {item.content}
+                  </motion.span>
+                ))}
+              </div>
+            )}
+          </AnimatePresence>
         </motion.div>
       </div>
     </section>
