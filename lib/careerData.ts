@@ -140,7 +140,9 @@ export const careerData: Record<CareerMode, CareerContent> = {
           'Built over 1,000 custom items and grew the server to 100,000+ unique players. Recruited and managed a team of 60+ specialized volunteers.',
           'Gained deep expertise in gaming communities and player psychology while growing the online presence from 200 to 50,000 users through a website, Reddit, and Discord.',
         ],
-        links: [],
+        links: [
+          { label: 'GitHub', href: 'https://github.com/WrysBowl' },
+        ],
         media: [
           { type: 'video', src: '/projects/placeholder-video.mp4', thumbnail: '/projects/placeholder-thumb.svg', alt: 'Siege gameplay trailer' },
           { type: 'image', src: '/projects/placeholder-image.svg', alt: 'Siege custom items showcase' },
@@ -148,19 +150,34 @@ export const careerData: Record<CareerMode, CareerContent> = {
         ],
       },
       {
-        title: 'Portfolio Website',
-        subtitle: 'The site you\'re looking at right now',
+        title: 'Brain Benchmark',
+        subtitle: 'Brain games to test your mental fitness',
         image: '/background/austin-skyline.webp',
-        tags: ['Next.js', 'Tailwind CSS', 'Framer Motion'],
+        tags: ['Web', 'Games', 'Cognitive Training'],
         description: [
-          'A responsive, theme-aware portfolio with career-mode toggling, built with Next.js, Tailwind CSS, and Framer Motion. Features dark/light theme support and animated section transitions.',
+          'Brain Benchmark is a collection of brain games designed to assess and improve mental fitness. Users can test various cognitive skills through engaging, interactive challenges.',
         ],
         links: [
-          { label: 'GitHub', href: 'https://github.com/Wryz' },
+          { label: 'Website', href: 'https://brain-benchmark.com/' },
+          { label: 'GitHub', href: 'https://github.com/Wryz/games' },
         ],
         media: [
-          { type: 'image', src: '/projects/placeholder-image.svg', alt: 'Portfolio dark mode' },
-          { type: 'image', src: '/projects/placeholder-image.svg', alt: 'Portfolio light mode' },
+          { type: 'image', src: '/projects/placeholder-image.svg', alt: 'Brain Benchmark brain games' },
+        ],
+      },
+      {
+        title: 'Verses Widget',
+        subtitle: 'Schedule Bible verses on your home screen',
+        image: '/background/austin-skyline.webp',
+        tags: ['React Native', 'iOS', 'Widgets'],
+        description: [
+          'Verses Widget is a React Native app that lets you schedule Bible verses using iOS app widgets. Display meaningful verses on your home screen with customizable scheduling.',
+        ],
+        links: [
+          { label: 'GitHub', href: 'https://github.com/Wryz/bible-modules' },
+        ],
+        media: [
+          { type: 'image', src: '/projects/placeholder-image.svg', alt: 'Verses Widget screenshot' },
         ],
       },
     ],

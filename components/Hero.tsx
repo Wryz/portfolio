@@ -1,11 +1,12 @@
 'use client';
 
 import Image from 'next/image';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
+import { BannerCarousel } from './BannerCarousel';
+import { FaChessPawn, FaGraduationCap } from 'react-icons/fa';
 import { useCareer } from '@/lib/CareerContext';
-import { useReveal } from '@/lib/RevealContext';
 import { useTheme } from '@/lib/ThemeContext';
-import { getItemsForSection } from '@/lib/revealData';
+
 const socialLinks = [
   {
     label: 'GitHub',
@@ -27,30 +28,83 @@ const socialLinks = [
   },
 ];
 
-const heroRevealItems = getItemsForSection('hero');
-
 const heroOverlays = {
   dark: 'linear-gradient(to top, rgba(30, 30, 30, 0.85) 0%, rgba(30, 30, 30, 0.85) 10%, transparent 100%)',
   light: 'linear-gradient(to top, rgba(255, 255, 255, 0.92) 0%, rgba(255, 255, 255, 0.92) 20%, transparent 100%)',
 } as const;
 
+const CHESS_COM_URL = 'https://www.chess.com/member/MyPhung0';
+
+function DetailBadge({
+  children,
+  tooltip,
+  href,
+  'aria-label': ariaLabel,
+}: {
+  children: React.ReactNode;
+  tooltip: string;
+  href?: string;
+  'aria-label': string;
+}) {
+  const wrapperClass = 'relative inline-flex items-center justify-center transition-colors duration-200 group';
+  const tooltipClass =
+    'absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2.5 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap opacity-0 pointer-events-none transition-opacity duration-200 z-10 group-hover:opacity-100';
+  const tooltipStyle = {
+    backgroundColor: 'var(--bg-card)',
+    color: 'var(--text)',
+    border: '1px solid var(--border)',
+    boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+  };
+
+  const content = (
+    <>
+      <span className={tooltipClass} style={tooltipStyle} role="tooltip">
+        {tooltip}
+      </span>
+      {children}
+    </>
+  );
+
+  if (href) {
+    return (
+      <a
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={ariaLabel}
+        className={`${wrapperClass} cursor-pointer`}
+        style={{ color: 'var(--text-secondary)' }}
+        onMouseEnter={(e) => { e.currentTarget.style.color = '#D4834A'; }}
+        onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--text-secondary)'; }}
+      >
+        {content}
+      </a>
+    );
+  }
+
+  return (
+    <span
+      aria-label={ariaLabel}
+      title={tooltip}
+      className={wrapperClass}
+      style={{ color: 'var(--text-secondary)' }}
+      onMouseEnter={(e) => { e.currentTarget.style.color = '#D4834A'; }}
+      onMouseLeave={(e) => { e.currentTarget.style.color = 'var(--text-secondary)'; }}
+    >
+      {content}
+    </span>
+  );
+}
+
 export function Hero() {
   const { career, setCareer } = useCareer();
-  const { revealed } = useReveal();
   const { mode } = useTheme();
 
   return (
     <section className="relative">
-      {/* Banner */}
-      <div className="relative h-[340px] sm:h-[400px] w-full overflow-hidden">
-        <Image
-          src="/background/austin-skyline.webp"
-          alt="Austin skyline"
-          fill
-          priority
-          className="object-cover"
-          style={{ filter: 'blur(2px)' }}
-        />
+      {/* Banner - 16:9 landscape, full width */}
+      <div className="relative w-full aspect-video overflow-hidden">
+        <BannerCarousel />
         <div
           className="absolute inset-0 pointer-events-none"
           style={{ background: heroOverlays[mode] }}
@@ -161,33 +215,33 @@ export function Hero() {
             ))}
           </motion.div>
 
-          {/* Reveal chips */}
-          <AnimatePresence>
-            {revealed && (
-              <div className="mt-4 flex flex-wrap justify-center gap-2">
-                {heroRevealItems.map((item) => (
-                  <motion.span
-                    key={item.content}
-                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: -8, scale: 0.95 }}
-                    transition={{ delay: item.globalIndex * 0.12, duration: 0.35 }}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs sm:text-sm font-medium"
-                    style={{
-                      backgroundColor: 'rgba(212, 131, 74, 0.1)',
-                      color: '#D4834A',
-                      border: '1px solid rgba(212, 131, 74, 0.25)',
-                    }}
-                  >
-                    <svg className="w-3 h-3 shrink-0" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M12 2l2.09 6.26L20 10l-5.91 1.74L12 18l-2.09-6.26L4 10l5.91-1.74L12 2z" />
-                    </svg>
-                    {item.content}
-                  </motion.span>
-                ))}
-              </div>
-            )}
-          </AnimatePresence>
+          {/* Detail badges: chess, Vietnamese, graduation */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5, duration: 0.5 }}
+            className="my-4 flex items-center justify-center gap-2"
+          >
+            <DetailBadge
+              tooltip="1900 chess.com elo"
+              href={CHESS_COM_URL}
+              aria-label="Chess.com profile, 1900 elo"
+            >
+              <FaChessPawn className="w-4 h-4" style={{ color: 'inherit' }} />
+            </DetailBadge>
+            <DetailBadge
+              tooltip="Vietnamese"
+              aria-label="Vietnamese"
+            >
+              <span className="text-base leading-none" aria-hidden>🇻🇳</span>
+            </DetailBadge>
+            <DetailBadge
+              tooltip="Graduated from UConn, BS in Economics, 2024"
+              aria-label="UConn BS Economics 2024"
+            >
+              <FaGraduationCap className="w-4 h-4" style={{ color: 'inherit' }} />
+            </DetailBadge>
+          </motion.div>
         </motion.div>
       </div>
     </section>
