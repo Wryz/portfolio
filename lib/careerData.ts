@@ -93,6 +93,38 @@ export const careerData: Record<CareerMode, CareerContent> = {
     ],
     projects: [
       {
+        title: 'Miqo',
+        subtitle: 'Voice-commanded embodied AI agent resembling Wall-E',
+        image: '/background/austin-skyline.webp',
+        tags: ['AI', 'ESP32', 'Bluetooth', 'Embedded'],
+        description: [
+          'Miqo is a voice-commanded embodied AI agent designed to resemble Wall-E. It runs on an ESP32 microcontroller and connects to a phone via Bluetooth, enabling hands-free voice control and interaction.',
+        ],
+        links: [],
+        media: [
+          { type: 'video', src: '/miqo/7eb3684a0b834822a2b6ae2b734ad769.MOV', alt: 'Miqo demo' },
+          { type: 'video', src: '/miqo/052aa446334841b9b152facffa54a355.mov', alt: 'Miqo demo' },
+          { type: 'video', src: '/miqo/4073ac29f47047d697efab593b7fef71.mov', alt: 'Miqo demo' },
+          { type: 'video', src: '/miqo/e78b16c01bdd41d49e61b6471fec62ab.mov', alt: 'Miqo demo' },
+          { type: 'video', src: '/miqo/4611d3bf6cba45b596c40301a18e12bc.mov', alt: 'Miqo demo' },
+          { type: 'video', src: '/miqo/39d82a6ef9984651aeee7787c7072b85.mov', alt: 'Miqo demo' },
+          { type: 'video', src: '/miqo/25eeb0d1473a405a9fd126a0723a7c2f%202.mov', alt: 'Miqo demo' },
+          { type: 'video', src: '/miqo/e78b16c01bdd41d49e61b6471fec62ab.mov', alt: 'Miqo demo' },
+          { type: 'video', src: '/miqo/3f703f6954f64ef1b3c82a6eb5d41973.mov', alt: 'Miqo demo' },
+          { type: 'video', src: '/miqo/586b10c8bbba41f397dcd1bf89bdead1.mov', alt: 'Miqo demo' },
+          { type: 'video', src: '/miqo/13fb6393a41a4b0bad518000f3b6afea.mov', alt: 'Miqo demo' },
+          { type: 'video', src: '/miqo/e5de3bd1ad37410ca0000ffde1187203.mov', alt: 'Miqo demo' },
+
+          { type: 'video', src: '/miqo/8a3ea956b1244ed890d3df31b3edda40.mov', alt: 'Miqo demo' },
+          
+          { type: 'video', src: '/miqo/99fa0712c0c84f708f6effc3e0b98169.mov', alt: 'Miqo demo' },
+          { type: 'video', src: '/miqo/88baf36c4118434d96a67befc5df2ecf.mov', alt: 'Miqo demo' },
+          { type: 'video', src: '/miqo/bdcac7a13ccc4f94a1decef5fe6fc2c5.mov', alt: 'Miqo demo' },
+          { type: 'video', src: '/miqo/ee7831d49d914639b29e9dc9eae877e3.mov', alt: 'Miqo demo' },
+          { type: 'image', src: '/miqo/IMG_3764.jpeg', alt: 'Miqo' },
+        ],
+      },
+      {
         title: 'BuilderFive',
         subtitle: 'Time-based rewards app for local events',
         image: '/background/austin-skyline.webp',
@@ -110,24 +142,6 @@ export const careerData: Record<CareerMode, CareerContent> = {
           { type: 'image', src: '/projects/placeholder-image.svg', alt: 'BuilderFive map view' },
           { type: 'video', src: '/projects/placeholder-video.mp4', thumbnail: '/projects/placeholder-thumb.svg', alt: 'BuilderFive rewards walkthrough' },
           { type: 'image', src: '/projects/placeholder-image.svg', alt: 'BuilderFive event screen' },
-        ],
-      },
-      {
-        title: 'Stressie',
-        subtitle: 'B2B AI stress management chat app',
-        image: '/background/austin-skyline.webp',
-        tags: ['React Native', 'AI', 'B2B', 'Mobile'],
-        description: [
-          'Stressie is a B2B AI-powered stress management chat app designed to help employees manage chronic stressors in the workplace.',
-          'As Fractional CTO, I lead mobile frontend development and serve as tech-lead for the dev team. The app is currently in active pilot with enterprise clients and pursuing a seed round.',
-        ],
-        links: [
-          { label: 'Website', href: '#' },
-        ],
-        media: [
-          { type: 'video', src: '/projects/placeholder-video.mp4', thumbnail: '/projects/placeholder-thumb.svg', alt: 'Stressie chat demo' },
-          { type: 'image', src: '/projects/placeholder-image.svg', alt: 'Stressie UI overview' },
-          { type: 'image', src: '/projects/placeholder-image.svg', alt: 'Stressie analytics dashboard' },
         ],
       },
       {

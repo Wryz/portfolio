@@ -1,11 +1,24 @@
 'use client';
 
-import { useState, useRef, useCallback, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useCareer } from '@/lib/CareerContext';
 import { careerData, type Project, type MediaItem } from '@/lib/careerData';
 import { MediaLightbox } from './MediaLightbox';
+import { FaRobot, FaGlobeAmericas, FaCube, FaBrain, FaCross } from 'react-icons/fa';
+import { FaCalendarDays, FaGamepad, FaPeopleGroup } from 'react-icons/fa6';
+
+const PROJECT_ICONS: Record<string, React.ReactNode> = {
+  'Miqo': <FaRobot className="w-7 h-7 sm:w-9 sm:h-9" />,
+  'BuilderFive': <FaGlobeAmericas className="w-7 h-7 sm:w-9 sm:h-9" />,
+  'Siege': <FaCube className="w-7 h-7 sm:w-9 sm:h-9" />,
+  'Brain Benchmark': <FaBrain className="w-7 h-7 sm:w-9 sm:h-9" />,
+  'Verses Widget': <FaCross className="w-7 h-7 sm:w-9 sm:h-9" />,
+  'Austin Coworking Events': <FaCalendarDays className="w-7 h-7 sm:w-9 sm:h-9" />,
+  'UConn Minecraft Club': <FaGamepad className="w-7 h-7 sm:w-9 sm:h-9" />,
+  'Siege Gaming Community': <FaPeopleGroup className="w-7 h-7 sm:w-9 sm:h-9" />,
+};
 
 function VideoThumbnail({
   item,
@@ -15,11 +28,13 @@ function VideoThumbnail({
   onClick: () => void;
 }) {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [aspectRatio, setAspectRatio] = useState<string>('9/16');
 
   return (
     <button
       onClick={onClick}
-      className="relative aspect-video w-full rounded-lg overflow-hidden cursor-pointer group text-left"
+      className="relative w-full rounded-lg overflow-hidden cursor-pointer group text-left"
+      style={{ aspectRatio }}
       onMouseEnter={() => videoRef.current?.play()}
       onMouseLeave={() => {
         if (videoRef.current) {
@@ -35,19 +50,14 @@ function VideoThumbnail({
         muted
         playsInline
         preload="metadata"
-        className="w-full h-full object-cover"
+        className="w-full h-full object-contain"
+        onLoadedMetadata={(e) => {
+          const v = e.currentTarget;
+          if (v.videoWidth && v.videoHeight) {
+            setAspectRatio(`${v.videoWidth}/${v.videoHeight}`);
+          }
+        }}
       />
-      <div className="absolute inset-0 flex items-center justify-center bg-black/30 group-hover:bg-black/10 transition-colors duration-300">
-        <div className="w-12 h-12 rounded-full bg-white/90 flex items-center justify-center group-hover:scale-110 group-hover:opacity-0 transition-all duration-300">
-          <svg
-            className="w-5 h-5 text-gray-900 ml-0.5"
-            fill="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path d="M8 5v14l11-7z" />
-          </svg>
-        </div>
-      </div>
     </button>
   );
 }
@@ -59,16 +69,25 @@ function ImageThumbnail({
   item: MediaItem;
   onClick: () => void;
 }) {
+  const [aspectRatio, setAspectRatio] = useState<string>('9/16');
+
   return (
     <button
       onClick={onClick}
-      className="relative aspect-video w-full rounded-lg overflow-hidden cursor-pointer group text-left"
+      className="relative w-full rounded-lg overflow-hidden cursor-pointer group text-left"
+      style={{ aspectRatio }}
     >
       <Image
         src={item.src}
         alt={item.alt}
         fill
-        className="object-cover group-hover:scale-105 transition-transform duration-500"
+        className="object-contain group-hover:scale-105 transition-transform duration-500"
+        onLoad={(e) => {
+          const img = e.target as HTMLImageElement;
+          if (img.naturalWidth && img.naturalHeight) {
+            setAspectRatio(`${img.naturalWidth}/${img.naturalHeight}`);
+          }
+        }}
       />
     </button>
   );
@@ -77,72 +96,17 @@ function ImageThumbnail({
 export function ProjectsSection() {
   const { career } = useCareer();
   const projects = careerData[career].projects;
-  const [activeIndex, setActiveIndex] = useState(0);
   const [displayedIndex, setDisplayedIndex] = useState(0);
   const [lightboxItem, setLightboxItem] = useState<{
     item: MediaItem;
     project: Project;
   } | null>(null);
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const ticking = useRef(false);
 
-  // Reset on career change
-  useEffect(() => {
-    setActiveIndex(0);
+  const [prevCareer, setPrevCareer] = useState(career);
+  if (career !== prevCareer) {
+    setPrevCareer(career);
     setDisplayedIndex(0);
-    requestAnimationFrame(() => {
-      if (scrollRef.current) {
-        scrollRef.current.scrollLeft = 0;
-      }
-    });
-  }, [career]);
-
-  // Debounce gallery updates so it doesn't flicker while scrolling
-  useEffect(() => {
-    const timer = setTimeout(() => setDisplayedIndex(activeIndex), 250);
-    return () => clearTimeout(timer);
-  }, [activeIndex]);
-
-  const handleScroll = useCallback(() => {
-    if (ticking.current) return;
-    ticking.current = true;
-    requestAnimationFrame(() => {
-      const container = scrollRef.current;
-      if (!container) {
-        ticking.current = false;
-        return;
-      }
-      const center = container.scrollLeft + container.clientWidth / 2;
-      const cards =
-        container.querySelectorAll<HTMLElement>('[data-card-index]');
-      let closest = 0;
-      let minDist = Infinity;
-      cards.forEach((card) => {
-        const cardCenter = card.offsetLeft + card.offsetWidth / 2;
-        const dist = Math.abs(center - cardCenter);
-        const idx = parseInt(card.dataset.cardIndex || '0', 10);
-        if (dist < minDist) {
-          minDist = dist;
-          closest = idx;
-        }
-      });
-      setActiveIndex(closest);
-      ticking.current = false;
-    });
-  }, []);
-
-  const scrollTo = useCallback((index: number) => {
-    const container = scrollRef.current;
-    if (!container) return;
-    const card = container.querySelector<HTMLElement>(
-      `[data-card-index="${index}"]`,
-    );
-    if (card) {
-      const scrollTarget =
-        card.offsetLeft + card.offsetWidth / 2 - container.clientWidth / 2;
-      container.scrollTo({ left: scrollTarget, behavior: 'smooth' });
-    }
-  }, []);
+  }
 
   const displayedProject = projects[displayedIndex];
 
@@ -152,8 +116,8 @@ export function ProjectsSection() {
       className="py-20 sm:py-28"
       style={{ backgroundColor: 'var(--bg-secondary)' }}
     >
-      {/* Section header */}
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Section header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -171,178 +135,48 @@ export function ProjectsSection() {
             style={{ backgroundColor: '#D4834A' }}
           />
         </motion.div>
-      </div>
 
-      {/* Carousel — full width */}
-      <div className="relative">
-        {/* Left arrow */}
-        {activeIndex > 0 && (
-          <button
-            onClick={() => scrollTo(activeIndex - 1)}
-            className="absolute left-2 sm:left-6 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full flex items-center justify-center cursor-pointer shadow-lg transition-colors duration-200"
-            style={{
-              backgroundColor: 'var(--bg-card)',
-              border: '1px solid var(--border)',
-              color: 'var(--text)',
-            }}
-            aria-label="Previous project"
-          >
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M15 19l-7-7 7-7"
-              />
-            </svg>
-          </button>
-        )}
-
-        {/* Right arrow */}
-        {activeIndex < projects.length - 1 && (
-          <button
-            onClick={() => scrollTo(activeIndex + 1)}
-            className="absolute right-2 sm:right-6 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full flex items-center justify-center cursor-pointer shadow-lg transition-colors duration-200"
-            style={{
-              backgroundColor: 'var(--bg-card)',
-              border: '1px solid var(--border)',
-              color: 'var(--text)',
-            }}
-            aria-label="Next project"
-          >
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M9 5l7 7-7 7"
-              />
-            </svg>
-          </button>
-        )}
-
-        {/* Scroll track */}
-        <div
-          ref={scrollRef}
-          onScroll={handleScroll}
-          className="flex gap-5 overflow-x-auto scrollbar-hide snap-x snap-mandatory"
-        >
-          {/* Left spacer — matches half viewport minus half card width */}
-          <div
-            className="shrink-0 sm:hidden"
-            style={{ width: 'calc(50vw - 160px)' }}
-            aria-hidden="true"
-          />
-          <div
-            className="shrink-0 hidden sm:block"
-            style={{ width: 'calc(50vw - 200px)' }}
-            aria-hidden="true"
-          />
-
-          {projects.map((project, i) => (
-            <motion.div
-              key={`${career}-${project.title}`}
-              data-card-index={i}
-              className="shrink-0 w-80 sm:w-[400px] snap-center cursor-pointer"
-              animate={{
-                scale: activeIndex === i ? 1 : 0.88,
-                opacity: activeIndex === i ? 1 : 0.5,
-              }}
-              transition={{ duration: 0.3 }}
-              onClick={() => scrollTo(i)}
-            >
-              <div className="relative h-52 sm:h-72 rounded-xl overflow-hidden">
-                <Image
-                  src={project.image}
-                  alt={project.title}
-                  fill
-                  className="object-cover"
-                />
-                <div
-                  className="absolute inset-0"
+        {/* Project icons + names */}
+        <div className="flex flex-wrap justify-center gap-8 sm:gap-12 mb-16">
+          {projects.map((project, i) => {
+            const isActive = displayedIndex === i;
+            return (
+              <button
+                key={`${career}-${project.title}`}
+                type="button"
+                onMouseEnter={() => setDisplayedIndex(i)}
+                className="flex flex-col items-center gap-3 cursor-pointer transition-all duration-200 group w-20 sm:w-24 shrink-0"
+              >
+                <span
+                  className="transition-all duration-200"
                   style={{
-                    background:
-                      'linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.1) 100%)',
+                    transform: isActive ? 'scale(1.15)' : 'scale(1)',
+                    color: isActive ? '#D4834A' : 'var(--text-secondary)',
                   }}
-                />
-                <div className="absolute inset-0 flex flex-col justify-end p-5 sm:p-6">
-                  <div className="flex flex-wrap gap-1.5 mb-2">
-                    {project.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="text-[10px] sm:text-xs px-2 py-0.5 rounded-full font-medium"
-                        style={{
-                          backgroundColor: 'rgba(212, 131, 74, 0.25)',
-                          color: '#EDAE82',
-                          backdropFilter: 'blur(4px)',
-                        }}
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                  <h3 className="text-lg sm:text-xl font-bold text-white">
-                    {project.title}
-                  </h3>
-                  <p className="text-xs sm:text-sm text-white/70 mt-0.5">
-                    {project.subtitle}
-                  </p>
-                </div>
-              </div>
-            </motion.div>
-          ))}
-
-          {/* Right spacer */}
-          <div
-            className="shrink-0 sm:hidden"
-            style={{ width: 'calc(50vw - 160px)' }}
-            aria-hidden="true"
-          />
-          <div
-            className="shrink-0 hidden sm:block"
-            style={{ width: 'calc(50vw - 200px)' }}
-            aria-hidden="true"
-          />
+                >
+                  {PROJECT_ICONS[project.title] ?? <FaCube className="w-7 h-7 sm:w-9 sm:h-9" />}
+                </span>
+                <span
+                  className="text-sm sm:text-base font-medium transition-colors duration-200 text-center break-words w-full"
+                  style={{
+                    color: isActive ? '#D4834A' : 'var(--text-secondary)',
+                  }}
+                >
+                  {project.title}
+                </span>
+              </button>
+            );
+          })}
         </div>
 
-        {/* Dot indicators */}
-        <div className="flex justify-center gap-2 mt-6">
-          {projects.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => scrollTo(i)}
-              className="rounded-full transition-all duration-300 cursor-pointer"
-              style={{
-                width: activeIndex === i ? 24 : 8,
-                height: 8,
-                backgroundColor:
-                  activeIndex === i ? '#D4834A' : 'var(--border)',
-              }}
-              aria-label={`Go to project ${i + 1}`}
-            />
-          ))}
-        </div>
-      </div>
-
-      {/* Media gallery for active project */}
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mt-12">
+        {/* Project content — swaps on hover */}
         <AnimatePresence mode="wait">
           <motion.div
             key={`${career}-${displayedIndex}`}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.3 }}
+            transition={{ duration: 0.25 }}
           >
             {/* Description */}
             <div className="mb-8">
@@ -403,12 +237,13 @@ export function ProjectsSection() {
               )}
             </div>
 
-            {/* Media grid */}
+            {/* Media flex — 200–250px per item, flexes to fill row with side padding */}
             {displayedProject.media.length > 0 && (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="flex flex-wrap gap-x-2">
                 {displayedProject.media.map((item, i) => (
                   <motion.div
                     key={`${item.src}-${i}`}
+                    className="min-w-[140px] max-w-[200px] flex-1"
                     initial={{ opacity: 0, y: 15 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3, delay: i * 0.08 }}

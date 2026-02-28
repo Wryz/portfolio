@@ -215,7 +215,7 @@ export function Hero() {
             ))}
           </motion.div>
 
-          {/* Detail badges: chess, Vietnamese, graduation */}
+          {/* Detail badges: chess, graduation */}
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -228,12 +228,6 @@ export function Hero() {
               aria-label="Chess.com profile, 1900 elo"
             >
               <FaChessPawn className="w-4 h-4" style={{ color: 'inherit' }} />
-            </DetailBadge>
-            <DetailBadge
-              tooltip="Vietnamese"
-              aria-label="Vietnamese"
-            >
-              <span className="text-base leading-none" aria-hidden>🇻🇳</span>
             </DetailBadge>
             <DetailBadge
               tooltip="Graduated from UConn, BS in Economics, 2024"
