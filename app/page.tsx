@@ -9,7 +9,7 @@ import { CareerProvider } from '@/lib/CareerContext';
 export default function Home() {
   return (
     <CareerProvider>
-      <main>
+      <main className="overflow-x-hidden min-w-0">
         <Hero />
         <ProjectsSection />
         <ExperienceSection />

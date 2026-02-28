@@ -173,14 +173,22 @@ export const careerData: Record<CareerMode, CareerContent> = {
         image: '/background/austin-skyline.webp',
         tags: ['Web', 'Games', 'Cognitive Training'],
         description: [
-          'Brain Benchmark is a collection of brain games designed to assess and improve mental fitness. Users can test various cognitive skills through engaging, interactive challenges.',
+          'Built in 3 hours, Brain Benchmark is a collection of brain games designed to assess and improve mental fitness. Users can test various cognitive skills through engaging, interactive challenges.',
         ],
         links: [
           { label: 'Website', href: 'https://brain-benchmark.com/' },
           { label: 'GitHub', href: 'https://github.com/Wryz/games' },
         ],
         media: [
-          { type: 'image', src: '/projects/placeholder-image.svg', alt: 'Brain Benchmark brain games' },
+          { type: 'video', src: '/brain-benchmark/IMG_3524.MOV', alt: 'Brain Benchmark demo' },
+          { type: 'video', src: '/brain-benchmark/IMG_3616.MOV', alt: 'Brain Benchmark demo' },
+          { type: 'video', src: '/brain-benchmark/IMG_3617.MOV', alt: 'Brain Benchmark demo' },
+          { type: 'image', src: '/brain-benchmark/IMG_3526.jpeg', alt: 'Brain Benchmark' },
+          { type: 'image', src: '/brain-benchmark/IMG_3530.JPG', alt: 'Brain Benchmark' },
+          { type: 'image', src: '/brain-benchmark/IMG_3531.JPG', alt: 'Brain Benchmark' },
+          { type: 'image', src: '/brain-benchmark/IMG_3532.JPG', alt: 'Brain Benchmark' },
+          { type: 'image', src: '/brain-benchmark/IMG_3533.JPG', alt: 'Brain Benchmark' },
+          { type: 'image', src: '/brain-benchmark/IMG_3534.JPG', alt: 'Brain Benchmark' },
         ],
       },
       {
@@ -189,7 +197,7 @@ export const careerData: Record<CareerMode, CareerContent> = {
         image: '/background/austin-skyline.webp',
         tags: ['React Native', 'iOS', 'Widgets'],
         description: [
-          'Verses Widget is a React Native app that lets you schedule Bible verses using iOS app widgets. Display meaningful verses on your home screen with customizable scheduling. Built in 2 hours.',
+          'Built in 2 hours, Verses Widget is a React Native app that lets you schedule Bible verses using iOS app widgets. Display meaningful verses on your home screen with customizable scheduling.',
         ],
         links: [
           { label: 'GitHub', href: 'https://github.com/Wryz/bible-modules' },

@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useCareer } from '@/lib/CareerContext';
 import { careerData, type Project, type MediaItem } from '@/lib/careerData';
 import { MediaLightbox } from './MediaLightbox';
-import { FaRobot, FaGlobeAmericas, FaCube, FaBrain, FaCross } from 'react-icons/fa';
+import { FaRobot, FaGlobeAmericas, FaCube, FaBrain, FaCross, FaGithub, FaLink } from 'react-icons/fa';
 import { FaCalendarDays, FaGamepad, FaPeopleGroup } from 'react-icons/fa6';
 
 const PROJECT_ICONS: Record<string, React.ReactNode> = {
@@ -98,8 +98,8 @@ export function ProjectsSection() {
   const projects = careerData[career].projects;
   const [displayedIndex, setDisplayedIndex] = useState(0);
   const [lightboxItem, setLightboxItem] = useState<{
-    item: MediaItem;
     project: Project;
+    initialIndex: number;
   } | null>(null);
 
   const [prevCareer, setPrevCareer] = useState(career);
@@ -113,10 +113,10 @@ export function ProjectsSection() {
   return (
     <section
       id="projects"
-      className="py-20 sm:py-28"
+      className="py-20 sm:py-28 overflow-x-hidden"
       style={{ backgroundColor: 'var(--bg-secondary)' }}
     >
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 overflow-x-hidden">
         {/* Section header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -137,7 +137,7 @@ export function ProjectsSection() {
         </motion.div>
 
         {/* Project icons + names */}
-        <div className="flex flex-wrap justify-center gap-8 sm:gap-12 mb-16">
+        <div className="flex flex-wrap justify-center gap-2 sm:gap-6 lg:gap-12 mb-16">
           {projects.map((project, i) => {
             const isActive = displayedIndex === i;
             return (
@@ -145,7 +145,7 @@ export function ProjectsSection() {
                 key={`${career}-${project.title}`}
                 type="button"
                 onMouseEnter={() => setDisplayedIndex(i)}
-                className="flex flex-col items-center gap-3 cursor-pointer transition-all duration-200 group w-20 sm:w-24 shrink-0"
+                className="flex flex-col items-center gap-3 cursor-pointer transition-all duration-200 group w-14 sm:w-20 lg:w-24 shrink-0"
               >
                 <span
                   className="transition-all duration-200"
@@ -180,12 +180,40 @@ export function ProjectsSection() {
           >
             {/* Description */}
             <div className="mb-8">
-              <h3
-                className="text-xl sm:text-2xl font-bold mb-3"
-                style={{ color: 'var(--text)' }}
-              >
-                {displayedProject.title}
-              </h3>
+              <div className="flex items-center gap-2 mb-3 flex-wrap">
+                <h3
+                  className="text-xl sm:text-2xl font-bold"
+                  style={{ color: 'var(--text)' }}
+                >
+                  {displayedProject.title}
+                </h3>
+                {displayedProject.links.length > 0 && (
+                  <div className="flex items-center gap-2">
+                    {displayedProject.links.map((link) => {
+                      const isGitHub = link.label === 'GitHub' || link.href.includes('github.com');
+                      return (
+                        <a
+                          key={link.label}
+                          href={link.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="transition-colors duration-200"
+                          style={{ color: 'var(--text-muted)' }}
+                          aria-label={link.label}
+                          onMouseEnter={(e) => (e.currentTarget.style.color = '#D4834A')}
+                          onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-muted)')}
+                        >
+                          {isGitHub ? (
+                            <FaGithub className="w-5 h-5" />
+                          ) : (
+                            <FaLink className="w-5 h-5" />
+                          )}
+                        </a>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
               <div className="space-y-3 mb-4">
                 {displayedProject.description.map((p, i) => (
                   <p
@@ -197,44 +225,6 @@ export function ProjectsSection() {
                   </p>
                 ))}
               </div>
-              {displayedProject.links.length > 0 && (
-                <div className="flex flex-wrap gap-3">
-                  {displayedProject.links.map((link) => (
-                    <a
-                      key={link.label}
-                      href={link.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold transition-colors duration-200"
-                      style={{
-                        backgroundColor: '#D4834A',
-                        color: '#ffffff',
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.backgroundColor = '#B86E3C';
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.backgroundColor = '#D4834A';
-                      }}
-                    >
-                      <svg
-                        className="w-4 h-4"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        strokeWidth={2}
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"
-                        />
-                      </svg>
-                      {link.label}
-                    </a>
-                  ))}
-                </div>
-              )}
             </div>
 
             {/* Media flex — 200–250px per item, flexes to fill row with side padding */}
@@ -243,7 +233,7 @@ export function ProjectsSection() {
                 {displayedProject.media.map((item, i) => (
                   <motion.div
                     key={`${item.src}-${i}`}
-                    className="min-w-[140px] max-w-[200px] flex-1"
+                    className="min-w-[120px] max-w-[200px] flex-1"
                     initial={{ opacity: 0, y: 15 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3, delay: i * 0.08 }}
@@ -253,8 +243,8 @@ export function ProjectsSection() {
                         item={item}
                         onClick={() =>
                           setLightboxItem({
-                            item,
                             project: displayedProject,
+                            initialIndex: i,
                           })
                         }
                       />
@@ -263,8 +253,8 @@ export function ProjectsSection() {
                         item={item}
                         onClick={() =>
                           setLightboxItem({
-                            item,
                             project: displayedProject,
+                            initialIndex: i,
                           })
                         }
                       />
@@ -281,7 +271,8 @@ export function ProjectsSection() {
       <AnimatePresence>
         {lightboxItem && (
           <MediaLightbox
-            item={lightboxItem.item}
+            media={lightboxItem.project.media}
+            initialIndex={lightboxItem.initialIndex}
             project={lightboxItem.project}
             onClose={() => setLightboxItem(null)}
           />

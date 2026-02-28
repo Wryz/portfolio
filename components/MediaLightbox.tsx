@@ -1,26 +1,71 @@
 'use client';
 
-import { useEffect, useCallback, useState } from 'react';
+import { useEffect, useCallback, useState, useRef } from 'react';
 import Image from 'next/image';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import type { MediaItem, Project } from '@/lib/careerData';
 
 interface MediaLightboxProps {
-  item: MediaItem;
+  media: MediaItem[];
+  initialIndex: number;
   project: Project;
   onClose: () => void;
 }
 
-export function MediaLightbox({ item, project, onClose }: MediaLightboxProps) {
+const SWIPE_THRESHOLD = 50;
+
+export function MediaLightbox({ media, initialIndex, project, onClose }: MediaLightboxProps) {
+  const [currentIndex, setCurrentIndex] = useState(initialIndex);
   const [videoAspect, setVideoAspect] = useState<string | null>(null);
   const [imageAspect, setImageAspect] = useState<string | null>(null);
+  const touchStartX = useRef<number | null>(null);
+  const touchEndX = useRef<number | null>(null);
+
+  const item = media[currentIndex];
+  const canGoPrev = currentIndex > 0;
+  const canGoNext = currentIndex < media.length - 1;
+
+  const goPrev = useCallback(() => {
+    if (canGoPrev) {
+      setCurrentIndex((i) => i - 1);
+      setVideoAspect(null);
+      setImageAspect(null);
+    }
+  }, [canGoPrev]);
+
+  const goNext = useCallback(() => {
+    if (canGoNext) {
+      setCurrentIndex((i) => i + 1);
+      setVideoAspect(null);
+      setImageAspect(null);
+    }
+  }, [canGoNext]);
 
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
       if (e.key === 'Escape') onClose();
+      if (e.key === 'ArrowLeft') goPrev();
+      if (e.key === 'ArrowRight') goNext();
     },
-    [onClose],
+    [onClose, goPrev, goNext],
   );
+
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  }, []);
+
+  const handleTouchMove = useCallback((e: React.TouchEvent) => {
+    touchEndX.current = e.touches[0].clientX;
+  }, []);
+
+  const handleTouchEnd = useCallback(() => {
+    if (touchStartX.current == null || touchEndX.current == null) return;
+    const diff = touchStartX.current - touchEndX.current;
+    if (diff > SWIPE_THRESHOLD) goNext();
+    else if (diff < -SWIPE_THRESHOLD) goPrev();
+    touchStartX.current = null;
+    touchEndX.current = null;
+  }, [goPrev, goNext]);
 
   useEffect(() => {
     document.addEventListener('keydown', handleKeyDown);
@@ -31,129 +76,108 @@ export function MediaLightbox({ item, project, onClose }: MediaLightboxProps) {
     };
   }, [handleKeyDown]);
 
+  const goTo = useCallback((index: number) => {
+    setCurrentIndex(index);
+    setVideoAspect(null);
+    setImageAspect(null);
+  }, []);
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.2 }}
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-8"
-      style={{ backgroundColor: 'rgba(0, 0, 0, 0.85)', backdropFilter: 'blur(8px)' }}
+      className="fixed inset-0 z-50 flex flex-col bg-black"
       onClick={onClose}
     >
-      <motion.div
-        initial={{ scale: 0.95, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        exit={{ scale: 0.95, opacity: 0 }}
-        transition={{ duration: 0.25 }}
-        className="relative w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-xl"
-        style={{ backgroundColor: 'var(--bg-card)' }}
+      {/* Media — full screen */}
+      <div
+        className="absolute inset-0 flex items-center justify-center"
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
         onClick={(e) => e.stopPropagation()}
       >
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full flex items-center justify-center cursor-pointer"
-          style={{ backgroundColor: 'rgba(0,0,0,0.5)', color: 'white' }}
-          aria-label="Close"
-        >
-          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </button>
-
-        {item.type === 'video' ? (
-          <div className="flex items-center justify-center max-h-[85vh] w-full rounded-t-xl overflow-hidden bg-black">
-            <video
-              src={item.src}
-              controls
-              autoPlay
-              playsInline
-              className="max-h-[85vh] max-w-full w-auto h-auto object-contain"
-              onLoadedMetadata={(e) => {
-                const v = e.currentTarget;
-                if (v.videoWidth && v.videoHeight) {
-                  setVideoAspect(`${v.videoWidth}/${v.videoHeight}`);
-                }
-              }}
-            />
-          </div>
-        ) : (
-          <div
-            className="relative w-full rounded-t-xl overflow-hidden"
-            style={{ aspectRatio: imageAspect ?? '9/16' }}
-          >
-            <Image
-              src={item.src}
-              alt={item.alt}
-              fill
-              className="object-contain"
-              onLoad={(e) => {
-                const img = e.target as HTMLImageElement;
-                if (img.naturalWidth && img.naturalHeight) {
-                  setImageAspect(`${img.naturalWidth}/${img.naturalHeight}`);
-                }
-              }}
-            />
-          </div>
-        )}
-
-        {item.type === 'image' && (
-          <div className="p-6 sm:p-8">
-            <h3
-              className="text-lg sm:text-xl font-bold mb-3"
-              style={{ color: 'var(--text)' }}
-            >
-              {project.title} — {item.alt}
-            </h3>
-            <div className="space-y-2">
-              {project.description.map((p, i) => (
-                <p
-                  key={i}
-                  className="text-sm leading-relaxed"
-                  style={{ color: 'var(--text-secondary)' }}
-                >
-                  {p}
-                </p>
-              ))}
-            </div>
-            {project.links.length > 0 && (
-              <div className="flex flex-wrap gap-3 mt-4">
-                {project.links.map((link) => (
-                  <a
-                    key={link.label}
-                    href={link.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold transition-colors duration-200"
-                    style={{ backgroundColor: '#D4834A', color: '#ffffff' }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.backgroundColor = '#B86E3C';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.backgroundColor = '#D4834A';
-                    }}
-                  >
-                    <svg
-                      className="w-4 h-4"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth={2}
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"
-                      />
-                    </svg>
-                    {link.label}
-                  </a>
-                ))}
-              </div>
+        <div className="w-full h-full flex items-center justify-center">
+          <AnimatePresence mode="wait">
+            {item.type === 'video' ? (
+              <motion.div
+                key={item.src}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+                className="w-full h-full flex items-center justify-center"
+              >
+                <video
+                  src={item.src}
+                  controls
+                  autoPlay
+                  playsInline
+                  className="w-full h-full object-contain"
+                />
+              </motion.div>
+            ) : (
+              <motion.div
+                key={item.src}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+                className="absolute inset-0"
+              >
+                <Image
+                  src={item.src}
+                  alt={item.alt}
+                  fill
+                  className="object-contain"
+                  onLoad={(e) => {
+                    const img = e.target as HTMLImageElement;
+                    if (img.naturalWidth && img.naturalHeight) {
+                      setImageAspect(`${img.naturalWidth}/${img.naturalHeight}`);
+                    }
+                  }}
+                />
+              </motion.div>
             )}
-          </div>
-        )}
-      </motion.div>
+          </AnimatePresence>
+        </div>
+      </div>
+
+      {/* Close — overlay top right */}
+      <button
+        onClick={onClose}
+        className="absolute top-4 right-4 z-20 w-10 h-10 rounded-full flex items-center justify-center cursor-pointer transition-opacity hover:opacity-100 opacity-80"
+        style={{ backgroundColor: 'rgba(0,0,0,0.5)', color: 'white' }}
+        aria-label="Close"
+      >
+        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+
+      {/* Dots — overlay bottom */}
+      {media.length > 1 && (
+        <div
+          className="absolute bottom-4 left-0 right-0 flex justify-center items-center gap-2 flex-wrap px-4 z-20"
+          onClick={(e) => e.stopPropagation()}
+        >
+          {media.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => goTo(i)}
+              className="rounded-full transition-all duration-200 cursor-pointer"
+              style={{
+                width: currentIndex === i ? 24 : 8,
+                height: 8,
+                backgroundColor: currentIndex === i ? '#D4834A' : 'rgba(255,255,255,0.4)',
+              }}
+              aria-label={`Go to slide ${i + 1}`}
+            />
+          ))}
+        </div>
+      )}
     </motion.div>
   );
 }
