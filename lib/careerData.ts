@@ -108,8 +108,12 @@ export const careerData: Record<CareerMode, CareerContent> = {
           { type: 'video', src: '/miqo/e78b16c01bdd41d49e61b6471fec62ab.mov', alt: 'Miqo demo' },
           { type: 'video', src: '/miqo/4611d3bf6cba45b596c40301a18e12bc.mov', alt: 'Miqo demo' },
           { type: 'video', src: '/miqo/39d82a6ef9984651aeee7787c7072b85.mov', alt: 'Miqo demo' },
+          { type: 'video', src: '/miqo/ee7831d49d914639b29e9dc9eae877e3.mov', alt: 'Miqo demo' },
+
           { type: 'video', src: '/miqo/25eeb0d1473a405a9fd126a0723a7c2f%202.mov', alt: 'Miqo demo' },
           { type: 'video', src: '/miqo/e78b16c01bdd41d49e61b6471fec62ab.mov', alt: 'Miqo demo' },
+          { type: 'video', src: '/miqo/ee7831d49d914639b29e9dc9eae877e3.mov', alt: 'Miqo demo' },
+
           { type: 'video', src: '/miqo/3f703f6954f64ef1b3c82a6eb5d41973.mov', alt: 'Miqo demo' },
           { type: 'video', src: '/miqo/586b10c8bbba41f397dcd1bf89bdead1.mov', alt: 'Miqo demo' },
           { type: 'video', src: '/miqo/13fb6393a41a4b0bad518000f3b6afea.mov', alt: 'Miqo demo' },
@@ -120,8 +124,8 @@ export const careerData: Record<CareerMode, CareerContent> = {
           { type: 'video', src: '/miqo/99fa0712c0c84f708f6effc3e0b98169.mov', alt: 'Miqo demo' },
           { type: 'video', src: '/miqo/88baf36c4118434d96a67befc5df2ecf.mov', alt: 'Miqo demo' },
           { type: 'video', src: '/miqo/bdcac7a13ccc4f94a1decef5fe6fc2c5.mov', alt: 'Miqo demo' },
-          { type: 'video', src: '/miqo/ee7831d49d914639b29e9dc9eae877e3.mov', alt: 'Miqo demo' },
           { type: 'image', src: '/miqo/IMG_3764.jpeg', alt: 'Miqo' },
+          { type: 'image', src: '/miqo/0C09546D-AB55-4D0B-AD80-FE61D3FF04FD.png', alt: 'Miqo' },
         ],
       },
       {
@@ -185,13 +189,14 @@ export const careerData: Record<CareerMode, CareerContent> = {
         image: '/background/austin-skyline.webp',
         tags: ['React Native', 'iOS', 'Widgets'],
         description: [
-          'Verses Widget is a React Native app that lets you schedule Bible verses using iOS app widgets. Display meaningful verses on your home screen with customizable scheduling.',
+          'Verses Widget is a React Native app that lets you schedule Bible verses using iOS app widgets. Display meaningful verses on your home screen with customizable scheduling. Built in 2 hours.',
         ],
         links: [
           { label: 'GitHub', href: 'https://github.com/Wryz/bible-modules' },
         ],
         media: [
-          { type: 'image', src: '/projects/placeholder-image.svg', alt: 'Verses Widget screenshot' },
+          { type: 'video', src: '/verses_widget/5f579840bcb34d9aabc80de74ad69c25.mov', alt: 'Verses Widget demo' },
+          { type: 'video', src: '/verses_widget/IMG_4518.MOV', alt: 'Verses Widget demo' },
         ],
       },
     ],
