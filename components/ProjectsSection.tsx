@@ -163,11 +163,21 @@ export function ProjectsSection() {
     setDisplayedIndex(0);
   }
 
-  const displayedProject = projects[displayedIndex];
-  const hasMediaSections = displayedProject.mediaSections && displayedProject.mediaSections.length > 0;
+  const safeIndex =
+    projects.length > 0 ? Math.min(displayedIndex, projects.length - 1) : 0;
+  if (displayedIndex !== safeIndex) {
+    setDisplayedIndex(safeIndex);
+  }
+  const displayedProject = projects[safeIndex];
+  const hasMediaSections =
+    displayedProject?.mediaSections && displayedProject.mediaSections.length > 0;
   const allMedia = hasMediaSections
-    ? displayedProject.mediaSections!.flatMap((s) => s.media)
-    : displayedProject.media;
+    ? displayedProject!.mediaSections!.flatMap((s) => s.media)
+    : (displayedProject?.media ?? []);
+
+  if (!displayedProject) {
+    return null;
+  }
 
   return (
     <section
@@ -255,15 +265,47 @@ export function ProjectsSection() {
                 ))}
               </div>
 
-              {/* Link embeds — YouTube, GitHub repos, Website */}
-              {(displayedProject.links.length > 0 || (displayedProject.githubRepos?.length ?? 0) > 0) && (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-                  {displayedProject.links.map((link) => (
-                    <LinkEmbed key={link.label} link={link} />
-                  ))}
-                  {displayedProject.githubRepos && displayedProject.githubRepos.length > 0 && (
-                    <GitHubReposEmbed repos={displayedProject.githubRepos} />
+              {/* Link embeds — YouTube, featured image, GitHub repos, Website */}
+              {(displayedProject.links.length > 0 || (displayedProject.githubRepos?.length ?? 0) > 0 || displayedProject.featuredImage) && (
+                <div
+                  className={
+                    displayedProject.featuredImage
+                      ? 'flex flex-col md:flex-row gap-4 mb-8'
+                      : 'grid grid-cols-1 md:grid-cols-2 gap-4 mb-8'
+                  }
+                >
+                  {displayedProject.featuredImage && (
+                    <div
+                      className="rounded-xl overflow-hidden border w-fit max-w-[500px] shrink-0"
+                      style={{
+                        borderColor: 'var(--border)',
+                        backgroundColor: 'var(--bg-card)',
+                      }}
+                    >
+                      <div className="relative">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={displayedProject.featuredImage.src}
+                          alt={displayedProject.featuredImage.alt}
+                          className="w-full h-auto block"
+                        />
+                      </div>
+                    </div>
                   )}
+                  <div
+                    className={
+                      displayedProject.featuredImage
+                        ? 'flex flex-col gap-4 flex-1 min-w-0'
+                        : 'contents'
+                    }
+                  >
+                    {displayedProject.links.map((link) => (
+                      <LinkEmbed key={link.label} link={link} />
+                    ))}
+                    {displayedProject.githubRepos && displayedProject.githubRepos.length > 0 && (
+                      <GitHubReposEmbed repos={displayedProject.githubRepos} />
+                    )}
+                  </div>
                 </div>
               )}
             </div>
