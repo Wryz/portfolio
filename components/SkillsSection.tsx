@@ -10,7 +10,7 @@ export function SkillsSection() {
   const skillCategories = careerData[career].skills;
 
   return (
-    <section id="skills" className="py-20 sm:py-28" style={{ backgroundColor: 'var(--bg-secondary)' }}>
+    <section id="skills" className="py-20 sm:py-28">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 30 }}

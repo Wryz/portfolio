@@ -47,10 +47,37 @@ html {
 }
 
 body {
+  position: relative;
   background-color: var(--bg);
   color: var(--text);
   font-family: var(--font-body), system-ui, sans-serif;
   overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url('/background/topography.svg');
+  background-size: 600px 600px;
+  background-repeat: repeat;
+  background-attachment: fixed;
+  pointer-events: none;
+  z-index: 0;
+}
+
+body > * {
+  position: relative;
+  z-index: 1;
+}
+
+[data-theme="light"] body::before {
+  opacity: 0.06;
+}
+
+[data-theme="dark"] body::before {
+  opacity: 0.04;
+  filter: invert(1);
 }
 
 *,

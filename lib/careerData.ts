@@ -24,15 +24,26 @@ export interface MediaItem {
   alt: string;
 }
 
+export interface MediaSection {
+  name: string;
+  media: MediaItem[];
+}
+
 export interface Project {
   title: string;
   subtitle: string;
+  /** 1–3 highlights shown next to the title (e.g. "100k+ users", "60+ team") */
+  highlights?: string[];
   image: string;
   tags: string[];
   description: string[];
   links: ProjectLink[];
+  /** When present, renders a single GitHub section showcasing all repos */
+  githubRepos?: { label: string; href: string }[];
   tiktokEmbed?: string;
   media: MediaItem[];
+  /** When present, media is shown in labeled sections (Gameplay, Cinematics, Mobs) */
+  mediaSections?: MediaSection[];
 }
 
 interface CareerContent {
@@ -50,7 +61,7 @@ export const careerData: Record<CareerMode, CareerContent> = {
       },
       {
         title: 'Frontend',
-        skills: ['React', 'React Native', 'Next.js', 'Tailwind CSS', 'Framer Motion'],
+        skills: ['React', 'React Native', 'Next.js', 'Tailwind CSS', 'Framer Motion', 'Three.js'],
       },
       {
         title: 'Backend & Cloud',
@@ -63,7 +74,7 @@ export const careerData: Record<CareerMode, CareerContent> = {
     ],
     experience: [
       {
-        role: 'Fractional CTO',
+        role: 'CTO',
         company: 'Stressie',
         period: 'April 2025 - Present',
         description:
@@ -72,14 +83,14 @@ export const careerData: Record<CareerMode, CareerContent> = {
       {
         role: 'Founder',
         company: 'BuilderFive',
-        period: '2024 - Present',
+        period: 'Mar 2024 - Oct 2025',
         description:
           'Building a time-based rewards app where users earn money attending local events hosted by businesses. Conducted 200+ custom discovery interviews and created a TikTok vlog with 200k+ total views. Currently in active alpha testing.',
       },
       {
         role: 'Founder / Lead Developer',
         company: 'GoalTac',
-        period: 'Oct 2022 - 2024',
+        period: '2022 - Jun 2023',
         description:
           'Launched a social productivity startup motivating students to overcome procrastination. Led a team of 20 using Agile methodology across development, product management, user testing, and business strategy. Secured the startup\'s first major client, onboarding 300+ users.',
       },
@@ -95,6 +106,7 @@ export const careerData: Record<CareerMode, CareerContent> = {
       {
         title: 'Miqo',
         subtitle: 'Voice-commanded embodied AI agent resembling Wall-E',
+        highlights: ['Voice-controlled', 'ESP32 + Bluetooth', 'Wall-E inspired'],
         image: '/background/austin-skyline.webp',
         tags: ['AI', 'ESP32', 'Bluetooth', 'Embedded'],
         description: [
@@ -131,11 +143,12 @@ export const careerData: Record<CareerMode, CareerContent> = {
       {
         title: 'BuilderFive',
         subtitle: 'Time-based rewards app for local events',
+        highlights: ['200+ discovery interviews', '200k+ TikTok views', 'Three.js'],
         image: '/background/austin-skyline.webp',
         tags: ['React Native', 'Next.js', 'AI', 'Mapbox', 'Three.js'],
         description: [
           'BuilderFive is a time-based rewards app where users earn money by attending local events hosted by businesses. The app incentivizes real-world engagement and helps local businesses drive foot traffic.',
-          'Conducted 200+ custom discovery interviews to validate the concept and iterate on the product. Built a TikTok vlog documenting the journey with 200k+ total views.',
+          'Conducted **200+** custom discovery interviews to validate the concept and iterate on the product. Built a TikTok vlog documenting the journey with **200k+** total views.',
           'Currently in active alpha testing with a growing waitlist of businesses and users.',
         ],
         links: [
@@ -151,29 +164,103 @@ export const careerData: Record<CareerMode, CareerContent> = {
       {
         title: 'Siege',
         subtitle: 'Minecraft MMORPG with 100k+ players',
+        highlights: ['100k+ players', '60+ team', '1,000+ custom items'],
         image: '/background/austin-skyline.webp',
-        tags: ['Java', 'Game Design', 'Community', '60+ Team'],
+        tags: ['Java', 'Kotlin', 'Game Design', 'Community', '60+ Team'],
         description: [
-          'Identified and filled a genre gap, creating a profitable Minecraft MMORPG server in just 2 weeks with nearly 500 eager participants on launch.',
-          'Built over 1,000 custom items and grew the server to 100,000+ unique players. Recruited and managed a team of 60+ specialized volunteers.',
-          'Gained deep expertise in gaming communities and player psychology while growing the online presence from 200 to 50,000 users through a website, Reddit, and Discord.',
+          'Identified and filled a genre gap, creating a profitable Minecraft MMORPG server in just **2 weeks** with nearly **500** eager participants on launch. Coded in **Java** and **Kotlin** for server plugins, mobs, and game logic.',
+          'Built over **1,000** custom items and grew the server to **100,000+** unique players. Recruited and managed a team of **60+** specialized volunteers.',
+          'Gained deep expertise in gaming communities and player psychology while growing the online presence from **200** to **100,000** users through a website, Reddit, and Discord.',
         ],
-        links: [
-          { label: 'GitHub', href: 'https://github.com/WrysBowl' },
+        links: [{ label: 'SiegeRPG official trailer', href: 'https://www.youtube.com/watch?v=6ke_CKSm1dM' }],
+        githubRepos: [
+          { label: 'Siege (server)', href: 'https://github.com/WrysBowl/Siege' },
+          { label: 'Siege-MythicMobs', href: 'https://github.com/WrysBowl/Siege-MythicMobs' },
+          { label: 'SiegeCore', href: 'https://github.com/WrysBowl/SiegeCore' },
+          { label: 'LastStraw-Skripts', href: 'https://github.com/WrysBowl/LastStraw-Skripts' },
+          { label: 'KotlinPaperPlugin', href: 'https://github.com/WrysBowl/KotlinPaperPlugin' },
         ],
-        media: [
-          { type: 'video', src: '/projects/placeholder-video.mp4', thumbnail: '/projects/placeholder-thumb.svg', alt: 'Siege gameplay trailer' },
-          { type: 'image', src: '/projects/placeholder-image.svg', alt: 'Siege custom items showcase' },
-          { type: 'video', src: '/projects/placeholder-video.mp4', thumbnail: '/projects/placeholder-thumb.svg', alt: 'Siege world tour' },
+        media: [{ type: 'video', src: '/siege/gameplay/Goo Battle.mp4', alt: 'Goo Battle' }],
+        mediaSections: [
+          {
+            name: 'Gameplay',
+            media: [
+              { type: 'video', src: '/siege/gameplay/Goo Battle.mp4', alt: 'Goo Battle' },
+            ],
+          },
+          {
+            name: 'Cinematics',
+            media: [
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.09.29 - 00.55.47.32.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.09.29 - 00.57.26.40.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.09.29 - 00.57.53.72.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.09.29 - 00.58.42.88.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.09.29 - 00.59.05.84.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.09.29 - 00.59.12.91.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.09.29 - 01.00.32.41.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.09.29 - 01.00.46.15.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.09.29 - 01.00.52.73.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.09.29 - 01.01.08.85.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.09.29 - 01.02.31.63.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.09.29 - 01.02.55.91.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.09.29 - 01.03.05.15.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.09.29 - 01.10.55.91.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.09.29 - 01.11.36.52.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.09.29 - 01.11.51.72.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.09.29 - 01.14.44.64.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.10.10 - 18.56.40.66.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.10.10 - 18.57.24.47.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.10.10 - 18.57.36.28.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.10.10 - 18.58.54.41.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.10.10 - 18.59.54.52.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.10.10 - 19.01.00.96.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.10.10 - 19.01.49.59.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.10.23 - 21.38.38.58.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.10.23 - 21.39.45.76.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.10.23 - 21.39.57.53.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.10.26 - 16.57.35.26.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.10.28 - 23.34.43.53.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.10.28 - 23.35.45.09.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.10.28 - 23.36.22.60.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.10.30 - 01.40.44.66.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.10.30 - 01.43.39.11.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.10.30 - 01.44.01.19.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.10.30 - 01.45.17.40.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.10.30 - 01.46.02.17.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.10.30 - 01.47.24.19.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.10.31 - 18.32.15.28.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.10.31 - 18.51.38.56.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.10.31 - 18.52.16.14.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.10.31 - 19.00.37.90.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.10.31 - 19.01.03.81.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.10.31 - 22.52.34.95.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.11.05 - 20.33.31.41.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.11.05 - 20.34.01.11.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.11.05 - 20.37.12.43.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Country Side.png', alt: 'Country Side' },
+            ],
+          },
+          {
+            name: 'Mobs',
+            media: [
+              { type: 'video', src: '/siege/mobs/Bandit.mp4', alt: 'Bandit' },
+              { type: 'video', src: '/siege/mobs/Bandit Archers.mp4', alt: 'Bandit Archers' },
+              { type: 'video', src: '/siege/mobs/Infected Digger.mp4', alt: 'Infected Digger' },
+              { type: 'video', src: '/siege/mobs/Necromancy.mp4', alt: 'Necromancy' },
+              { type: 'video', src: '/siege/mobs/OldGoblins.mp4', alt: 'Old Goblins' },
+              { type: 'video', src: '/siege/mobs/Squilliams AI 2.0.mp4', alt: 'Squilliams AI 2.0' },
+            ],
+          },
         ],
       },
       {
         title: 'Brain Benchmark',
         subtitle: 'Brain games to test your mental fitness',
+        highlights: ['Built in 3 hours', 'Live website', 'Cognitive games'],
         image: '/background/austin-skyline.webp',
         tags: ['Web', 'Games', 'Cognitive Training'],
         description: [
-          'Built in 3 hours, Brain Benchmark is a collection of brain games designed to assess and improve mental fitness. Users can test various cognitive skills through engaging, interactive challenges.',
+          'Built in **3 hours**, Brain Benchmark is a collection of brain games designed to assess and improve mental fitness. Users can test various cognitive skills through engaging, interactive challenges.',
         ],
         links: [
           { label: 'Website', href: 'https://brain-benchmark.com/' },
@@ -194,10 +281,11 @@ export const careerData: Record<CareerMode, CareerContent> = {
       {
         title: 'Verses Widget',
         subtitle: 'Schedule Bible verses on your home screen',
+        highlights: ['Built in 2 hours', 'React Native', 'iOS Widgets'],
         image: '/background/austin-skyline.webp',
         tags: ['React Native', 'iOS', 'Widgets'],
         description: [
-          'Built in 2 hours, Verses Widget is a React Native app that lets you schedule Bible verses using iOS app widgets. Display meaningful verses on your home screen with customizable scheduling.',
+          'Built in **2 hours**, Verses Widget is a React Native app that lets you schedule Bible verses using iOS app widgets. Display meaningful verses on your home screen with customizable scheduling.',
         ],
         links: [
           { label: 'GitHub', href: 'https://github.com/Wryz/bible-modules' },
@@ -234,7 +322,7 @@ export const careerData: Record<CareerMode, CareerContent> = {
         company: 'Non-Profit Coworking Group',
         period: '2024 - Present',
         description:
-          'Founded a non-profit group in Austin where I plan, advertise, and host coworking events for startup founders. 200+ events hosted for 300+ founders and growing.',
+          'Founded a non-profit group in Austin where I plan, advertise, and host coworking events for startup founders. 200+ events hosted for 100+ founders and growing.',
       },
       {
         role: 'Supervisor',
@@ -261,14 +349,15 @@ export const careerData: Record<CareerMode, CareerContent> = {
     projects: [
       {
         title: 'Austin Coworking Events',
-        subtitle: '200+ events for 300+ startup founders',
+        subtitle: '200+ events for 100+ startup founders',
+        highlights: ['200+ events', '100+ founders', 'Non-profit'],
         image: '/background/austin-skyline.webp',
         tags: ['Non-Profit', 'Startups', 'Networking', 'Events'],
         description: [
           'Founded a non-profit group dedicated to hosting coworking events for startup founders in Austin. Each event is designed to create a productive, collaborative environment where entrepreneurs can build alongside each other.',
-          '200+ events hosted for a growing community of 300+ founders, with programming ranging from focused coworking sessions to casual networking mixers.',
+          '**200+** events hosted for a growing community of **100+** founders, with programming ranging from focused coworking sessions to casual networking mixers.',
         ],
-        links: [],
+        links: [{ label: 'Website', href: 'https://atxfc.org' }],
         media: [
           { type: 'video', src: '/projects/placeholder-video.mp4', thumbnail: '/projects/placeholder-thumb.svg', alt: 'Coworking event highlights' },
           { type: 'image', src: '/projects/placeholder-image.svg', alt: 'Event venue setup' },
@@ -278,10 +367,11 @@ export const careerData: Record<CareerMode, CareerContent> = {
       {
         title: 'UConn Minecraft Club',
         subtitle: '600 members — 6th largest club at UConn',
+        highlights: ['600+ members', '6th largest at UConn', 'Bi-weekly events'],
         image: '/background/austin-skyline.webp',
         tags: ['Community', 'Gaming', 'Leadership', '600+ Members'],
         description: [
-          'Built UConn\'s Minecraft Club from zero to 600+ members, making it the 6th largest club on campus. Organized bi-weekly events every semester and secured funding through student campaigns.',
+          'Built UConn\'s Minecraft Club from zero to **600+** members, making it the **6th** largest club on campus. Organized bi-weekly events every semester and secured funding through student campaigns.',
           'Innovated with virtual goods sales to fund server maintenance. Leveraged Reddit, Discord, and partnerships with other UConn groups to fuel growth. Recruited and onboarded a successor to ensure the club\'s continued success.',
         ],
         links: [],
@@ -294,16 +384,92 @@ export const careerData: Record<CareerMode, CareerContent> = {
       {
         title: 'Siege Gaming Community',
         subtitle: '100k+ players and 60+ team members',
+        highlights: ['100k+ players', '60+ volunteers', '50k community growth'],
         image: '/background/austin-skyline.webp',
-        tags: ['Gaming', 'Community', 'Growth', 'Discord'],
+        tags: ['Java', 'Kotlin', 'Gaming', 'Community', 'Growth', 'Discord'],
         description: [
-          'Built and managed a Minecraft MMORPG community that grew to 100,000+ unique players. Recruited and coordinated a team of 60+ specialized volunteers across development, moderation, and content creation.',
-          'Gained deep expertise in online community management, player engagement psychology, and scaling a community from 200 to 50,000 members through strategic use of Discord, Reddit, and a dedicated website.',
+          'Built and managed a Minecraft MMORPG community that grew to **100,000+** unique players. Server and plugins coded in **Java** and **Kotlin**. Recruited and coordinated a team of **60+** specialized volunteers across development, moderation, and content creation.',
+          'Gained deep expertise in online community management, player engagement psychology, and scaling a community from **200** to **100,000** members through strategic use of Discord, Reddit, and a dedicated website.',
         ],
         links: [],
-        media: [
-          { type: 'video', src: '/projects/placeholder-video.mp4', thumbnail: '/projects/placeholder-thumb.svg', alt: 'Siege community trailer' },
-          { type: 'image', src: '/projects/placeholder-image.svg', alt: 'Siege Discord growth chart' },
+        githubRepos: [
+          { label: 'Siege (server)', href: 'https://github.com/WrysBowl/Siege' },
+          { label: 'Siege-MythicMobs', href: 'https://github.com/WrysBowl/Siege-MythicMobs' },
+          { label: 'SiegeCore', href: 'https://github.com/WrysBowl/SiegeCore' },
+          { label: 'LastStraw-Skripts', href: 'https://github.com/WrysBowl/LastStraw-Skripts' },
+          { label: 'KotlinPaperPlugin', href: 'https://github.com/WrysBowl/KotlinPaperPlugin' },
+        ],
+        media: [{ type: 'video', src: '/siege/gameplay/Goo Battle.mp4', alt: 'Goo Battle' }],
+        mediaSections: [
+          {
+            name: 'Gameplay',
+            media: [
+              { type: 'video', src: '/siege/gameplay/Goo Battle.mp4', alt: 'Goo Battle' },
+            ],
+          },
+          {
+            name: 'Cinematics',
+            media: [
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.09.29 - 00.55.47.32.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.09.29 - 00.57.26.40.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.09.29 - 00.57.53.72.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.09.29 - 00.58.42.88.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.09.29 - 00.59.05.84.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.09.29 - 00.59.12.91.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.09.29 - 01.00.32.41.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.09.29 - 01.00.46.15.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.09.29 - 01.00.52.73.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.09.29 - 01.01.08.85.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.09.29 - 01.02.31.63.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.09.29 - 01.02.55.91.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.09.29 - 01.03.05.15.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.09.29 - 01.10.55.91.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.09.29 - 01.11.36.52.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.09.29 - 01.11.51.72.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.09.29 - 01.14.44.64.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.10.10 - 18.56.40.66.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.10.10 - 18.57.24.47.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.10.10 - 18.57.36.28.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.10.10 - 18.58.54.41.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.10.10 - 18.59.54.52.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.10.10 - 19.01.00.96.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.10.10 - 19.01.49.59.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.10.23 - 21.38.38.58.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.10.23 - 21.39.45.76.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.10.23 - 21.39.57.53.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.10.26 - 16.57.35.26.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.10.28 - 23.34.43.53.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.10.28 - 23.35.45.09.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.10.28 - 23.36.22.60.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.10.30 - 01.40.44.66.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.10.30 - 01.43.39.11.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.10.30 - 01.44.01.19.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.10.30 - 01.45.17.40.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.10.30 - 01.46.02.17.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.10.30 - 01.47.24.19.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.10.31 - 18.32.15.28.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.10.31 - 18.51.38.56.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.10.31 - 18.52.16.14.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.10.31 - 19.00.37.90.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.10.31 - 19.01.03.81.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.10.31 - 22.52.34.95.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.11.05 - 20.33.31.41.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.11.05 - 20.34.01.11.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Badlion Client Screenshot 2021.11.05 - 20.37.12.43.png', alt: 'Siege cinematic' },
+              { type: 'image', src: '/siege/cinematics/Country Side.png', alt: 'Country Side' },
+            ],
+          },
+          {
+            name: 'Mobs',
+            media: [
+              { type: 'video', src: '/siege/mobs/Bandit.mp4', alt: 'Bandit' },
+              { type: 'video', src: '/siege/mobs/Bandit Archers.mp4', alt: 'Bandit Archers' },
+              { type: 'video', src: '/siege/mobs/Infected Digger.mp4', alt: 'Infected Digger' },
+              { type: 'video', src: '/siege/mobs/Necromancy.mp4', alt: 'Necromancy' },
+              { type: 'video', src: '/siege/mobs/OldGoblins.mp4', alt: 'Old Goblins' },
+              { type: 'video', src: '/siege/mobs/Squilliams AI 2.0.mp4', alt: 'Squilliams AI 2.0' },
+            ],
+          },
         ],
       },
     ],

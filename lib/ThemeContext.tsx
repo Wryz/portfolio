@@ -18,8 +18,6 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     const stored = localStorage.getItem('theme') as ThemeMode | null;
     if (stored) {
       setMode(stored);
-    } else if (window.matchMedia('(prefers-color-scheme: light)').matches) {
-      setMode('light');
     }
     setMounted(true);
   }, []);

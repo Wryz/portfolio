@@ -5,6 +5,81 @@ import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { MediaItem, Project } from '@/lib/careerData';
 
+function VideoWithPlaceholder({
+  src,
+  isCurrent,
+  alt,
+}: {
+  src: string;
+  isCurrent: boolean;
+  alt: string;
+}) {
+  const [isLoaded, setIsLoaded] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  const handleCanPlay = useCallback(() => setIsLoaded(true), []);
+
+  // Reset load state when src changes (e.g. navigating to different video)
+  useEffect(() => {
+    setIsLoaded(false);
+  }, [src]);
+
+  // If video was cached and already has data, show immediately
+  useEffect(() => {
+    const v = videoRef.current;
+    if (v && v.readyState >= 2) setIsLoaded(true);
+  }, [isCurrent]);
+
+  return (
+    <div className="relative w-full h-full flex items-center justify-center">
+      {!isLoaded && (
+        <div
+          className="absolute inset-0 flex items-center justify-center z-10"
+          style={{ backgroundColor: 'rgba(0,0,0,0.9)' }}
+        >
+          <div className="flex flex-col items-center gap-3">
+            <svg
+              className="animate-spin h-10 w-10 text-white"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              aria-hidden
+            >
+              <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
+              />
+              <path
+                className="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+              />
+            </svg>
+            <span className="text-sm text-white/80">Loading video...</span>
+          </div>
+        </div>
+      )}
+      <video
+        ref={videoRef}
+        src={src}
+        controls
+        controlsList="playpause volume timeline fullscreen"
+        autoPlay={isCurrent}
+        playsInline
+        preload="auto"
+        className="w-full h-full object-contain"
+        onCanPlay={handleCanPlay}
+        onLoadedData={handleCanPlay}
+        {...(!isCurrent && { muted: true })}
+      />
+    </div>
+  );
+}
+
 interface MediaLightboxProps {
   media: MediaItem[];
   initialIndex: number;
@@ -13,11 +88,11 @@ interface MediaLightboxProps {
 }
 
 const SWIPE_THRESHOLD = 50;
+/** Sliding window: keep current ± 2 in DOM so back/forward is instant */
+const CACHE_WINDOW = 2;
 
 export function MediaLightbox({ media, initialIndex, project, onClose }: MediaLightboxProps) {
   const [currentIndex, setCurrentIndex] = useState(initialIndex);
-  const [videoAspect, setVideoAspect] = useState<string | null>(null);
-  const [imageAspect, setImageAspect] = useState<string | null>(null);
   const touchStartX = useRef<number | null>(null);
   const touchEndX = useRef<number | null>(null);
 
@@ -26,19 +101,11 @@ export function MediaLightbox({ media, initialIndex, project, onClose }: MediaLi
   const canGoNext = currentIndex < media.length - 1;
 
   const goPrev = useCallback(() => {
-    if (canGoPrev) {
-      setCurrentIndex((i) => i - 1);
-      setVideoAspect(null);
-      setImageAspect(null);
-    }
+    if (canGoPrev) setCurrentIndex((i) => i - 1);
   }, [canGoPrev]);
 
   const goNext = useCallback(() => {
-    if (canGoNext) {
-      setCurrentIndex((i) => i + 1);
-      setVideoAspect(null);
-      setImageAspect(null);
-    }
+    if (canGoNext) setCurrentIndex((i) => i + 1);
   }, [canGoNext]);
 
   const handleKeyDown = useCallback(
@@ -78,9 +145,10 @@ export function MediaLightbox({ media, initialIndex, project, onClose }: MediaLi
 
   const goTo = useCallback((index: number) => {
     setCurrentIndex(index);
-    setVideoAspect(null);
-    setImageAspect(null);
   }, []);
+
+  const minCached = Math.max(0, currentIndex - CACHE_WINDOW);
+  const maxCached = Math.min(media.length - 1, currentIndex + CACHE_WINDOW);
 
   return (
     <motion.div
@@ -99,49 +167,37 @@ export function MediaLightbox({ media, initialIndex, project, onClose }: MediaLi
         onTouchEnd={handleTouchEnd}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="w-full h-full flex items-center justify-center">
-          <AnimatePresence mode="wait">
-            {item.type === 'video' ? (
-              <motion.div
-                key={item.src}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.2 }}
-                className="w-full h-full flex items-center justify-center"
+        <div className="relative w-full h-full flex items-center justify-center">
+          {media.slice(minCached, maxCached + 1).map((m, offset) => {
+            const i = minCached + offset;
+            const isCurrent = i === currentIndex;
+            return (
+              <div
+                key={`${m.src}-${i}`}
+                className="absolute inset-0 flex items-center justify-center"
+                style={{
+                  visibility: isCurrent ? 'visible' : 'hidden',
+                  zIndex: isCurrent ? 1 : 0,
+                  pointerEvents: isCurrent ? 'auto' : 'none',
+                }}
               >
-                <video
-                  src={item.src}
-                  controls
-                  autoPlay
-                  playsInline
-                  className="w-full h-full object-contain"
-                />
-              </motion.div>
-            ) : (
-              <motion.div
-                key={item.src}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.2 }}
-                className="absolute inset-0"
-              >
-                <Image
-                  src={item.src}
-                  alt={item.alt}
-                  fill
-                  className="object-contain"
-                  onLoad={(e) => {
-                    const img = e.target as HTMLImageElement;
-                    if (img.naturalWidth && img.naturalHeight) {
-                      setImageAspect(`${img.naturalWidth}/${img.naturalHeight}`);
-                    }
-                  }}
-                />
-              </motion.div>
-            )}
-          </AnimatePresence>
+                {m.type === 'video' ? (
+                  <VideoWithPlaceholder
+                    src={m.src}
+                    isCurrent={isCurrent}
+                    alt={m.alt}
+                  />
+                ) : (
+                  <Image
+                    src={m.src}
+                    alt={m.alt}
+                    fill
+                    className="object-contain"
+                  />
+                )}
+              </div>
+            );
+          })}
         </div>
       </div>
 
@@ -157,10 +213,10 @@ export function MediaLightbox({ media, initialIndex, project, onClose }: MediaLi
         </svg>
       </button>
 
-      {/* Dots — overlay bottom */}
+      {/* Dots — overlay bottom (higher when video to avoid covering controls) */}
       {media.length > 1 && (
         <div
-          className="absolute bottom-4 left-0 right-0 flex justify-center items-center gap-2 flex-wrap px-4 z-20"
+          className={`absolute left-0 right-0 flex justify-center items-center gap-2 flex-wrap px-4 z-20 ${item.type === 'video' ? 'bottom-16' : 'bottom-4'}`}
           onClick={(e) => e.stopPropagation()}
         >
           {media.map((_, i) => (

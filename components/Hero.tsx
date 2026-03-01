@@ -98,10 +98,10 @@ function DetailBadge({
 
 export function Hero() {
   const { career, setCareer } = useCareer();
-  const { mode } = useTheme();
+  const { mode, toggleTheme } = useTheme();
 
   return (
-    <section className="relative">
+    <section className="relative" style={{ backgroundColor: 'var(--bg)' }}>
       {/* Banner - 16:9 landscape, full width */}
       <div className="relative w-full aspect-video overflow-hidden">
         <BannerCarousel />
@@ -110,6 +110,32 @@ export function Hero() {
           style={{ background: heroOverlays[mode] }}
           aria-hidden
         />
+        {/* Theme toggle - top right */}
+        <button
+          onClick={toggleTheme}
+          className="absolute top-4 right-4 z-10 p-2.5 rounded-full transition-all duration-200 cursor-pointer hover:scale-105"
+          style={{
+            color: 'rgba(255,255,255,0.95)',
+            backgroundColor: 'rgba(0,0,0,0.4)',
+          }}
+          aria-label="Toggle theme"
+          onMouseEnter={(e) => {
+            e.currentTarget.style.backgroundColor = 'rgba(0,0,0,0.6)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.backgroundColor = 'rgba(0,0,0,0.4)';
+          }}
+        >
+          {mode === 'dark' ? (
+            <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v1m0 16v1m8.66-13.66l-.71.71M4.05 19.95l-.71.71M21 12h-1M4 12H3m16.66 7.66l-.71-.71M4.05 4.05l-.71-.71M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+            </svg>
+          ) : (
+            <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.005 9.005 0 0012 21a9.005 9.005 0 008.354-5.646z" />
+            </svg>
+          )}
+        </button>
       </div>
 
       {/* Profile + Info */}
@@ -183,36 +209,56 @@ export function Hero() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.45, duration: 0.5 }}
-            className="mt-5 flex items-center gap-3"
+            className="mt-5 flex flex-col items-center gap-3"
           >
-            {socialLinks.map((link) => (
-              <a
-                key={link.label}
-                href={link.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={link.label}
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200"
-                style={{
-                  backgroundColor: 'var(--bg-muted)',
-                  color: 'var(--text-secondary)',
-                  border: '1px solid var(--border)',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = '#D4834A';
-                  e.currentTarget.style.color = '#ffffff';
-                  e.currentTarget.style.borderColor = '#D4834A';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = 'var(--bg-muted)';
-                  e.currentTarget.style.color = 'var(--text-secondary)';
-                  e.currentTarget.style.borderColor = 'var(--border)';
-                }}
-              >
-                {link.icon}
-                {link.label}
-              </a>
-            ))}
+            <div className="flex items-center gap-3">
+              {socialLinks.map((link) => (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={link.label}
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200"
+                  style={{
+                    backgroundColor: 'var(--bg-muted)',
+                    color: 'var(--text-secondary)',
+                    border: '1px solid var(--border)',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = '#D4834A';
+                    e.currentTarget.style.color = '#ffffff';
+                    e.currentTarget.style.borderColor = '#D4834A';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = 'var(--bg-muted)';
+                    e.currentTarget.style.color = 'var(--text-secondary)';
+                    e.currentTarget.style.borderColor = 'var(--border)';
+                  }}
+                >
+                  {link.icon}
+                  {link.label}
+                </a>
+              ))}
+            </div>
+            <a
+              href="/resume.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-sm font-medium transition-all duration-200 hover:underline"
+              style={{ color: 'var(--text-secondary)' }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.color = '#D4834A';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.color = 'var(--text-secondary)';
+              }}
+            >
+              View Resume
+              <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+              </svg>
+            </a>
           </motion.div>
 
           {/* Detail badges: chess, graduation */}
