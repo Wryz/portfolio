@@ -265,37 +265,54 @@ export function ProjectsSection() {
                 ))}
               </div>
 
-              {/* Link embeds — YouTube, featured image, GitHub repos, Website */}
-              {(displayedProject.links.length > 0 || (displayedProject.githubRepos?.length ?? 0) > 0 || displayedProject.featuredImage) && (
+              {/* Link embeds — YouTube, featured image(s), GitHub repos, Website */}
+              {(() => {
+                const featuredItems = displayedProject.featuredImages ?? (displayedProject.featuredImage ? [displayedProject.featuredImage] : []);
+                const hasFeatured = featuredItems.length > 0;
+                const hasBelowLinksImage = !!displayedProject.belowLinksImage;
+                return (displayedProject.links.length > 0 || (displayedProject.githubRepos?.length ?? 0) > 0 || hasFeatured || hasBelowLinksImage) && (
                 <div
                   className={
-                    displayedProject.featuredImage
-                      ? 'flex flex-col md:flex-row gap-4 mb-8'
+                    hasFeatured || hasBelowLinksImage
+                      ? 'flex flex-col lg:flex-row gap-4 mb-8 w-full'
                       : 'grid grid-cols-1 md:grid-cols-2 gap-4 mb-8'
                   }
                 >
-                  {displayedProject.featuredImage && (
-                    <div
-                      className="rounded-xl overflow-hidden border w-fit max-w-[500px] shrink-0"
-                      style={{
-                        borderColor: 'var(--border)',
-                        backgroundColor: 'var(--bg-card)',
-                      }}
-                    >
-                      <div className="relative">
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img
-                          src={displayedProject.featuredImage.src}
-                          alt={displayedProject.featuredImage.alt}
-                          className="w-full h-auto block"
-                        />
-                      </div>
+                  {hasFeatured && (
+                    <div className={`w-full gap-4 lg:flex-1 lg:min-w-0 flex ${featuredItems.length > 1 ? 'flex-wrap' : 'flex-col'}`}>
+                      {featuredItems.map((item, idx) => (
+                        <div
+                          key={`${item.src}-${idx}`}
+                          className={`flex flex-col rounded-xl overflow-hidden border w-full max-w-full ${featuredItems.length === 1 ? 'flex-1 min-h-0' : 'w-fit'}`}
+                          style={{
+                            borderColor: 'var(--border)',
+                            backgroundColor: 'var(--bg-card)',
+                          }}
+                        >
+                          {item.title && (
+                            <div
+                              className="px-3 py-2 border-b text-sm font-medium shrink-0"
+                              style={{ borderColor: 'var(--border)', color: 'var(--text)' }}
+                            >
+                              {item.title}
+                            </div>
+                          )}
+                          <div className={`relative min-w-0 p-0 ${featuredItems.length === 1 ? 'flex-1 min-h-0' : ''}`}>
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img
+                              src={item.src}
+                              alt={item.alt}
+                              className={`block w-full max-w-full ${featuredItems.length === 1 ? 'h-full object-cover' : 'h-auto object-contain'}`}
+                            />
+                          </div>
+                        </div>
+                      ))}
                     </div>
                   )}
                   <div
                     className={
-                      displayedProject.featuredImage
-                        ? 'flex flex-col gap-4 flex-1 min-w-0'
+                      hasFeatured || hasBelowLinksImage
+                        ? 'flex flex-col gap-4 w-full lg:flex-1 lg:min-w-[300px] lg:max-w-[400px]'
                         : 'contents'
                     }
                   >
@@ -305,9 +322,36 @@ export function ProjectsSection() {
                     {displayedProject.githubRepos && displayedProject.githubRepos.length > 0 && (
                       <GitHubReposEmbed repos={displayedProject.githubRepos} />
                     )}
+                    {displayedProject.belowLinksImage && (
+                      <div
+                        className="flex flex-1 flex-col min-h-0 rounded-xl overflow-hidden border w-full"
+                        style={{
+                          borderColor: 'var(--border)',
+                          backgroundColor: 'var(--bg-card)',
+                        }}
+                      >
+                        {displayedProject.belowLinksImage.title && (
+                          <div
+                            className="px-3 py-2 border-b text-sm font-medium shrink-0"
+                            style={{ borderColor: 'var(--border)', color: 'var(--text)' }}
+                          >
+                            {displayedProject.belowLinksImage.title}
+                          </div>
+                        )}
+                        <div className="relative flex-1 min-h-0 min-w-0 p-0">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={displayedProject.belowLinksImage.src}
+                            alt={displayedProject.belowLinksImage.alt}
+                            className="block w-full h-full object-cover"
+                          />
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
-              )}
+              );
+              })()}
             </div>
 
             {/* Media — either sections (Gameplay, Cinematics, Mobs) or flat list */}

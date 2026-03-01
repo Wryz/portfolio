@@ -39,9 +39,13 @@ export interface Project {
   description: string[];
   links: ProjectLink[];
   /** When present, shows a highlighted image on the left (like Siege YouTube), with links stacked on the right */
-  featuredImage?: { src: string; alt: string };
+  featuredImage?: { src: string; alt: string; title?: string };
+  /** When present, shows multiple highlighted images on the left (same style as featuredImage) */
+  featuredImages?: { src: string; alt: string; title?: string }[];
   /** When present, renders a single GitHub section showcasing all repos */
   githubRepos?: { label: string; href: string }[];
+  /** When present, shows an image below the links/GitHub section (e.g. in the right column) */
+  belowLinksImage?: { src: string; alt: string; title?: string };
   tiktokEmbed?: string;
   media: MediaItem[];
   /** When present, media is shown in labeled sections (Gameplay, Cinematics, Mobs) */
@@ -114,20 +118,20 @@ export const careerData: Record<CareerMode, CareerContent> = {
         description: [
           'Miqo is a voice-commanded embodied AI agent designed to resemble Wall-E. It runs on an ESP32 microcontroller and connects to a phone via Bluetooth, enabling hands-free voice control and interaction.',
         ],
-        links: [],
+        links: [{ label: 'GitHub', href: 'https://github.com/Wryz/miqo' }],
+        belowLinksImage: { src: '/miqo/0C09546D-AB55-4D0B-AD80-FE61D3FF04FD.png', alt: 'Buddy design', title: 'Buddy design' },
+        featuredImages: [
+          { src: '/miqo/IMG_3764.jpeg', alt: 'Miqo robot', title: 'Miqo robot' },
+        ],
         media: [
           { type: 'video', src: '/miqo/7eb3684a0b834822a2b6ae2b734ad769.MOV', alt: 'Miqo demo' },
           { type: 'video', src: '/miqo/052aa446334841b9b152facffa54a355.mov', alt: 'Miqo demo' },
           { type: 'video', src: '/miqo/4073ac29f47047d697efab593b7fef71.mov', alt: 'Miqo demo' },
-          { type: 'video', src: '/miqo/e78b16c01bdd41d49e61b6471fec62ab.mov', alt: 'Miqo demo' },
           { type: 'video', src: '/miqo/4611d3bf6cba45b596c40301a18e12bc.mov', alt: 'Miqo demo' },
           { type: 'video', src: '/miqo/39d82a6ef9984651aeee7787c7072b85.mov', alt: 'Miqo demo' },
-          { type: 'video', src: '/miqo/ee7831d49d914639b29e9dc9eae877e3.mov', alt: 'Miqo demo' },
 
           { type: 'video', src: '/miqo/25eeb0d1473a405a9fd126a0723a7c2f%202.mov', alt: 'Miqo demo' },
           { type: 'video', src: '/miqo/e78b16c01bdd41d49e61b6471fec62ab.mov', alt: 'Miqo demo' },
-          { type: 'video', src: '/miqo/ee7831d49d914639b29e9dc9eae877e3.mov', alt: 'Miqo demo' },
-
           { type: 'video', src: '/miqo/3f703f6954f64ef1b3c82a6eb5d41973.mov', alt: 'Miqo demo' },
           { type: 'video', src: '/miqo/586b10c8bbba41f397dcd1bf89bdead1.mov', alt: 'Miqo demo' },
           { type: 'video', src: '/miqo/13fb6393a41a4b0bad518000f3b6afea.mov', alt: 'Miqo demo' },
@@ -138,8 +142,6 @@ export const careerData: Record<CareerMode, CareerContent> = {
           { type: 'video', src: '/miqo/99fa0712c0c84f708f6effc3e0b98169.mov', alt: 'Miqo demo' },
           { type: 'video', src: '/miqo/88baf36c4118434d96a67befc5df2ecf.mov', alt: 'Miqo demo' },
           { type: 'video', src: '/miqo/bdcac7a13ccc4f94a1decef5fe6fc2c5.mov', alt: 'Miqo demo' },
-          { type: 'image', src: '/miqo/IMG_3764.jpeg', alt: 'Miqo' },
-          { type: 'image', src: '/miqo/0C09546D-AB55-4D0B-AD80-FE61D3FF04FD.png', alt: 'Miqo' },
         ],
       },
       {
@@ -233,17 +235,12 @@ export const careerData: Record<CareerMode, CareerContent> = {
           { label: 'GitHub', href: 'https://github.com/Wryz/games' },
           { label: 'Website', href: 'https://brain-benchmark.com/' },
         ],
-        featuredImage: { src: '/brain-benchmark/analytics.png', alt: 'Brain Benchmark analytics' },
+        featuredImage: { src: '/brain-benchmark/analytics.png', alt: 'Brain Benchmark analytics', title: 'Traffic analytics' },
         media: [
           { type: 'video', src: '/brain-benchmark/IMG_3524.MOV', alt: 'Brain Benchmark demo' },
           { type: 'video', src: '/brain-benchmark/IMG_3616.MOV', alt: 'Brain Benchmark demo' },
           { type: 'video', src: '/brain-benchmark/IMG_3617.MOV', alt: 'Brain Benchmark demo' },
-          { type: 'image', src: '/brain-benchmark/IMG_3526.jpeg', alt: 'Brain Benchmark' },
           { type: 'image', src: '/brain-benchmark/IMG_3530.JPG', alt: 'Brain Benchmark' },
-          { type: 'image', src: '/brain-benchmark/IMG_3531.JPG', alt: 'Brain Benchmark' },
-          { type: 'image', src: '/brain-benchmark/IMG_3532.JPG', alt: 'Brain Benchmark' },
-          { type: 'image', src: '/brain-benchmark/IMG_3533.JPG', alt: 'Brain Benchmark' },
-          { type: 'image', src: '/brain-benchmark/IMG_3534.JPG', alt: 'Brain Benchmark' },
         ],
       },
       {
