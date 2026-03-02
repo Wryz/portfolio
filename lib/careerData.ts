@@ -131,7 +131,8 @@ export const careerData: Record<CareerMode, CareerContent> = {
             name: 'Demo',
             media: [
               { type: 'video', src: '/miqo/7eb3684a0b834822a2b6ae2b734ad769.MOV', alt: 'Miqo demo' },
-              { type: 'video', src: '/miqo/052aa446334841b9b152facffa54a355.mov', alt: 'Miqo demo' }
+              { type: 'video', src: '/miqo/052aa446334841b9b152facffa54a355.mov', alt: 'Miqo demo' },
+              { type: 'video', src: '/miqo/6153e757d8764db49ae576bd98c283df.mov', alt: 'Miqo demo' },
             ],
           },
           {
@@ -245,7 +246,6 @@ export const careerData: Record<CareerMode, CareerContent> = {
         ],
         featuredImage: { src: '/brain-benchmark/analytics.png', alt: 'Brain Benchmark analytics', title: 'Traffic analytics — first 5 days post launch' },
         media: [
-          { type: 'video', src: '/miqo/6153e757d8764db49ae576bd98c283df.mov', alt: 'Brain Benchmark demo' },
           { type: 'video', src: '/brain-benchmark/IMG_3524.MOV', alt: 'Brain Benchmark demo' },
           { type: 'video', src: '/brain-benchmark/IMG_3616.MOV', alt: 'Brain Benchmark demo' },
           { type: 'video', src: '/brain-benchmark/IMG_3617.MOV', alt: 'Brain Benchmark demo' },
