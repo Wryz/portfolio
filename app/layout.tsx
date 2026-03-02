@@ -16,8 +16,11 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "My Phung - Portfolio",
+  title: "My Phung",
   description: "Software Engineer based in Austin, TX",
+  openGraph: {
+    title: "My Phung",
+  },
 };
 
 export default function RootLayout({
