@@ -252,23 +252,6 @@ export const careerData: Record<CareerMode, CareerContent> = {
           { type: 'image', src: '/brain-benchmark/IMG_3530.JPG', alt: 'Brain Benchmark' },
         ],
       },
-      {
-        title: 'Verses Widget',
-        subtitle: 'Schedule Bible verses on your home screen',
-        highlights: ['Built in 2 hours', 'React Native', 'iOS Widgets'],
-        image: '/background/austin-skyline.webp',
-        tags: ['React Native', 'iOS', 'Widgets'],
-        description: [
-          'Built in **2 hours**, Verses Widget is a React Native app that lets you schedule Bible verses using iOS app widgets. Display meaningful verses on your home screen with customizable scheduling.',
-        ],
-        links: [
-          { label: 'GitHub', href: 'https://github.com/Wryz/bible-modules' },
-        ],
-        media: [
-          { type: 'video', src: '/verses_widget/5f579840bcb34d9aabc80de74ad69c25.mov', alt: 'Verses Widget demo' },
-          { type: 'video', src: '/verses_widget/IMG_4518.MOV', alt: 'Verses Widget demo' },
-        ],
-      },
     ],
   },
   community: {
