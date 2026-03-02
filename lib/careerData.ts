@@ -82,28 +82,28 @@ export const careerData: Record<CareerMode, CareerContent> = {
     ],
     experience: [
       {
-        role: 'CTO',
+        role: 'Chief Technology Officer',
         company: 'Stressie',
         period: 'April 2025 - Present',
         description:
           'Head of mobile frontend and tech-lead for the dev team at Stressie, a B2B AI stress management chat app helping employees manage chronic stressors. Currently in active pilot and seed round.',
       },
       {
-        role: 'Founder',
+        role: 'Founder & Chief Technology Officer',
         company: 'BuilderFive',
         period: 'Mar 2024 - Oct 2025',
         description:
           'Building a time-based rewards app where users earn money attending local events hosted by businesses. Used Three.js for 3D map and territory visualization. Conducted 200+ custom discovery interviews and created a TikTok vlog with 200k+ total views.',
       },
       {
-        role: 'Founder / Lead Developer',
+        role: 'Founder',
         company: 'GoalTac',
         period: '2022 - Jun 2023',
         description:
           'Launched a social productivity startup motivating students to overcome procrastination. Led a team of 20 using Agile methodology across development, product management, user testing, and business strategy. Secured the startup\'s first major client, onboarding 300+ users.',
       },
       {
-        role: 'Founder / Lead Developer',
+        role: 'Founder',
         company: 'Siege',
         period: '2020 - 2022',
         description:
