@@ -26,6 +26,8 @@ export interface MediaItem {
 
 export interface MediaSection {
   name: string;
+  /** Optional subtitle shown below the section header */
+  subtitle?: string;
   media: MediaItem[];
 }
 
@@ -91,7 +93,7 @@ export const careerData: Record<CareerMode, CareerContent> = {
         company: 'BuilderFive',
         period: 'Mar 2024 - Oct 2025',
         description:
-          'Building a time-based rewards app where users earn money attending local events hosted by businesses. Conducted 200+ custom discovery interviews and created a TikTok vlog with 200k+ total views. Currently in active alpha testing.',
+          'Building a time-based rewards app where users earn money attending local events hosted by businesses. Used Three.js for 3D map and territory visualization. Conducted 200+ custom discovery interviews and created a TikTok vlog with 200k+ total views.',
       },
       {
         role: 'Founder / Lead Developer',
@@ -112,36 +114,43 @@ export const careerData: Record<CareerMode, CareerContent> = {
       {
         title: 'Miqo',
         subtitle: 'Voice-commanded embodied AI agent resembling Wall-E',
-        highlights: ['Voice-controlled', 'ESP32 + Bluetooth', 'Wall-E inspired'],
+        highlights: ['Voice-controlled', 'Three.js', 'ESP32 + Bluetooth', 'Wall-E inspired'],
         image: '/background/austin-skyline.webp',
-        tags: ['AI', 'ESP32', 'Bluetooth', 'Embedded'],
+        tags: ['AI', 'Three.js', 'ESP32', 'Bluetooth', 'Embedded'],
         description: [
-          'Miqo is a voice-commanded embodied AI agent designed to resemble Wall-E. It runs on an ESP32 microcontroller and connects to a phone via Bluetooth, enabling hands-free voice control and interaction.',
+          'Miqo is a voice-commanded embodied AI agent designed to resemble Wall-E. I built both the hardware robot and a mobile app that serves as the robot\'s brain—the app acts as the CPU, using Bluetooth to receive real-time data from the robot and send it commands. Built with **Three.js** for 3D visualization. The mobile app also processes voice commands.',
         ],
         links: [{ label: 'GitHub', href: 'https://github.com/Wryz/miqo' }],
         belowLinksImage: { src: '/miqo/0C09546D-AB55-4D0B-AD80-FE61D3FF04FD.png', alt: 'Buddy design', title: 'Buddy design' },
         featuredImages: [
           { src: '/miqo/IMG_3764.jpeg', alt: 'Miqo robot', title: 'Miqo robot' },
         ],
-        media: [
-          { type: 'video', src: '/miqo/7eb3684a0b834822a2b6ae2b734ad769.MOV', alt: 'Miqo demo' },
-          { type: 'video', src: '/miqo/052aa446334841b9b152facffa54a355.mov', alt: 'Miqo demo' },
-          { type: 'video', src: '/miqo/4073ac29f47047d697efab593b7fef71.mov', alt: 'Miqo demo' },
-          { type: 'video', src: '/miqo/4611d3bf6cba45b596c40301a18e12bc.mov', alt: 'Miqo demo' },
-          { type: 'video', src: '/miqo/39d82a6ef9984651aeee7787c7072b85.mov', alt: 'Miqo demo' },
-
-          { type: 'video', src: '/miqo/25eeb0d1473a405a9fd126a0723a7c2f%202.mov', alt: 'Miqo demo' },
-          { type: 'video', src: '/miqo/e78b16c01bdd41d49e61b6471fec62ab.mov', alt: 'Miqo demo' },
-          { type: 'video', src: '/miqo/3f703f6954f64ef1b3c82a6eb5d41973.mov', alt: 'Miqo demo' },
-          { type: 'video', src: '/miqo/586b10c8bbba41f397dcd1bf89bdead1.mov', alt: 'Miqo demo' },
-          { type: 'video', src: '/miqo/13fb6393a41a4b0bad518000f3b6afea.mov', alt: 'Miqo demo' },
-          { type: 'video', src: '/miqo/e5de3bd1ad37410ca0000ffde1187203.mov', alt: 'Miqo demo' },
-
-          { type: 'video', src: '/miqo/8a3ea956b1244ed890d3df31b3edda40.mov', alt: 'Miqo demo' },
-          
-          { type: 'video', src: '/miqo/99fa0712c0c84f708f6effc3e0b98169.mov', alt: 'Miqo demo' },
-          { type: 'video', src: '/miqo/88baf36c4118434d96a67befc5df2ecf.mov', alt: 'Miqo demo' },
-          { type: 'video', src: '/miqo/bdcac7a13ccc4f94a1decef5fe6fc2c5.mov', alt: 'Miqo demo' },
+        media: [{ type: 'video', src: '/miqo/7eb3684a0b834822a2b6ae2b734ad769.MOV', alt: 'Miqo demo' }],
+        mediaSections: [
+          {
+            name: 'Demo',
+            media: [
+              { type: 'video', src: '/miqo/7eb3684a0b834822a2b6ae2b734ad769.MOV', alt: 'Miqo demo' },
+              { type: 'video', src: '/miqo/052aa446334841b9b152facffa54a355.mov', alt: 'Miqo demo' }
+            ],
+          },
+          {
+            name: 'Tutorials',
+            subtitle: 'Over 25k total views on TikTok',
+            media: [
+              { type: 'video', src: '/miqo/4073ac29f47047d697efab593b7fef71.mov', alt: 'Miqo demo' },
+              { type: 'video', src: '/miqo/4611d3bf6cba45b596c40301a18e12bc.mov', alt: 'Miqo demo' },
+              { type: 'video', src: '/miqo/39d82a6ef9984651aeee7787c7072b85.mov', alt: 'Miqo demo' },
+              { type: 'video', src: '/miqo/25eeb0d1473a405a9fd126a0723a7c2f%202.mov', alt: 'Miqo demo' },
+              { type: 'video', src: '/miqo/e78b16c01bdd41d49e61b6471fec62ab.mov', alt: 'Miqo demo' },
+              { type: 'video', src: '/miqo/3f703f6954f64ef1b3c82a6eb5d41973.mov', alt: 'Miqo demo' },
+              { type: 'video', src: '/miqo/586b10c8bbba41f397dcd1bf89bdead1.mov', alt: 'Miqo demo' },
+              { type: 'video', src: '/miqo/13fb6393a41a4b0bad518000f3b6afea.mov', alt: 'Miqo demo' },
+              { type: 'video', src: '/miqo/e5de3bd1ad37410ca0000ffde1187203.mov', alt: 'Miqo demo' },
+              { type: 'video', src: '/miqo/8a3ea956b1244ed890d3df31b3edda40.mov', alt: 'Miqo demo' },
+              { type: 'video', src: '/miqo/99fa0712c0c84f708f6effc3e0b98169.mov', alt: 'Miqo demo' },
+            ],
+          }
         ],
       },
       {
@@ -151,18 +160,16 @@ export const careerData: Record<CareerMode, CareerContent> = {
         image: '/background/austin-skyline.webp',
         tags: ['React Native', 'Next.js', 'AI', 'Mapbox', 'Three.js'],
         description: [
-          'BuilderFive is a time-based rewards app where users earn money by attending local events hosted by businesses. The app incentivizes real-world engagement and helps local businesses drive foot traffic.',
+          'BuilderFive is a time-based rewards app where users earn money by attending local events hosted by businesses. Built with **Three.js** for 3D map visualization. The app included a gamified component where users could claim territory on the map and discover the rarity of each area using **AI** to analyze points of interest and their historical context. The app incentivizes real-world engagement and helps local businesses drive foot traffic.',
           'Conducted **200+** custom discovery interviews to validate the concept and iterate on the product. Built a TikTok vlog documenting the journey with **200k+** total views.',
-          'Currently in active alpha testing with a growing waitlist of businesses and users.',
         ],
         links: [
-          { label: 'Learn More', href: '#' },
+          { label: 'App Store', href: 'https://apps.apple.com/us/app/builderfive/id6747997481' },
         ],
         media: [
-          { type: 'video', src: '/projects/placeholder-video.mp4', thumbnail: '/projects/placeholder-thumb.svg', alt: 'BuilderFive app demo' },
-          { type: 'image', src: '/projects/placeholder-image.svg', alt: 'BuilderFive map view' },
-          { type: 'video', src: '/projects/placeholder-video.mp4', thumbnail: '/projects/placeholder-thumb.svg', alt: 'BuilderFive rewards walkthrough' },
-          { type: 'image', src: '/projects/placeholder-image.svg', alt: 'BuilderFive event screen' },
+          { type: 'video', src: '/builderfive/5fac3adad5df48eeb439d4ef59a6924f.mov', alt: 'BuilderFive app demo' },
+          { type: 'video', src: '/builderfive/98b5b3f0b7bc4bd8aa893f501b0d0c0b.mov', alt: 'BuilderFive app demo' },
+          { type: 'video', src: '/builderfive/110950e34c4845a5b4292bc196db005f.mov', alt: 'BuilderFive app demo' },
         ],
       },
       {
@@ -211,6 +218,7 @@ export const careerData: Record<CareerMode, CareerContent> = {
           },
           {
             name: 'Mobs',
+            subtitle: 'Coded mob pathfinding and aggressive focus behavior with loot drop mechanics',
             media: [
               { type: 'video', src: '/siege/mobs/Bandit.mp4', alt: 'Bandit' },
               { type: 'video', src: '/siege/mobs/Bandit Archers.mp4', alt: 'Bandit Archers' },
@@ -235,8 +243,9 @@ export const careerData: Record<CareerMode, CareerContent> = {
           { label: 'GitHub', href: 'https://github.com/Wryz/games' },
           { label: 'Website', href: 'https://brain-benchmark.com/' },
         ],
-        featuredImage: { src: '/brain-benchmark/analytics.png', alt: 'Brain Benchmark analytics', title: 'Traffic analytics' },
+        featuredImage: { src: '/brain-benchmark/analytics.png', alt: 'Brain Benchmark analytics', title: 'Traffic analytics — first 5 days post launch' },
         media: [
+          { type: 'video', src: '/miqo/6153e757d8764db49ae576bd98c283df.mov', alt: 'Brain Benchmark demo' },
           { type: 'video', src: '/brain-benchmark/IMG_3524.MOV', alt: 'Brain Benchmark demo' },
           { type: 'video', src: '/brain-benchmark/IMG_3616.MOV', alt: 'Brain Benchmark demo' },
           { type: 'video', src: '/brain-benchmark/IMG_3617.MOV', alt: 'Brain Benchmark demo' },
@@ -356,7 +365,7 @@ export const careerData: Record<CareerMode, CareerContent> = {
           'Built and managed a Minecraft MMORPG community that grew to **100,000+** unique players. Server and plugins coded in **Java** and **Kotlin**. Recruited and coordinated a team of **60+** specialized volunteers across development, moderation, and content creation.',
           'Gained deep expertise in online community management, player engagement psychology, and scaling a community from **200** to **100,000** members through strategic use of Discord, Reddit, and a dedicated website.',
         ],
-        links: [],
+        links: [{ label: 'SiegeRPG official trailer', href: 'https://www.youtube.com/watch?v=6ke_CKSm1dM' }],
         githubRepos: [
           { label: 'Siege (server)', href: 'https://github.com/WrysBowl/Siege' },
           { label: 'Siege-MythicMobs', href: 'https://github.com/WrysBowl/Siege-MythicMobs' },
@@ -391,6 +400,7 @@ export const careerData: Record<CareerMode, CareerContent> = {
           },
           {
             name: 'Mobs',
+            subtitle: 'Coded mob pathfinding and aggressive focus behavior with loot drop mechanics',
             media: [
               { type: 'video', src: '/siege/mobs/Bandit.mp4', alt: 'Bandit' },
               { type: 'video', src: '/siege/mobs/Bandit Archers.mp4', alt: 'Bandit Archers' },

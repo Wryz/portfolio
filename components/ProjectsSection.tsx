@@ -148,7 +148,7 @@ function ImageThumbnail({
 }
 
 export function ProjectsSection() {
-  const { career } = useCareer();
+  const { career, setCareer } = useCareer();
   const projects = careerData[career].projects;
   const [displayedIndex, setDisplayedIndex] = useState(0);
   const [lightboxItem, setLightboxItem] = useState<{
@@ -185,6 +185,37 @@ export function ProjectsSection() {
       className="py-20 sm:py-28 overflow-x-hidden"
     >
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 overflow-x-hidden">
+        {/* Career switch */}
+        <div className="flex items-center justify-center gap-3 mb-12">
+          <span
+            className="text-sm font-medium cursor-pointer"
+            style={{ color: career === 'software' ? 'var(--text)' : 'var(--text-muted)' }}
+            onClick={() => setCareer('software')}
+          >
+            Software Engineer
+          </span>
+          <button
+            onClick={() => setCareer(career === 'software' ? 'community' : 'software')}
+            className="relative w-12 h-7 rounded-full cursor-pointer shrink-0"
+            style={{ backgroundColor: career === 'software' ? 'var(--bg-muted)' : '#D4834A' }}
+            aria-label="Toggle career mode"
+          >
+            <motion.div
+              className="absolute top-1 w-5 h-5 rounded-full"
+              style={{ backgroundColor: career === 'software' ? '#D4834A' : '#ffffff' }}
+              animate={{ left: career === 'software' ? '4px' : '24px' }}
+              transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+            />
+          </button>
+          <span
+            className="text-sm font-medium cursor-pointer"
+            style={{ color: career === 'community' ? 'var(--text)' : 'var(--text-muted)' }}
+            onClick={() => setCareer('community')}
+          >
+            Community Manager
+          </span>
+        </div>
+
         {/* Project icons + names */}
         <div className="flex flex-wrap justify-center gap-2 sm:gap-6 lg:gap-12 mb-16 overflow-visible">
           {projects.map((project, i) => {
@@ -194,7 +225,7 @@ export function ProjectsSection() {
                 key={`${career}-${project.title}`}
                 type="button"
                 onMouseEnter={() => setDisplayedIndex(i)}
-                className="flex flex-col items-center gap-3 cursor-pointer transition-all duration-200 group w-14 sm:w-20 lg:w-24 shrink-0 py-1"
+                className="flex flex-col items-center gap-3 cursor-pointer transition-all duration-200 group min-w-[6rem] sm:min-w-[7rem] lg:min-w-[8.5rem] shrink-0 py-1"
               >
                 <span
                   className="flex items-center justify-center min-w-10 min-h-10 sm:min-w-11 sm:min-h-11 transition-all duration-200"
@@ -211,7 +242,20 @@ export function ProjectsSection() {
                     color: isActive ? '#D4834A' : 'var(--text-secondary)',
                   }}
                 >
-                  {project.title}
+                  {(() => {
+                    const twoLineTitles = ['Brain Benchmark', 'Verses Widget'];
+                    if (twoLineTitles.includes(project.title)) {
+                      const [first, ...rest] = project.title.split(' ');
+                      return (
+                        <>
+                          {first}
+                          <br />
+                          {rest.join(' ')}
+                        </>
+                      );
+                    }
+                    return project.title;
+                  })()}
                 </span>
               </button>
             );
@@ -365,11 +409,19 @@ export function ProjectsSection() {
                   return (
                     <div key={section.name}>
                       <h4
-                        className="text-lg font-semibold mb-3"
+                        className={`text-lg font-semibold ${section.subtitle ? 'mb-1' : 'mb-3'}`}
                         style={{ color: 'var(--text)' }}
                       >
                         {section.name}
                       </h4>
+                      {section.subtitle && (
+                        <p
+                          className="text-sm mb-3"
+                          style={{ color: 'var(--text-secondary)' }}
+                        >
+                          {section.subtitle}
+                        </p>
+                      )}
                       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-0">
                         {section.media.map((item, i) => {
                           const globalIndex = runningIndex + i;
