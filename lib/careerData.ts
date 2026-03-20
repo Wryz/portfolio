@@ -93,7 +93,7 @@ export const careerData: Record<CareerMode, CareerContent> = {
         company: 'BuilderFive',
         period: 'Mar 2024 - Oct 2025',
         description:
-          'Building a time-based rewards app where users earn money attending local events hosted by businesses. Used Three.js for 3D map and territory visualization. Conducted 200+ custom discovery interviews and created a TikTok vlog with 200k+ total views.',
+          'Building a time-based rewards app where users earn money attending local events hosted by businesses. Used Three.js for 3D map and territory visualization. Created a TikTok vlog with 300k+ total views.',
       },
       {
         role: 'Founder',
@@ -157,12 +157,12 @@ export const careerData: Record<CareerMode, CareerContent> = {
       {
         title: 'BuilderFive',
         subtitle: 'Time-based rewards app for local events',
-        highlights: ['200+ discovery interviews', '200k+ TikTok views', 'Three.js'],
+        highlights: ['300k+ TikTok views', 'Three.js'],
         image: '/background/austin-skyline.webp',
         tags: ['React Native', 'Next.js', 'AI', 'Mapbox', 'Three.js'],
         description: [
           'BuilderFive is a time-based rewards app where users earn money by attending local events hosted by businesses. Built with **Three.js** for 3D map visualization. The app included a gamified component where users could claim territory on the map and discover the rarity of each area using **AI** to analyze points of interest and their historical context. The app incentivizes real-world engagement and helps local businesses drive foot traffic.',
-          'Conducted **200+** custom discovery interviews to validate the concept and iterate on the product. Built a TikTok vlog documenting the journey with **200k+** total views.',
+          'Built a TikTok vlog documenting the journey with **300k+** total views.',
         ],
         links: [
           { label: 'App Store', href: 'https://apps.apple.com/us/app/builderfive/id6747997481' },
