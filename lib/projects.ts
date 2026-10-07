@@ -41,6 +41,10 @@ export interface ProjectBand {
   /** Extra CSS applied to the project name (letter-spacing, case, weight) */
   nameStyle?: CSSProperties;
   logo?: string;
+  /** Extra CSS for the logo (rounded corners for app icons, pixelated scaling for pixel art) */
+  logoStyle?: CSSProperties;
+  /** Photo behind the band. `bg` is drawn over it, so make `bg` a gradient that keeps the text readable. */
+  image?: string;
 }
 
 export interface Project {
@@ -104,7 +108,14 @@ export const projects: Project[] = [
       body: 'var(--font-inter), ui-sans-serif, system-ui, sans-serif',
       radius: '9999px',
     },
-    band: { bg: '#FAF7F2', ink: '#252A3A', soft: '#5A6070', nameStyle: { fontWeight: 700 }, logo: '/projects/ourtailtales/logo.png' },
+    band: {
+      bg: 'linear-gradient(90deg, #FAF7F2 0%, #FAF7F2 38%, rgba(250,247,242,0.8) 60%, rgba(250,247,242,0.5) 100%)',
+      ink: '#252A3A',
+      soft: '#3F4556',
+      nameStyle: { fontWeight: 700 },
+      logo: '/projects/ourtailtales/logo.png',
+      image: '/projects/ourtailtales/band.webp',
+    },
     about: [
       'ourTailTales turns a pet\'s camera roll into a memoir. You drop in an album; it sorts the years, drafts the chapters, and lays out a hardcover book you can edit before you order.',
       'Inside the book, photos are treated as prints placed by hand: white borders, a slight tilt, washi tape in colours drawn from the pet\'s own coat or collar. The same layout definition drives the on-screen editor and the print-ready PDF.',
@@ -161,7 +172,14 @@ export const projects: Project[] = [
       body: 'var(--font-fredoka), ui-rounded, system-ui, sans-serif',
       radius: '16px',
     },
-    band: { bg: '#EDE6DC', ink: '#6B5344', soft: '#8B7355', nameStyle: { fontWeight: 700 } },
+    band: {
+      bg: '#EDE6DC',
+      ink: '#6B5344',
+      soft: '#75603F',
+      nameStyle: { fontWeight: 700 },
+      logo: '/projects/bibli/logo.webp',
+      logoStyle: { borderRadius: '22%' },
+    },
     about: [],
     stack: [],
     links: [],
@@ -266,7 +284,9 @@ export const projects: Project[] = [
       bg: 'linear-gradient(180deg, #0B0D16 0%, #1A2036 100%)',
       ink: '#FFFFFF',
       soft: '#A9B4CC',
-      nameStyle: { fontWeight: 600, textTransform: 'lowercase' },
+      nameStyle: { fontWeight: 600 },
+      logo: '/projects/builderfive/logo.webp',
+      logoStyle: { borderRadius: '22%' },
     },
     about: [
       'BuilderFive is a time-based rewards app where users earn money by attending local events hosted by businesses. Built with **Three.js** for 3D map visualization.',
@@ -306,7 +326,14 @@ export const projects: Project[] = [
       body: 'var(--font-lato), ui-sans-serif, system-ui, sans-serif',
       radius: '6px',
     },
-    band: { bg: '#BF5700', ink: '#FFFFFF', soft: 'rgba(255,255,255,0.9)', nameStyle: { fontWeight: 700 } },
+    band: {
+      bg: 'linear-gradient(90deg, rgba(44,44,44,0.96) 0%, rgba(44,44,44,0.86) 45%, rgba(191,87,0,0.55) 100%)',
+      ink: '#FFFFFF',
+      soft: 'rgba(255,255,255,0.9)',
+      nameStyle: { fontWeight: 700 },
+      logo: '/projects/austin-founders/logo.webp',
+      image: '/projects/austin-founders/band.webp',
+    },
     about: [
       'I founded Austin Founders Community in 2024 as a non-profit, and I plan, promote and host its coworking sessions. It is a place for founders, builders and operators to work alongside each other and get real peer support, rather than another for-profit tech mixer.',
       'The community lives on WhatsApp. Every request to join is verified personally before the founder is added. I also built and maintain the website, including the startup directory and event gallery.',
@@ -341,6 +368,8 @@ export const projects: Project[] = [
       ink: '#1B1B1B',
       soft: '#55524D',
       nameStyle: { fontWeight: 700, textTransform: 'lowercase', letterSpacing: '-0.02em' },
+      logo: '/projects/miqo/mark.webp',
+      logoStyle: { borderRadius: '22%' },
     },
     about: [
       'Miqo is a voice-commanded embodied AI agent designed to resemble Wall-E. I built both the hardware robot and a mobile app that serves as the robot\'s brain.',
@@ -394,10 +423,13 @@ export const projects: Project[] = [
       radius: '0px',
     },
     band: {
-      bg: 'linear-gradient(90deg, #2B1D3F 0%, #6B3A5B 60%, #C9735C 100%)',
+      bg: 'linear-gradient(90deg, rgba(23,18,31,0.94) 0%, rgba(23,18,31,0.78) 45%, rgba(23,18,31,0.15) 100%)',
       ink: '#FFF4E6',
-      soft: 'rgba(255,244,230,0.88)',
+      soft: 'rgba(255,244,230,0.9)',
       nameStyle: { fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.04em' },
+      logo: '/projects/siege/logo.png',
+      logoStyle: { imageRendering: 'pixelated' },
+      image: '/projects/siege/band.webp',
     },
     about: [
       'Identified and filled a genre gap, creating a profitable Minecraft MMORPG server in just **2 weeks** with nearly **500** eager participants on launch. Coded in **Java** and **Kotlin** for server plugins, mobs, and game logic.',

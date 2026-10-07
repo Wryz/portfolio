@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import type { Project } from '@/lib/projects';
 import { ProjectLinks } from '../parts';
 
@@ -23,6 +24,7 @@ export function AustinFoundersHero({ project }: { project: Project }) {
         aria-hidden
       />
       <div className="relative mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
+        <Image src="/projects/austin-founders/logo.webp" alt="" width={144} height={144} priority className="mb-6 h-20 w-20 sm:h-24 sm:w-24" />
         <h1 className="max-w-3xl text-4xl leading-[1.15] sm:text-5xl lg:text-6xl" style={{ fontWeight: 700 }}>
           Austin Founders Community
         </h1>

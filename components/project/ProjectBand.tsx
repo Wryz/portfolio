@@ -18,6 +18,7 @@ export function ProjectBand({ project, lead }: { project: Project; lead?: string
           width={72}
           height={72}
           className="project-band-logo h-12 w-12 shrink-0 object-contain sm:h-16 sm:w-16"
+          style={band.logoStyle}
         />
       )}
       <div className="min-w-0 flex-1">
@@ -58,7 +59,10 @@ export function ProjectBand({ project, lead }: { project: Project; lead?: string
   );
 
   const className = 'project-band block';
-  const style = { background: band.bg, color: band.ink };
+  const style = {
+    background: band.image ? `${band.bg}, url('${band.image}') center / cover no-repeat` : band.bg,
+    color: band.ink,
+  };
 
   return external ? (
     <a href={projectHref(project)} target="_blank" rel="noopener noreferrer" className={className} style={style}>

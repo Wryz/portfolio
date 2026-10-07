@@ -43,7 +43,7 @@ export function ProjectSwitcher({ current }: { current: string }) {
             const dot = (
               <span
                 className="h-2.5 w-2.5 shrink-0 rounded-full"
-                style={{ background: p.band.bg, boxShadow: '0 0 0 1px color-mix(in srgb, currentColor 45%, transparent)' }}
+                style={{ background: p.band.image ? p.theme.accent : p.band.bg, boxShadow: '0 0 0 1px color-mix(in srgb, currentColor 45%, transparent)' }}
                 aria-hidden
               />
             );

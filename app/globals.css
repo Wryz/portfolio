@@ -222,3 +222,14 @@ h1, h2, h3, h4, h5, h6 {
   mask-image: linear-gradient(to right, transparent 0, #000 16px, #000 calc(100% - 24px), transparent 100%);
   padding-inline: 8px;
 }
+
+/* ourTailTales: product photo behind the hero, faded into the brand cream so the text stays dark-on-cream */
+.ott-hero-fade {
+  background: linear-gradient(180deg, rgba(250, 247, 242, 0.95) 0%, rgba(250, 247, 242, 0.9) 60%, rgba(250, 247, 242, 0.55) 100%);
+}
+
+@media (min-width: 1024px) {
+  .ott-hero-fade {
+    background: linear-gradient(90deg, #faf7f2 0%, rgba(250, 247, 242, 0.96) 36%, rgba(250, 247, 242, 0.6) 58%, rgba(250, 247, 242, 0) 82%);
+  }
+}

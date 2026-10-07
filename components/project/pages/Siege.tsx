@@ -26,6 +26,7 @@ export function SiegeHero({ project }: { project: Project }) {
         aria-hidden
       />
       <div className="relative mx-auto w-full max-w-6xl px-4 pb-14 pt-40 sm:px-6 lg:px-8">
+        <Image src="/projects/siege/logo.png" alt="" width={256} height={256} className="mb-5 h-20 w-20 sm:h-24 sm:w-24" style={{ imageRendering: 'pixelated' }} />
         <h1 className="text-7xl leading-none sm:text-8xl lg:text-9xl" style={{ fontWeight: 700, letterSpacing: '0.04em' }}>
           SIEGE
         </h1>
