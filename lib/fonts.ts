@@ -1,7 +1,6 @@
 import {
   Space_Grotesk,
   DM_Sans,
-  Merienda,
   Inter,
   Caveat,
   Fredoka,
@@ -12,6 +11,7 @@ import {
   Chakra_Petch,
   Pixelify_Sans,
 } from 'next/font/google';
+import localFont from 'next/font/local';
 
 /* Site fonts */
 const heading = Space_Grotesk({ variable: '--font-heading', subsets: ['latin'], weight: ['400', '500', '600', '700'] });
@@ -19,7 +19,16 @@ const body = DM_Sans({ variable: '--font-body', subsets: ['latin'], weight: ['30
 
 /* Project fonts. Each project page is set in the typefaces its own product uses.
    None are preloaded: the browser only downloads a face when a page renders text in it. */
-const merienda = Merienda({ variable: '--font-merienda', subsets: ['latin'], weight: ['400', '700'], preload: false });
+/* Merienda is bundled (app/fonts, SIL Open Font License) rather than fetched: Turbopack cannot
+   resolve the URLs Google Fonts serves for it ("next/font/google queries have exactly one entry"). */
+const merienda = localFont({
+  variable: '--font-merienda',
+  preload: false,
+  src: [
+    { path: '../app/fonts/Merienda-Regular.woff2', weight: '400', style: 'normal' },
+    { path: '../app/fonts/Merienda-Bold.woff2', weight: '700', style: 'normal' },
+  ],
+});
 const inter = Inter({ variable: '--font-inter', subsets: ['latin'], weight: ['400', '500', '600'], preload: false });
 const caveat = Caveat({ variable: '--font-caveat', subsets: ['latin'], weight: ['600'], preload: false });
 const fredoka = Fredoka({ variable: '--font-fredoka', subsets: ['latin'], weight: ['400', '500', '600', '700'], preload: false });
