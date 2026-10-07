@@ -28,7 +28,7 @@ export function BuilderFiveHero({ project }: { project: Project }) {
     <section className="b5-sky relative overflow-hidden">
       <div className="relative z-10 mx-auto max-w-3xl px-4 pt-20 text-center sm:px-6 sm:pt-28">
         <p className="flex items-center justify-center gap-3 text-2xl" style={{ color: '#fff', fontWeight: 600 }}>
-          <Image src="/projects/builderfive/logo.webp" alt="" width={120} height={120} priority className="h-11 w-11" style={{ borderRadius: '22%' }} />
+          <Image src="/projects/builderfive/logo.webp" alt="" width={256} height={256} priority className="h-11 w-11" style={{ borderRadius: '22%' }} />
           BuilderFive
         </p>
         <h1 className="mt-6 text-6xl leading-[0.98] sm:text-7xl lg:text-8xl" style={{ fontWeight: 600, color: '#fff' }}>
