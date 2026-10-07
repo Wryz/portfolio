@@ -5,8 +5,8 @@ import { useEffect, useState, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const BANNER_ASSETS = [
-  { src: '/banner/ESP32_tutorial.mov', type: 'video' as const },
-  { src: '/banner/IMG_1775.MOV', type: 'video' as const },
+  { src: '/banner/ESP32_tutorial.mp4', type: 'video' as const },
+  { src: '/banner/IMG_1775.mp4', type: 'video' as const },
   { src: '/banner/capital_factory_speech.jpeg', type: 'image' as const },
   { src: '/banner/texas_mccombs_speech.jpeg', type: 'image' as const },
 ];
