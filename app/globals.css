@@ -107,3 +107,118 @@ h1, h2, h3, h4, h5, h6 {
   0%, 100% { opacity: 0.7; transform: scale(1); }
   50% { opacity: 1; transform: scale(1.15); }
 }
+
+/* ───────── Project pages ─────────
+   Each page sets --p-* from the project's own brand (see lib/projects.ts). */
+.project-page {
+  min-height: 100vh;
+  padding-top: 3rem;
+  background: var(--p-bg);
+  color: var(--p-ink);
+  font-family: var(--p-body);
+}
+
+.project-page :is(h1, h2, h3, h4) {
+  font-family: var(--p-display);
+}
+
+.project-page ::selection {
+  background: color-mix(in srgb, var(--p-accent) 30%, transparent);
+}
+
+.p-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.4rem;
+  border-radius: var(--p-radius);
+  border: 2px solid var(--p-accent);
+  background: var(--p-accent);
+  color: var(--p-on-accent);
+  font-weight: 600;
+  line-height: 1.2;
+  transition: transform 0.15s ease, filter 0.15s ease;
+}
+
+.p-btn:hover {
+  filter: brightness(1.08);
+  transform: translateY(-1px);
+}
+
+.p-btn-ghost {
+  background: transparent;
+  border-color: var(--p-line);
+  color: var(--p-ink);
+}
+
+.p-btn-ghost:hover {
+  border-color: var(--p-ink);
+  filter: none;
+}
+
+.project-page :is(a, button):focus-visible,
+.project-band:focus-visible {
+  outline: 3px solid var(--p-accent, currentColor);
+  outline-offset: 3px;
+}
+
+.project-band:focus-visible {
+  outline-color: currentColor;
+  outline-offset: -6px;
+}
+
+.switcher-link:hover {
+  color: var(--p-ink) !important;
+}
+
+.switcher-link[aria-current='page']:hover {
+  color: var(--p-bg) !important;
+}
+
+/* Project bands (home index and "next project") */
+.project-band-arrow,
+.project-band-logo {
+  transition: transform 0.25s ease;
+}
+
+.project-band:hover .project-band-arrow {
+  transform: translateX(6px);
+}
+
+.project-band:hover .project-band-logo {
+  transform: rotate(-6deg) scale(1.06);
+}
+
+/* BuilderFive: night sky */
+.b5-sky {
+  background-color: #0b0d16;
+  background-image:
+    radial-gradient(1.5px 1.5px at 12% 18%, #fff 50%, transparent 51%),
+    radial-gradient(1px 1px at 27% 62%, #cfe2ff 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 44% 9%, #fff 50%, transparent 51%),
+    radial-gradient(1px 1px at 58% 41%, #cfe2ff 50%, transparent 51%),
+    radial-gradient(2px 2px at 71% 15%, #fff 50%, transparent 51%),
+    radial-gradient(1px 1px at 83% 55%, #fff 50%, transparent 51%),
+    radial-gradient(1.5px 1.5px at 92% 28%, #cfe2ff 50%, transparent 51%),
+    radial-gradient(1px 1px at 6% 78%, #fff 50%, transparent 51%),
+    radial-gradient(1px 1px at 36% 33%, #fff 50%, transparent 51%),
+    radial-gradient(1px 1px at 66% 72%, #cfe2ff 50%, transparent 51%),
+    linear-gradient(180deg, #05060b 0%, #0b0d16 45%, #1a2036 100%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-band-arrow,
+  .project-band-logo,
+  .p-btn { transition: none; }
+}
+
+.siege-repo:hover {
+  background: var(--p-surface);
+  color: var(--p-accent);
+}
+
+/* Fade the ends of the project switcher when it scrolls */
+.switcher-list {
+  mask-image: linear-gradient(to right, transparent 0, #000 16px, #000 calc(100% - 24px), transparent 100%);
+  padding-inline: 8px;
+}

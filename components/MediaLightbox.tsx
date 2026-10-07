@@ -3,7 +3,7 @@
 import { useEffect, useCallback, useState, useRef } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
-import type { MediaItem, Project } from '@/lib/careerData';
+import type { MediaItem } from '@/lib/projects';
 
 function VideoWithPlaceholder({
   src,
@@ -83,7 +83,6 @@ function VideoWithPlaceholder({
 interface MediaLightboxProps {
   media: MediaItem[];
   initialIndex: number;
-  project: Project;
   onClose: () => void;
 }
 
@@ -91,7 +90,7 @@ const SWIPE_THRESHOLD = 50;
 /** Sliding window: keep current ± 2 in DOM so back/forward is instant */
 const CACHE_WINDOW = 2;
 
-export function MediaLightbox({ media, initialIndex, project, onClose }: MediaLightboxProps) {
+export function MediaLightbox({ media, initialIndex, onClose }: MediaLightboxProps) {
   const [currentIndex, setCurrentIndex] = useState(initialIndex);
   const touchStartX = useRef<number | null>(null);
   const touchEndX = useRef<number | null>(null);
@@ -227,7 +226,7 @@ export function MediaLightbox({ media, initialIndex, project, onClose }: MediaLi
               style={{
                 width: currentIndex === i ? 24 : 8,
                 height: 8,
-                backgroundColor: currentIndex === i ? '#D4834A' : 'rgba(255,255,255,0.4)',
+                backgroundColor: currentIndex === i ? '#ffffff' : 'rgba(255,255,255,0.4)',
               }}
               aria-label={`Go to slide ${i + 1}`}
             />
