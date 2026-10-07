@@ -84,7 +84,7 @@ const siegeCinematics = [
   '2021.10.31 - 22.52.34.95',
 ].map<MediaItem>((stamp) => ({
   type: 'image',
-  src: `/siege/cinematics/Badlion Client Screenshot ${stamp}.png`,
+  src: `/siege/cinematics/Badlion Client Screenshot ${stamp}.webp`,
   alt: 'Siege cinematic',
 }));
 
@@ -221,9 +221,9 @@ export const projects: Project[] = [
       {
         name: 'In play',
         media: [
-          video('/brain-benchmark/IMG_3524.MOV', 'Brain Benchmark demo'),
-          video('/brain-benchmark/IMG_3616.MOV', 'Brain Benchmark demo'),
-          video('/brain-benchmark/IMG_3617.MOV', 'Brain Benchmark demo'),
+          video('/brain-benchmark/IMG_3524.mp4', 'Brain Benchmark demo'),
+          video('/brain-benchmark/IMG_3616.mp4', 'Brain Benchmark demo'),
+          video('/brain-benchmark/IMG_3617.mp4', 'Brain Benchmark demo'),
           { type: 'image', src: '/brain-benchmark/IMG_3530.JPG', alt: 'Brain Benchmark' },
         ],
       },
@@ -302,9 +302,9 @@ export const projects: Project[] = [
       {
         name: 'In the app',
         media: [
-          video('/builderfive/5fac3adad5df48eeb439d4ef59a6924f.mov', 'BuilderFive app demo'),
-          video('/builderfive/98b5b3f0b7bc4bd8aa893f501b0d0c0b.mov', 'BuilderFive app demo'),
-          video('/builderfive/110950e34c4845a5b4292bc196db005f.mov', 'BuilderFive app demo'),
+          video('/builderfive/5fac3adad5df48eeb439d4ef59a6924f.mp4', 'BuilderFive app demo'),
+          video('/builderfive/98b5b3f0b7bc4bd8aa893f501b0d0c0b.mp4', 'BuilderFive app demo'),
+          video('/builderfive/110950e34c4845a5b4292bc196db005f.mp4', 'BuilderFive app demo'),
         ],
       },
     ],
@@ -381,9 +381,9 @@ export const projects: Project[] = [
       {
         name: 'Demo',
         media: [
-          video('/miqo/7eb3684a0b834822a2b6ae2b734ad769.mov', 'Miqo demo'),
-          video('/miqo/052aa446334841b9b152facffa54a355.mov', 'Miqo demo'),
-          video('/miqo/6153e757d8764db49ae576bd98c283df.mov', 'Miqo demo'),
+          video('/miqo/7eb3684a0b834822a2b6ae2b734ad769.mp4', 'Miqo demo'),
+          video('/miqo/052aa446334841b9b152facffa54a355.mp4', 'Miqo demo'),
+          video('/miqo/6153e757d8764db49ae576bd98c283df.mp4', 'Miqo demo'),
         ],
       },
       {
@@ -393,7 +393,7 @@ export const projects: Project[] = [
           '4073ac29f47047d697efab593b7fef71',
           '4611d3bf6cba45b596c40301a18e12bc',
           '39d82a6ef9984651aeee7787c7072b85',
-          '25eeb0d1473a405a9fd126a0723a7c2f%202',
+          '25eeb0d1473a405a9fd126a0723a7c2f',
           'e78b16c01bdd41d49e61b6471fec62ab',
           '3f703f6954f64ef1b3c82a6eb5d41973',
           '586b10c8bbba41f397dcd1bf89bdead1',
@@ -401,7 +401,7 @@ export const projects: Project[] = [
           'e5de3bd1ad37410ca0000ffde1187203',
           '8a3ea956b1244ed890d3df31b3edda40',
           '99fa0712c0c84f708f6effc3e0b98169',
-        ].map((id) => video(`/miqo/${id}.mov`, 'Miqo build tutorial')),
+        ].map((id) => video(`/miqo/${id}.mp4`, 'Miqo build tutorial')),
       },
     ],
   },

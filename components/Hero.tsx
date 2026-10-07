@@ -152,7 +152,7 @@ export function Hero() {
               className="relative w-40 h-40 sm:w-48 sm:h-48 shrink-0 rounded-full overflow-hidden"
             >
               <Image
-                src="/Linkedin.png"
+                src="/Linkedin.webp"
                 alt="My Phung"
                 fill
                 priority
