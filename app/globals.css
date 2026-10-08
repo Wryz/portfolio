@@ -206,10 +206,49 @@ h1, h2, h3, h4, h5, h6 {
     linear-gradient(180deg, #05060b 0%, #0b0d16 45%, #1a2036 100%);
 }
 
+/* Hex Hordes: chunky buttons that sit on a solid shadow, like the game's menus */
+.hh .p-btn {
+  font-family: var(--p-display);
+  font-size: 1.125rem;
+  box-shadow: 0 5px 0 #B45309;
+}
+
+.hh .p-btn-ghost {
+  background: #334155;
+  border-color: #334155;
+  color: #F1F5F9;
+  box-shadow: 0 5px 0 #020617;
+}
+
+.hh .p-btn:active {
+  transform: translateY(3px);
+  box-shadow: 0 2px 0 #B45309;
+}
+
+.hh .p-btn-ghost:active {
+  box-shadow: 0 2px 0 #020617;
+}
+
+/* The game's wordmark: amber letters with a dark outline and a hard shadow */
+.hh-wordmark {
+  -webkit-text-stroke: 3px #0F172A;
+  paint-order: stroke fill;
+  text-shadow: 0 6px 0 #0F172A;
+}
+
+.hh-card {
+  transition: transform 0.15s ease;
+}
+
+.hh-card:hover {
+  transform: translateY(-6px);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .project-band-arrow,
   .project-band-logo,
-  .p-btn { transition: none; }
+  .p-btn,
+  .hh-card { transition: none; }
 }
 
 .siege-repo:hover {
