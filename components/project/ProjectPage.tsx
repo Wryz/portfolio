@@ -7,6 +7,7 @@ import { OurTailTalesHero, OurTailTalesExtra } from './pages/OurTailTales';
 import { BrainBenchmarkHero, BrainBenchmarkExtra } from './pages/BrainBenchmark';
 import { BuilderFiveHero } from './pages/BuilderFive';
 import { HexHordesHero, HexHordesExtra } from './pages/HexHordes';
+import { ReelEarthHero, ReelEarthExtra } from './pages/ReelEarth';
 import { AustinFoundersHero } from './pages/AustinFounders';
 import { JobUpdatesHero } from './pages/JobUpdates';
 import { MiqoHero, MiqoExtra } from './pages/Miqo';
@@ -20,6 +21,7 @@ const layouts: Record<string, { Hero: Part; Extra?: Part }> = {
   'brain-benchmark': { Hero: BrainBenchmarkHero, Extra: BrainBenchmarkExtra },
   builderfive: { Hero: BuilderFiveHero },
   'hex-hordes': { Hero: HexHordesHero, Extra: HexHordesExtra },
+  reelearth: { Hero: ReelEarthHero, Extra: ReelEarthExtra },
   'austin-founders': { Hero: AustinFoundersHero },
   'job-updates': { Hero: JobUpdatesHero },
   miqo: { Hero: MiqoHero, Extra: MiqoExtra },

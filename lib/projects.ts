@@ -114,6 +114,46 @@ const video = (src: string, alt: string): MediaItem => ({ type: 'video', src, al
 export const projects: Project[] = [
   /* Games */
   {
+    slug: 'reelearth',
+    name: 'ReelEarth',
+    tagline: 'Fish with friends under a shared sky.',
+    kind: 'Multiplayer game',
+    category: 'game',
+    tile: {
+      href: 'https://reelearth.vercel.app/',
+      action: 'play',
+      thumbnail: '/projects/reelearth/thumb.webp',
+      blurb: 'A cozy low-poly fishing game you play together. Four islands share one sky, tide and weather, each with its own fish.',
+    },
+    theme: {
+      bg: '#0D1A25',
+      surface: '#15283A',
+      ink: '#F4EFE5',
+      soft: '#AEB4B1',
+      accent: '#F0B45C',
+      onAccent: '#0D1A25',
+      line: '#2A3B4A',
+      display: 'var(--font-young-serif), Georgia, serif',
+      body: 'var(--font-figtree), ui-sans-serif, system-ui, sans-serif',
+      radius: '12px',
+    },
+    band: {
+      bg: 'linear-gradient(90deg, rgba(13,26,37,0.96) 0%, rgba(13,26,37,0.85) 45%, rgba(13,26,37,0.35) 100%)',
+      ink: '#F4EFE5',
+      soft: 'rgba(244,239,229,0.82)',
+      logo: '/projects/reelearth/logo.png',
+      logoStyle: { borderRadius: '25%' },
+      image: '/projects/reelearth/thumb.webp',
+    },
+    about: [
+      'ReelEarth is a cozy multiplayer fishing game in the browser. You make an angler, then fish alongside whoever else is on the island, under a sky, tide and weather that everyone there shares.',
+      'There are **four islands**, each with its own local time, weather, islanders and **eight fish**, from everyday catches to legendaries that only bite at certain moments, such as after a shooting star or under the northern lights. Catches sell for coins, and your coins, fish room and cosmetics travel with you between islands.',
+      'The world is drawn in **Three.js** with flat-shaded low-poly models, and the music and sound are generated in the browser. Multiplayer runs on **Supabase Realtime**: one channel per island, with players sending updates only when something changes, so groups of friends fit in the free tier.',
+    ],
+    stack: ['JavaScript', 'Three.js', 'Supabase Realtime', 'Web Audio'],
+    links: [{ label: 'Play ReelEarth', href: 'https://reelearth.vercel.app/' }],
+  },
+  {
     slug: 'hex-hordes',
     name: 'Hex Hordes',
     tagline: 'Play your cards, read the land, topple the castle.',
