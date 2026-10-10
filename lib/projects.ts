@@ -50,13 +50,19 @@ export interface ProjectBand {
 /** Which shelf of the home page the project sits on */
 export type ProjectCategory = 'game' | 'app' | 'website';
 
-/** How a game appears as a tile in the home page's games grid. */
-export interface GameListing {
-  /** Where to play it. Without one, the tile opens the game's page here. */
-  play?: string;
+/** What a click on a project's tile does, shown as a badge on the thumbnail */
+export type TileAction = 'play' | 'visit' | 'download';
+
+/** How a project appears as a tile on the home page. */
+export interface ProjectTile {
+  /** Where a click on the tile goes. Without one, it opens the project's page (or its externalUrl). */
+  href?: string;
+  action?: TileAction;
+  /** No longer running: the badge says CLOSED */
+  closed?: boolean;
   /** 16:10 picture for the tile */
   thumbnail: string;
-  /** What the game is about, shown on the thumbnail */
+  /** What the project is about, shown on the thumbnail */
   blurb: string;
 }
 
@@ -68,7 +74,7 @@ export interface Project {
   /** What kind of thing it is, in plain words */
   kind: string;
   category: ProjectCategory;
-  game?: GameListing;
+  tile: ProjectTile;
   /** When set, the project has no page here and links straight out */
   externalUrl?: string;
   theme: ProjectTheme;
@@ -113,8 +119,9 @@ export const projects: Project[] = [
     tagline: 'Play your cards, read the land, topple the castle.',
     kind: 'Browser game',
     category: 'game',
-    game: {
-      play: 'https://www.hexhordes.com',
+    tile: {
+      href: 'https://www.hexhordes.com',
+      action: 'play',
       thumbnail: '/projects/hex-hordes/thumb.webp',
       blurb: 'A fantasy strategy card game on a 3D hex battlefield. Play your troops, read the land and topple the enemy castle.',
     },
@@ -154,8 +161,9 @@ export const projects: Project[] = [
     tagline: 'Brain games to test your mental fitness.',
     kind: 'Browser game',
     category: 'game',
-    game: {
-      play: 'https://brain-benchmark.com/',
+    tile: {
+      href: 'https://brain-benchmark.com/',
+      action: 'play',
       thumbnail: '/projects/brain-benchmark/thumb.webp',
       blurb: 'Quick tests of reaction time, memory, attention and reasoning. Set a score and see how you rank against everyone.',
     },
@@ -205,7 +213,8 @@ export const projects: Project[] = [
     tagline: 'A Minecraft MMORPG with 100k+ players.',
     kind: 'Minecraft server',
     category: 'game',
-    game: {
+    tile: {
+      closed: true,
       thumbnail: '/projects/siege/thumb.webp',
       blurb: 'A Minecraft MMORPG server with 1,000+ custom items and custom mobs, played by 100,000+ people.',
     },
@@ -268,6 +277,11 @@ export const projects: Project[] = [
     tagline: 'Scripture, one step at a time.',
     kind: 'iOS app',
     category: 'app',
+    tile: {
+      action: 'visit',
+      thumbnail: '/projects/bibli/thumb.webp',
+      blurb: 'A Bible app for new Christians: short reading paths by theme, like Love or Faith, unlocked one step at a time.',
+    },
     externalUrl: 'https://bibli-website-brown.vercel.app',
     theme: {
       bg: '#F5F0E8',
@@ -299,6 +313,12 @@ export const projects: Project[] = [
     tagline: 'Explore. Collect. Learn.',
     kind: 'iOS app',
     category: 'app',
+    tile: {
+      href: 'https://apps.apple.com/us/app/builderfive/id6747997481',
+      action: 'download',
+      thumbnail: '/projects/builderfive/thumb.webp',
+      blurb: 'Earn rewards for visiting local spots, claim territory on a 3D map and learn the history of each place.',
+    },
     theme: {
       bg: '#0B0D16',
       surface: '#171A27',
@@ -346,6 +366,10 @@ export const projects: Project[] = [
     tagline: 'Every application I\'m waiting on, in one tab.',
     kind: 'Chrome extension',
     category: 'app',
+    tile: {
+      thumbnail: '/projects/job-updates/thumb.webp',
+      blurb: 'A Chrome extension that watches about twenty job platforms and reports what changed, ranked by pay and urgency.',
+    },
     theme: {
       bg: '#121417',
       surface: '#1B1E23',
@@ -374,6 +398,10 @@ export const projects: Project[] = [
     tagline: 'A voice-commanded robot with a phone for a brain.',
     kind: 'Robot',
     category: 'app',
+    tile: {
+      thumbnail: '/projects/miqo/thumb.webp',
+      blurb: 'A voice-commanded robot inspired by Wall-E, with a phone app as its brain over Bluetooth.',
+    },
     theme: {
       bg: '#DAD7D2',
       surface: '#E8E6E2',
@@ -435,6 +463,12 @@ export const projects: Project[] = [
     tagline: 'Their life, in chapters.',
     kind: 'Web app',
     category: 'website',
+    tile: {
+      href: 'https://our-tail-tales.vercel.app',
+      action: 'visit',
+      thumbnail: '/projects/ourtailtales/thumb.webp',
+      blurb: 'Turns your pet\'s camera roll into a hardcover memoir, with the chapters drafted for you to edit.',
+    },
     theme: {
       bg: '#FAF7F2',
       surface: '#FFFFFF',
@@ -472,6 +506,12 @@ export const projects: Project[] = [
     tagline: 'Invite-only coworking for founders building in Austin.',
     kind: 'Community',
     category: 'website',
+    tile: {
+      href: 'https://www.austinfoundercoworking.com',
+      action: 'visit',
+      thumbnail: '/projects/austin-founders/thumb.webp',
+      blurb: 'An invite-only community where Austin founders cowork and back each other up. I founded it and run it.',
+    },
     theme: {
       bg: '#222222',
       surface: '#2C2C2C',

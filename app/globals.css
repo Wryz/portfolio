@@ -189,24 +189,24 @@ h1, h2, h3, h4, h5, h6 {
   transform: rotate(-6deg) scale(1.06);
 }
 
-/* Game tiles on the home page */
-.game-tile-image {
+/* Project tiles on the home page */
+.project-tile-image {
   transition: transform 0.3s ease;
 }
 
-.game-tile:hover .game-tile-image,
-.game-tile:focus-visible .game-tile-image {
+.project-tile:hover .project-tile-image,
+.project-tile:focus-visible .project-tile-image {
   transform: scale(1.05);
 }
 
-.game-tile:focus-visible,
-.game-tile-about:focus-visible {
+.project-tile:focus-visible,
+.project-tile-about:focus-visible {
   outline: 3px solid #D4834A;
   outline-offset: 4px;
   border-radius: 1rem;
 }
 
-.game-tile-about:hover {
+.project-tile-about:hover {
   color: var(--text) !important;
   border-color: var(--text-secondary) !important;
 }
@@ -271,7 +271,7 @@ h1, h2, h3, h4, h5, h6 {
   .project-band-logo,
   .p-btn,
   .hh-card,
-  .game-tile-image { transition: none; }
+  .project-tile-image { transition: none; }
 }
 
 .siege-repo:hover {
