@@ -38,16 +38,23 @@ export function ReelEarthHero({ project }: { project: Project }) {
         </p>
         <ProjectLinks project={project} className="mt-8" />
       </div>
-      <div className="relative overflow-hidden" style={{ borderRadius: 16, border: '1px solid var(--p-line)', aspectRatio: '860 / 760' }}>
-        <Image
-          src="/projects/reelearth/globe.webp"
-          alt="The ReelEarth travel globe, with pins for Isola Tiberina, Île de Paris, Westminster, Santorini, Giza and the other islands"
-          fill
-          priority
-          sizes="(min-width: 1024px) 640px, 100vw"
-          className="object-cover"
-        />
-      </div>
+      {/* The game's trailer: plays muted on its own; the controls turn the sound on.
+          The WebM copy is for browsers without H.264, such as some Linux builds of Chromium. */}
+      <video
+        poster="/projects/reelearth/demo-poster.webp"
+        autoPlay
+        muted
+        loop
+        playsInline
+        controls
+        preload="auto"
+        className="block h-auto w-full"
+        style={{ borderRadius: 16, border: '1px solid var(--p-line)', aspectRatio: '16 / 9', backgroundColor: '#000' }}
+        aria-label="ReelEarth trailer: sixteen tiny islands, casting a line, hooking a legendary fish and sailing the globe"
+      >
+        <source src="/projects/reelearth/demo.mp4" type="video/mp4" />
+        <source src="/projects/reelearth/demo.webm" type="video/webm" />
+      </video>
     </Section>
   );
 }
