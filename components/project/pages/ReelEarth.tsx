@@ -3,8 +3,6 @@ import type { Project } from '@/lib/projects';
 import { ProjectLinks, Section } from '../parts';
 
 /* The sixteen islands in the game's own order, with each one's landmark, snack and legendary fish */
-/* The eth (U+00F0) in Budakirkja is escaped: written literally in this file, it makes the Turbopack
-   build fail with "next/font/google queries have exactly one entry". */
 const islands = [
   { id: 'liberty', name: 'Liberty Island', region: 'New York Harbor, USA', landmark: 'Statue of Liberty', food: 'Hot dog', legendary: 'Lady Liberty Sturgeon' },
   { id: 'giza', name: 'Giza', region: 'Nile Delta, Egypt', landmark: 'Pyramids of Giza', food: 'Falafel', legendary: 'Phoenix Ray' },
@@ -21,7 +19,7 @@ const islands = [
   { id: 'machupicchu', name: 'Machu Picchu', region: 'Andes, Peru', landmark: 'Machu Picchu', food: 'Choclo', legendary: 'Starlight Lanternfish' },
   { id: 'rome', name: 'Isola Tiberina', region: 'Tiber, Italy', landmark: 'Colosseum', food: 'Gelato', legendary: 'Imperial Bluefin' },
   { id: 'borabora', name: 'Bora Bora', region: 'French Polynesia', landmark: 'Overwater bungalows', food: 'Coconut', legendary: 'Sunburst Marlin' },
-  { id: 'iceland', name: 'Snæfellsnes', region: 'West Iceland', landmark: 'Bú\u00f0akirkja', food: 'Pylsur hot dog', legendary: 'Aurora Char' },
+  { id: 'iceland', name: 'Snæfellsnes', region: 'West Iceland', landmark: 'Búðakirkja', food: 'Pylsur hot dog', legendary: 'Aurora Char' },
 ];
 
 /* The game's small caps label: "Seine, France" */

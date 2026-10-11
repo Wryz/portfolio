@@ -102,8 +102,8 @@ export function Hero() {
 
   return (
     <section className="relative" style={{ backgroundColor: 'var(--bg)' }}>
-      {/* Banner - 16:9 landscape, full width */}
-      <div className="relative w-full aspect-video overflow-hidden">
+      {/* Banner - a 32:9 strip, full width; never shorter than 160px so the avatar below doesn't cover it on phones */}
+      <div className="relative w-full aspect-[32/9] min-h-40 overflow-hidden">
         <BannerCarousel />
         <div
           className="absolute inset-0 pointer-events-none"
