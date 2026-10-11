@@ -199,6 +199,16 @@ h1, h2, h3, h4, h5, h6 {
   transform: scale(1.05);
 }
 
+.project-tile-blurb {
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.project-tile:hover .project-tile-blurb,
+.project-tile:focus-visible .project-tile-blurb {
+  opacity: 1;
+}
+
 .project-tile:focus-visible,
 .project-tile-about:focus-visible {
   outline: 3px solid #D4834A;
@@ -271,7 +281,8 @@ h1, h2, h3, h4, h5, h6 {
   .project-band-logo,
   .p-btn,
   .hh-card,
-  .project-tile-image { transition: none; }
+  .project-tile-image,
+  .project-tile-blurb { transition: none; }
 }
 
 .siege-repo:hover {

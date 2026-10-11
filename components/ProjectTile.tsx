@@ -54,10 +54,11 @@ export function ProjectTile({ project }: { project: Project }) {
           sizes="(min-width: 1024px) 368px, (min-width: 640px) 50vw, 100vw"
           className="project-tile-image object-cover"
         />
-        <span className="absolute left-3 top-3">
+        <span className="absolute left-3 top-3 z-10">
           <Badge project={project} />
         </span>
-        <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/65 to-transparent px-4 pb-3.5 pt-10">
+        {/* The description only appears while the tile is hovered or focused */}
+        <div className="project-tile-blurb absolute inset-0 flex items-end bg-gradient-to-t from-black/90 via-black/60 to-black/10 px-4 pb-3.5">
           <p className="text-sm leading-snug text-white">{tile.blurb}</p>
         </div>
       </div>
