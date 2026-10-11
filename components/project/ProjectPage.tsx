@@ -8,6 +8,7 @@ import { BrainBenchmarkHero, BrainBenchmarkExtra } from './pages/BrainBenchmark'
 import { BuilderFiveHero } from './pages/BuilderFive';
 import { HexHordesHero, HexHordesExtra } from './pages/HexHordes';
 import { ReelEarthHero, ReelEarthExtra } from './pages/ReelEarth';
+import { DungeonStyleHero, DungeonStyleExtra } from './pages/DungeonStyle';
 import { AustinFoundersHero } from './pages/AustinFounders';
 import { JobUpdatesHero } from './pages/JobUpdates';
 import { MiqoHero, MiqoExtra } from './pages/Miqo';
@@ -22,6 +23,7 @@ const layouts: Record<string, { Hero: Part; Extra?: Part }> = {
   builderfive: { Hero: BuilderFiveHero },
   'hex-hordes': { Hero: HexHordesHero, Extra: HexHordesExtra },
   reelearth: { Hero: ReelEarthHero, Extra: ReelEarthExtra },
+  'dungeon-style': { Hero: DungeonStyleHero, Extra: DungeonStyleExtra },
   'austin-founders': { Hero: AustinFoundersHero },
   'job-updates': { Hero: JobUpdatesHero },
   miqo: { Hero: MiqoHero, Extra: MiqoExtra },

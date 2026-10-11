@@ -45,7 +45,7 @@ export function ProjectTile({ project }: { project: Project }) {
     <>
       <div
         className="relative overflow-hidden rounded-2xl"
-        style={{ aspectRatio: '16 / 10', backgroundColor: 'var(--bg-muted)', boxShadow: '0 1px 0 var(--border)' }}
+        style={{ aspectRatio: '16 / 9', backgroundColor: 'var(--bg-muted)', boxShadow: '0 1px 0 var(--border)' }}
       >
         <Image
           src={tile.thumbnail}

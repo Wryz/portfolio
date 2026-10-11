@@ -60,7 +60,7 @@ export interface ProjectTile {
   action?: TileAction;
   /** No longer running: the badge says CLOSED */
   closed?: boolean;
-  /** 16:10 picture for the tile */
+  /** 16:9 picture for the tile */
   thumbnail: string;
   /** What the project is about, shown on the thumbnail */
   blurb: string;
@@ -142,7 +142,7 @@ export const projects: Project[] = [
       ink: '#F4EFE5',
       soft: 'rgba(244,239,229,0.82)',
       logo: '/projects/reelearth/logo.png',
-      image: '/projects/reelearth/thumb.webp',
+      image: '/projects/reelearth/islands/liberty.webp',
     },
     about: [
       'ReelEarth is a cozy multiplayer fishing game in the browser, set on **sixteen** low-poly miniatures of famous places: the Statue of Liberty, the pyramids of Giza, the Eiffel Tower, the Taj Mahal and more. Everyone on an island shares its sky, tide and weather, so you fish, chat and hang out together.',
@@ -151,6 +151,49 @@ export const projects: Project[] = [
     ],
     stack: ['JavaScript', 'Three.js', 'Supabase Realtime', 'Web Audio'],
     links: [{ label: 'Play ReelEarth', href: 'https://reelearth.vercel.app/' }],
+  },
+  {
+    slug: 'dungeon-style',
+    name: 'DungeonStyle',
+    tagline: 'You choose when to strike. Your fighter defends on its own.',
+    kind: 'Browser game',
+    category: 'game',
+    tile: {
+      href: 'https://dungeon-style.vercel.app/',
+      action: 'play',
+      thumbnail: '/projects/dungeon-style/thumb.webp',
+      blurb: 'A physics-driven 3D brawler. Pick when to strike while your fighter defends itself, through a gauntlet of arenas and giant bosses.',
+    },
+    theme: {
+      bg: '#111216',
+      surface: '#1A1C22',
+      ink: '#F2EDE2',
+      soft: '#A39E94',
+      accent: '#FFD36B',
+      onAccent: '#111216',
+      line: '#2B2D35',
+      display: 'var(--font-figtree), ui-sans-serif, system-ui, sans-serif',
+      body: 'var(--font-figtree), ui-sans-serif, system-ui, sans-serif',
+      radius: '10px',
+    },
+    band: {
+      bg: 'linear-gradient(90deg, rgba(17,18,22,0.96) 0%, rgba(17,18,22,0.85) 45%, rgba(17,18,22,0.3) 100%)',
+      ink: '#F2EDE2',
+      soft: 'rgba(242,237,226,0.82)',
+      nameStyle: { fontWeight: 800, letterSpacing: '-0.02em' },
+      logo: '/projects/dungeon-style/logo.png',
+      image: '/projects/dungeon-style/arenas/colosseum.webp',
+    },
+    about: [
+      'DungeonStyle is a 3D low-poly brawler where the combat is automatic and physics-driven: **you only choose when and how to attack**, and your fighter blocks, ducks, weaves and counters on its own. Punches, kicks and weapon blows land on simulated bodies, so hits snap heads back, fold fighters over and knock them off their feet.',
+      'It is a roguelike gauntlet of one-on-one fights. Every round is a new arena and a tougher opponent, across **seven arenas**: a boxing ring, the street, a grocery store, a warehouse fight club, a biker bar, a dojo and a rooftop at night. Every fourth round is a **boss** in the colosseum: the Champion, the Minotaur or the Cyclops. KOs pay coins for armour that changes your stats and shows on your fighter.',
+      'Each arena has its own weapons lying around, from a folding chair and a frying pan to a katana and a battle axe, and each one is swung the way it really is. It is built in **TypeScript** with **Three.js** and the **Rapier** physics engine, and every sound is generated in the browser.',
+    ],
+    stack: ['TypeScript', 'Three.js', 'Rapier physics', 'Vite', 'Web Audio'],
+    links: [
+      { label: 'Play DungeonStyle', href: 'https://dungeon-style.vercel.app/' },
+      { label: 'GitHub', href: 'https://github.com/Wryz/Dungeon-Style' },
+    ],
   },
   {
     slug: 'hex-hordes',
