@@ -116,14 +116,14 @@ export const projects: Project[] = [
   {
     slug: 'reelearth',
     name: 'ReelEarth',
-    tagline: 'Fish with friends under a shared sky.',
+    tagline: 'Fish the world\'s landmarks with friends.',
     kind: 'Multiplayer game',
     category: 'game',
     tile: {
       href: 'https://reelearth.vercel.app/',
       action: 'play',
       thumbnail: '/projects/reelearth/thumb.webp',
-      blurb: 'A cozy low-poly fishing game you play together. Four islands share one sky, tide and weather, each with its own fish.',
+      blurb: 'A cozy multiplayer fishing game on miniature famous places, from the Statue of Liberty to the pyramids. Fish and hang out with friends.',
     },
     theme: {
       bg: '#0D1A25',
@@ -142,13 +142,12 @@ export const projects: Project[] = [
       ink: '#F4EFE5',
       soft: 'rgba(244,239,229,0.82)',
       logo: '/projects/reelearth/logo.png',
-      logoStyle: { borderRadius: '25%' },
       image: '/projects/reelearth/thumb.webp',
     },
     about: [
-      'ReelEarth is a cozy multiplayer fishing game in the browser. You make an angler, then fish alongside whoever else is on the island, under a sky, tide and weather that everyone there shares.',
-      'There are **four islands**, each with its own local time, weather, islanders and **eight fish**, from everyday catches to legendaries that only bite at certain moments, such as after a shooting star or under the northern lights. Catches sell for coins, and your coins, fish room and cosmetics travel with you between islands.',
-      'The world is drawn in **Three.js** with flat-shaded low-poly models, and the music and sound are generated in the browser. Multiplayer runs on **Supabase Realtime**: one channel per island, with players sending updates only when something changes, so groups of friends fit in the free tier.',
+      'ReelEarth is a cozy multiplayer fishing game in the browser, set on **sixteen** low-poly miniatures of famous places: the Statue of Liberty, the pyramids of Giza, the Eiffel Tower, the Taj Mahal and more. Everyone on an island shares its sky, tide and weather, so you fish, chat and hang out together.',
+      'Each island has its own landmark, islanders, food stall and **legendary fish**. Fish fight differently, as runners, jumpers, divers or thrashers; feeding frenzies bring fast bites for everyone, and a legendary catch sets off fireworks over the whole island. Coins, your fish room and cosmetics travel with you.',
+      'Every island\'s time of day comes from **one shared sun** and its real longitude, and the travel map is a low-poly **globe** that shows the same day and night. Sailing flies you along the great circle to the next island. It is drawn in **Three.js**, multiplayer runs on **Supabase Realtime**, and the music and sound are generated in the browser.',
     ],
     stack: ['JavaScript', 'Three.js', 'Supabase Realtime', 'Web Audio'],
     links: [{ label: 'Play ReelEarth', href: 'https://reelearth.vercel.app/' }],
