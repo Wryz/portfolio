@@ -10,7 +10,8 @@ import { HexHordesHero, HexHordesExtra } from './pages/HexHordes';
 import { ReelEarthHero, ReelEarthExtra } from './pages/ReelEarth';
 import { DungeonStyleHero, DungeonStyleExtra } from './pages/DungeonStyle';
 import { ShelfMadeHero, ShelfMadeExtra } from './pages/ShelfMade';
-import { AustinFoundersHero } from './pages/AustinFounders';
+import { AustinFoundersHero, AustinFoundersExtra } from './pages/AustinFounders';
+import { StressieHero, StressieExtra } from './pages/Stressie';
 import { JobUpdatesHero } from './pages/JobUpdates';
 import { MiqoHero, MiqoExtra } from './pages/Miqo';
 import { SiegeHero, SiegeExtra } from './pages/Siege';
@@ -26,7 +27,8 @@ const layouts: Record<string, { Hero: Part; Extra?: Part }> = {
   reelearth: { Hero: ReelEarthHero, Extra: ReelEarthExtra },
   'dungeon-style': { Hero: DungeonStyleHero, Extra: DungeonStyleExtra },
   'shelf-made': { Hero: ShelfMadeHero, Extra: ShelfMadeExtra },
-  'austin-founders': { Hero: AustinFoundersHero },
+  'austin-founders': { Hero: AustinFoundersHero, Extra: AustinFoundersExtra },
+  stressie: { Hero: StressieHero, Extra: StressieExtra },
   'job-updates': { Hero: JobUpdatesHero },
   miqo: { Hero: MiqoHero, Extra: MiqoExtra },
   siege: { Hero: SiegeHero, Extra: SiegeExtra },
@@ -34,9 +36,12 @@ const layouts: Record<string, { Hero: Part; Extra?: Part }> = {
 
 export function ProjectPage({ project }: { project: Project }) {
   const { Hero, Extra } = layouts[project.slug];
-  // The next project in the same section, wrapping round to its first
+  // The next project in the same section, wrapping round to its first. A section of one leads on to the next section.
   const siblings = pagedProjects.filter((p) => p.category === project.category);
-  const next = siblings[(siblings.findIndex((p) => p.slug === project.slug) + 1) % siblings.length];
+  const next =
+    siblings.length > 1
+      ? siblings[(siblings.findIndex((p) => p.slug === project.slug) + 1) % siblings.length]
+      : pagedProjects[(pagedProjects.findIndex((p) => p.slug === project.slug) + 1) % pagedProjects.length];
 
   return (
     <div className="project-page" style={themeVars(project.theme)}>
@@ -67,7 +72,7 @@ export function ProjectPage({ project }: { project: Project }) {
         {Extra && <Extra project={project} />}
 
         {project.mediaSections && (
-          <Section>
+          <Section className="scroll-mt-24" id="gallery">
             <MediaGallery sections={project.mediaSections} />
           </Section>
         )}

@@ -240,6 +240,11 @@ h1, h2, h3, h4, h5, h6 {
   animation-play-state: paused;
 }
 
+/* Landing page: the skills ticker fades out at both ends */
+.skill-ticker {
+  mask-image: linear-gradient(to right, transparent 0, #000 48px, #000 calc(100% - 48px), transparent 100%);
+}
+
 /* Project tiles in each section */
 .project-tile-image {
   transition: transform 0.3s ease;

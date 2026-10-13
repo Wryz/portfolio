@@ -1,9 +1,10 @@
 import Image from 'next/image';
 import type { Project } from '@/lib/projects';
-import { ProjectLinks } from '../parts';
+import { ProjectLinks, Section } from '../parts';
+import { AiRankBadge, AiRankCard } from '@/components/community/AiRank';
 
 /* Figures as published on the community's site. */
-const figures = [
+export const figures = [
   { value: '54', label: 'Startups' },
   { value: '$20M+', label: 'Collective ARR' },
   { value: '$30M+', label: 'Capital raised' },
@@ -25,6 +26,7 @@ export function AustinFoundersHero({ project }: { project: Project }) {
       />
       <div className="relative mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
         <Image src="/projects/austin-founders/logo.webp" alt="" width={144} height={144} priority className="mb-6 h-20 w-20 sm:h-24 sm:w-24" />
+        <AiRankBadge className="mb-5" />
         <h1 className="max-w-3xl text-4xl leading-[1.15] sm:text-5xl lg:text-6xl" style={{ fontWeight: 700 }}>
           Austin Founders Community
         </h1>
@@ -48,5 +50,13 @@ export function AustinFoundersHero({ project }: { project: Project }) {
         <ProjectLinks project={project} className="mt-10" />
       </div>
     </section>
+  );
+}
+
+export function AustinFoundersExtra() {
+  return (
+    <Section className="pb-0 sm:pb-0">
+      <AiRankCard />
+    </Section>
   );
 }

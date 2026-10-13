@@ -186,7 +186,7 @@ function Band({ showcase, project, flip }: { showcase: Showcase; project: Projec
   return (
     <section
       id={project.slug}
-      className={`scroll-mt-14 ${showcase.className ?? ''}`}
+      className={`scroll-mt-28 sm:scroll-mt-14 ${showcase.className ?? ''}`}
       style={{ ...themeVars(theme), backgroundColor: theme.bg, color: theme.ink, fontFamily: theme.body }}
     >
       <div className={`mx-auto grid max-w-6xl items-center gap-10 px-4 py-20 sm:px-6 sm:py-24 lg:grid-cols-[1.25fr_1fr] lg:gap-14 lg:px-8 ${flip ? 'lg:[&>*:first-child]:order-2' : ''}`}>

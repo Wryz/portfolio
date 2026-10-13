@@ -48,13 +48,14 @@ export interface ProjectBand {
 }
 
 /** Which section of the site the project sits in */
-export type ProjectCategory = 'game' | 'app' | 'website';
+export type ProjectCategory = 'game' | 'app' | 'website' | 'community';
 
-/** The site's sections, each with its own page of tiles (/games, /apps, /websites) */
+/** The site's sections, each with its own page (/games, /apps, /websites, /communities) */
 export const sections: { category: ProjectCategory; slug: string; title: string; intro: string }[] = [
   { category: 'game', slug: 'games', title: 'Games', intro: 'Free to play in your browser. Pick one and jump straight in.' },
-  { category: 'app', slug: 'apps', title: 'Apps', intro: 'Apps for iPhone and Chrome, and the app that drives my robot.' },
+  { category: 'app', slug: 'apps', title: 'Apps', intro: 'Apps for phones and Chrome, and the app that drives my robot.' },
   { category: 'website', slug: 'websites', title: 'Websites', intro: 'Sites I designed, built and run.' },
+  { category: 'community', slug: 'communities', title: 'Communities', intro: 'People I bring together in real life, every week.' },
 ];
 
 export function sectionOf(category: ProjectCategory) {
@@ -440,6 +441,50 @@ export const projects: Project[] = [
   },
   /* Apps */
   {
+    slug: 'stressie',
+    name: 'Stressie',
+    tagline: 'Rewarding shift teams for looking after their health.',
+    kind: 'Mobile app',
+    category: 'app',
+    tile: {
+      href: 'https://www.stressieapp.com/',
+      action: 'visit',
+      thumbnail: '/projects/stressie/thumb.webp',
+      blurb: 'A wellness app for restaurant and shift teams that rewards them for managing stress. I led its mobile frontend.',
+    },
+    theme: {
+      bg: '#FCF4EB',
+      surface: '#F4E1CC',
+      ink: '#1F1A16',
+      soft: '#6B5D52',
+      accent: '#BF6212',
+      onAccent: '#FFFFFF',
+      line: '#E5CEC0',
+      display: 'var(--font-plex-serif), ui-serif, Georgia, serif',
+      body: 'var(--font-inter), ui-sans-serif, system-ui, sans-serif',
+      radius: '6px',
+    },
+    band: {
+      bg: 'linear-gradient(90deg, #FCF4EB 0%, #FCF4EB 40%, rgba(252,244,235,0.82) 62%, rgba(252,244,235,0.35) 100%)',
+      ink: '#1F1A16',
+      soft: '#6B5D52',
+      nameStyle: { fontFamily: 'var(--font-plex-serif), ui-serif, Georgia, serif', fontWeight: 500 },
+      image: '/projects/stressie/insights.webp',
+    },
+    about: [
+      'Stressie is an employee wellness program for shift workers: restaurant crews first, then hospitality, healthcare and warehouses. Staff check in privately, take short resets before a shift and earn **points they trade for real rewards**, while managers see anonymous, team-wide insights on a dashboard.',
+      'I was **head of mobile frontend** and tech lead for the dev team. I built the app people use on shift, on **iOS and Android**: the check-ins, the coping library, points and rewards, and the insights screens.',
+      'It was refined through a **six-month pilot with Ember** in Austin, where stress dropped 22% and 35% of staff said they felt more supported.',
+    ],
+    stack: ['Head of mobile frontend', 'Tech lead', 'iOS and Android'],
+    stackLabel: 'My role',
+    links: [
+      { label: 'Visit stressieapp.com', href: 'https://www.stressieapp.com/' },
+      { label: 'App Store', href: 'https://apps.apple.com/us/app/stressieapp/id6737459302' },
+      { label: 'Google Play', href: 'https://play.google.com/store/apps/details?id=com.stressiefrontend.app' },
+    ],
+  },
+  {
     slug: 'bibli',
     name: 'Bibli',
     tagline: 'Scripture, one step at a time.',
@@ -673,7 +718,7 @@ export const projects: Project[] = [
     name: 'Austin Founders Community',
     tagline: 'Invite-only coworking for founders building in Austin.',
     kind: 'Community',
-    category: 'website',
+    category: 'community',
     tile: {
       href: 'https://www.austinfoundercoworking.com',
       action: 'visit',
@@ -710,6 +755,35 @@ export const projects: Project[] = [
     links: [
       { label: 'Visit the community site', href: 'https://www.austinfoundercoworking.com' },
       { label: 'Instagram', href: 'https://www.instagram.com/atx.founders' },
+    ],
+    mediaSections: [
+      {
+        name: 'Gallery',
+        subtitle: 'Coworking sessions and meetups around Austin',
+        media: [
+          {
+            type: 'video',
+            src: '/projects/austin-founders/gallery/networking.mp4',
+            thumbnail: '/projects/austin-founders/gallery/networking.webp',
+            alt: 'Founders networking at a meetup',
+          },
+          { type: 'image', src: '/projects/austin-founders/gallery/01.webp', alt: 'Founders coding side by side at a café table' },
+          { type: 'image', src: '/projects/austin-founders/gallery/02.webp', alt: 'Laptops and coffee at a coworking session' },
+          { type: 'image', src: '/projects/austin-founders/gallery/03.webp', alt: 'Three founders at a meetup' },
+          { type: 'image', src: '/projects/austin-founders/gallery/04.webp', alt: 'Founders working around a table in a lounge' },
+          { type: 'image', src: '/projects/austin-founders/gallery/05.webp', alt: 'A packed meetup at Capital Factory' },
+          { type: 'image', src: '/projects/austin-founders/gallery/06.webp', alt: 'Founders working at long desks above downtown' },
+          { type: 'image', src: '/projects/austin-founders/gallery/07.webp', alt: 'A group selfie at a coworking session' },
+          { type: 'image', src: '/projects/austin-founders/gallery/08.webp', alt: 'Founders on laptops in a café, smiling for a selfie' },
+          { type: 'image', src: '/projects/austin-founders/gallery/09.webp', alt: 'Founders talking in a coworking space' },
+          { type: 'image', src: '/projects/austin-founders/gallery/10.webp', alt: 'Founders chatting at an outdoor table' },
+          { type: 'image', src: '/projects/austin-founders/gallery/11.webp', alt: 'Laptops along a desk on a high floor' },
+          { type: 'image', src: '/projects/austin-founders/gallery/12.webp', alt: 'An open coworking floor' },
+          { type: 'image', src: '/projects/austin-founders/gallery/13.webp', alt: 'Founders gathered round a coworking kitchen' },
+          { type: 'image', src: '/projects/austin-founders/gallery/14.webp', alt: 'A talk on stage at Capital Factory' },
+          { type: 'image', src: '/projects/austin-founders/gallery/15.webp', alt: 'Founders talking on a patio' },
+        ],
+      },
     ],
   },
 ];

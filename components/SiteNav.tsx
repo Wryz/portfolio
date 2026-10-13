@@ -16,11 +16,12 @@ export function SiteNav() {
       className="sticky top-0 z-40 border-b backdrop-blur-md"
       style={{ backgroundColor: 'color-mix(in srgb, var(--bg) 88%, transparent)', borderColor: 'var(--border)' }}
     >
-      <div className="mx-auto flex h-14 max-w-6xl items-center gap-2 px-4 sm:gap-4 sm:px-6 lg:px-8">
-        <Link href="/" className="site-nav-link mr-auto text-base font-bold sm:text-lg" style={{ fontFamily: 'var(--font-heading)', color: 'var(--text)' }}>
+      {/* Below sm the sections drop to a second row, so all four fit on a phone */}
+      <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-x-2 px-4 sm:h-14 sm:flex-nowrap sm:gap-4 sm:px-6 lg:px-8">
+        <Link href="/" className="site-nav-link mr-auto py-3 text-base font-bold sm:py-0 sm:text-lg" style={{ fontFamily: 'var(--font-heading)', color: 'var(--text)' }}>
           My Phung
         </Link>
-        <ul className="flex items-center gap-0.5 sm:gap-1">
+        <ul className="order-last flex w-full items-center justify-center gap-0.5 pb-2.5 sm:order-none sm:w-auto sm:gap-1 sm:pb-0">
           {sections.map((s) => {
             const href = `/${s.slug}`;
             const current = pathname === href;
