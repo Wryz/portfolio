@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { SectionPage } from '@/components/SectionPage';
+import { GamesPage } from '@/components/games/GamesPage';
 
 export const metadata: Metadata = {
   title: 'Games | My Phung',
@@ -7,5 +7,5 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
-  return <SectionPage slug="games" />;
+  return <GamesPage />;
 }

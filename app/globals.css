@@ -227,6 +227,19 @@ h1, h2, h3, h4, h5, h6 {
   outline-offset: 3px;
 }
 
+/* Games page: ReelEarth's islands drifting past */
+@keyframes postcards {
+  to { transform: translateX(-50%); }
+}
+
+.postcards {
+  animation: postcards 60s linear infinite;
+}
+
+.postcards:hover {
+  animation-play-state: paused;
+}
+
 /* Project tiles in each section */
 .project-tile-image {
   transition: transform 0.3s ease;
@@ -324,6 +337,7 @@ h1, h2, h3, h4, h5, h6 {
   .section-card,
   .section-card-image,
   .section-card-arrow { transition: none; }
+  .postcards { animation: none; }
 }
 
 .siege-repo:hover {

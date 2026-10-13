@@ -42,7 +42,6 @@ function VideoSlide({ src, poster, label }: { src: string; poster: string; label
   return (
     <video
       ref={videoRef}
-      src={src}
       poster={poster}
       muted
       playsInline
@@ -50,7 +49,11 @@ function VideoSlide({ src, poster, label }: { src: string; poster: string; label
       preload="auto"
       className="absolute inset-0 h-full w-full object-cover"
       aria-label={label}
-    />
+    >
+      <source src={src} type="video/mp4" />
+      {/* For browsers without H.264, such as some Linux builds of Chromium */}
+      <source src={src.replace(/\.mp4$/, '.webm')} type="video/webm" />
+    </video>
   );
 }
 
