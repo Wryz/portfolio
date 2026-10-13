@@ -158,7 +158,7 @@ export function MediaLightbox({ media, initialIndex, onClose }: MediaLightboxPro
       className="fixed inset-0 z-50 flex flex-col bg-black"
       onClick={onClose}
     >
-      {/* Media — full screen */}
+      {/* Media, full screen */}
       <div
         className="absolute inset-0 flex items-center justify-center"
         onTouchStart={handleTouchStart}
@@ -200,7 +200,7 @@ export function MediaLightbox({ media, initialIndex, onClose }: MediaLightboxPro
         </div>
       </div>
 
-      {/* Close — overlay top right */}
+      {/* Close button, over the top right */}
       <button
         onClick={onClose}
         className="absolute top-4 right-4 z-20 w-10 h-10 rounded-full flex items-center justify-center cursor-pointer transition-opacity hover:opacity-100 opacity-80"
@@ -212,7 +212,7 @@ export function MediaLightbox({ media, initialIndex, onClose }: MediaLightboxPro
         </svg>
       </button>
 
-      {/* Dots — overlay bottom (higher when video to avoid covering controls) */}
+      {/* Dots over the bottom, raised for videos so they miss the controls */}
       {media.length > 1 && (
         <div
           className={`absolute left-0 right-0 flex justify-center items-center gap-2 flex-wrap px-4 z-20 ${item.type === 'video' ? 'bottom-16' : 'bottom-4'}`}

@@ -66,7 +66,7 @@ export const experience: Experience[] = [
     company: 'Siege',
     period: '2020 - 2022',
     description:
-      'Created a Minecraft MMORPG server with over 1,000 custom items. Grew to 100,000+ unique players and recruited 60+ team members. Boosted presence via website, Reddit, and Discord — scaling from 200 to 50,000 users.',
+      'Created a Minecraft MMORPG server with over 1,000 custom items. Grew to 100,000+ unique players and recruited 60+ team members. Boosted presence via website, Reddit, and Discord, scaling from 200 to 50,000 users.',
   },
 ];
 

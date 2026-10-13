@@ -136,8 +136,8 @@ function AppsCard() {
           <Image src="/projects/stressie/phone.webp" alt="" width={600} height={1176} sizes="144px" className="section-card-image h-auto w-full" />
         </div>
         {icons.map((icon) => (
-          <span key={icon.src} className="absolute h-12 w-12 overflow-hidden rounded-2xl bg-white shadow-lg sm:h-14 sm:w-14" style={icon.style}>
-            <Image src={icon.src} alt="" fill sizes="56px" className="object-contain p-1" />
+          <span key={icon.src} className="absolute h-12 w-12 overflow-hidden rounded-full shadow-lg ring-2 ring-white sm:h-14 sm:w-14" style={icon.style}>
+            <Image src={icon.src} alt="" fill sizes="56px" className="object-cover" />
           </span>
         ))}
       </div>

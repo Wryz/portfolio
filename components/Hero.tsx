@@ -185,7 +185,7 @@ export function Hero() {
             className="mt-6 max-w-2xl text-base sm:text-lg leading-relaxed text-center lg:text-left"
             style={{ color: 'var(--text-secondary)' }}
           >
-            Software engineer and community builder. I love building products that bring people together—from Minecraft servers with 100k+ players to AI stress-management tools and embodied robotics. When I&apos;m not coding, you&apos;ll find me playing chess or building my community of startup founders in Austin.
+            Software engineer and community builder. I love building products that bring people together, from Minecraft servers with 100k+ players to AI stress-management tools and embodied robotics. When I&apos;m not coding, you&apos;ll find me playing chess or building my community of startup founders in Austin.
           </motion.p>
 
           {/* View Resume */}
