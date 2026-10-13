@@ -47,19 +47,30 @@ export interface ProjectBand {
   image?: string;
 }
 
-/** Which shelf of the home page the project sits on */
+/** Which section of the site the project sits in */
 export type ProjectCategory = 'game' | 'app' | 'website';
+
+/** The site's sections, each with its own page of tiles (/games, /apps, /websites) */
+export const sections: { category: ProjectCategory; slug: string; title: string; intro: string }[] = [
+  { category: 'game', slug: 'games', title: 'Games', intro: 'Free to play in your browser. Pick one and jump straight in.' },
+  { category: 'app', slug: 'apps', title: 'Apps', intro: 'Apps for iPhone and Chrome, and the app that drives my robot.' },
+  { category: 'website', slug: 'websites', title: 'Websites', intro: 'Sites I designed, built and run.' },
+];
+
+export function sectionOf(category: ProjectCategory) {
+  return sections.find((s) => s.category === category)!;
+}
 
 /** What a click on a project's tile does, shown as a badge on the thumbnail */
 export type TileAction = 'play' | 'visit' | 'download';
 
-/** How a project appears as a tile on the home page. */
+/** How a project appears as a tile in its section. */
 export interface ProjectTile {
   /** Where a click on the tile goes. Without one, it opens the project's page (or its externalUrl). */
   href?: string;
   action?: TileAction;
-  /** No longer running: the badge says CLOSED */
-  closed?: boolean;
+  /** Not playable right now: the badge says CLOSED or IN DEVELOPMENT */
+  status?: 'closed' | 'in-development';
   /** 16:9 picture for the tile */
   thumbnail: string;
   /** What the project is about, shown on the thumbnail */
@@ -290,13 +301,51 @@ export const projects: Project[] = [
     ],
   },
   {
+    slug: 'shelf-made',
+    name: 'Shelf Made',
+    tagline: 'Grow a tiny corner shop into a grocery chain.',
+    kind: 'Tycoon game',
+    category: 'game',
+    tile: {
+      status: 'in-development',
+      thumbnail: '/projects/shelf-made/thumb.webp',
+      blurb: 'A grocery store tycoon: ring up customers, stock the shelves and grow a corner shop into a chain of stores.',
+    },
+    theme: {
+      bg: '#F7F4EA',
+      surface: '#FFFFFF',
+      ink: '#38383D',
+      soft: '#5F5F66',
+      accent: '#2B7D59',
+      onAccent: '#FFFFFF',
+      line: '#E3DED0',
+      display: 'var(--font-fredoka), ui-rounded, system-ui, sans-serif',
+      body: 'var(--font-fredoka), ui-rounded, system-ui, sans-serif',
+      radius: '14px',
+    },
+    band: {
+      bg: '#3FA87A',
+      ink: '#FFFFFF',
+      soft: 'rgba(255,255,255,0.9)',
+      nameStyle: { fontWeight: 700 },
+    },
+    about: [
+      'Shelf Made is a grocery store tycoon I am building for the browser. You start with a tiny corner shop in a small town with rival stores. Customers drive in from the main road, park, shop, queue and pay, and you grow from ringing them up by hand to running a **chain of stores** with managers.',
+      'The economy is meant to be visible: you watch the line back up, the parking lot fill and a rival\'s sale pull shoppers away. Early on you scan items at the register and carry stock to the shelves yourself, and **every chore can later be handed to staff**. The strategy comes from customer types, reputation, rivals, ads, loans, store layout and franchises.',
+      'It is built on a deterministic simulation in **TypeScript**, with **React** for the interface and **three.js** for a bright, chunky low-poly town. A free web beta comes first, then a desktop release on Steam.',
+    ],
+    stack: ['TypeScript', 'React', 'three.js', 'Vite'],
+    stackLabel: 'Building with',
+    links: [],
+  },
+  {
     slug: 'siege',
     name: 'Siege',
     tagline: 'A Minecraft MMORPG with 100k+ players.',
     kind: 'Minecraft server',
     category: 'game',
     tile: {
-      closed: true,
+      status: 'closed',
       thumbnail: '/projects/siege/thumb.webp',
       blurb: 'A Minecraft MMORPG server with 1,000+ custom items and custom mobs, played by 100,000+ people.',
     },

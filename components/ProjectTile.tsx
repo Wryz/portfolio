@@ -11,8 +11,11 @@ function displayHost(href: string) {
 
 function Badge({ project }: { project: Project }) {
   const { tile } = project;
-  if (tile.closed) {
+  if (tile.status === 'closed') {
     return <span className="rounded-full bg-red-600 px-3 py-1 text-xs font-bold tracking-wider text-white">CLOSED</span>;
+  }
+  if (tile.status === 'in-development') {
+    return <span className="rounded-full bg-amber-300 px-3 py-1 text-xs font-bold tracking-wider text-neutral-900">IN DEVELOPMENT</span>;
   }
   return (
     <span className="inline-flex items-center gap-1.5 rounded-full bg-black/75 px-3 py-1 text-xs font-semibold text-white">

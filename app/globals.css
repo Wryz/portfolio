@@ -189,7 +189,45 @@ h1, h2, h3, h4, h5, h6 {
   transform: rotate(-6deg) scale(1.06);
 }
 
-/* Project tiles on the home page */
+/* Site nav and the landing page's section cards */
+.site-nav-link {
+  transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+.site-nav-link:not([aria-current='page']):hover {
+  color: var(--text) !important;
+  background-color: var(--bg-muted);
+}
+
+.section-card {
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.section-card:hover {
+  transform: translateY(-4px);
+  border-color: #D4834A !important;
+}
+
+.section-card-image,
+.section-card-arrow {
+  transition: transform 0.3s ease;
+}
+
+.section-card:hover .section-card-image {
+  transform: scale(1.05);
+}
+
+.section-card:hover .section-card-arrow {
+  transform: translateX(4px);
+}
+
+.site-nav-link:focus-visible,
+.section-card:focus-visible {
+  outline: 3px solid #D4834A;
+  outline-offset: 3px;
+}
+
+/* Project tiles in each section */
 .project-tile-image {
   transition: transform 0.3s ease;
 }
@@ -282,7 +320,10 @@ h1, h2, h3, h4, h5, h6 {
   .p-btn,
   .hh-card,
   .project-tile-image,
-  .project-tile-blurb { transition: none; }
+  .project-tile-blurb,
+  .section-card,
+  .section-card-image,
+  .section-card-arrow { transition: none; }
 }
 
 .siege-repo:hover {

@@ -9,6 +9,7 @@ import { BuilderFiveHero } from './pages/BuilderFive';
 import { HexHordesHero, HexHordesExtra } from './pages/HexHordes';
 import { ReelEarthHero, ReelEarthExtra } from './pages/ReelEarth';
 import { DungeonStyleHero, DungeonStyleExtra } from './pages/DungeonStyle';
+import { ShelfMadeHero, ShelfMadeExtra } from './pages/ShelfMade';
 import { AustinFoundersHero } from './pages/AustinFounders';
 import { JobUpdatesHero } from './pages/JobUpdates';
 import { MiqoHero, MiqoExtra } from './pages/Miqo';
@@ -24,6 +25,7 @@ const layouts: Record<string, { Hero: Part; Extra?: Part }> = {
   'hex-hordes': { Hero: HexHordesHero, Extra: HexHordesExtra },
   reelearth: { Hero: ReelEarthHero, Extra: ReelEarthExtra },
   'dungeon-style': { Hero: DungeonStyleHero, Extra: DungeonStyleExtra },
+  'shelf-made': { Hero: ShelfMadeHero, Extra: ShelfMadeExtra },
   'austin-founders': { Hero: AustinFoundersHero },
   'job-updates': { Hero: JobUpdatesHero },
   miqo: { Hero: MiqoHero, Extra: MiqoExtra },
@@ -32,8 +34,9 @@ const layouts: Record<string, { Hero: Part; Extra?: Part }> = {
 
 export function ProjectPage({ project }: { project: Project }) {
   const { Hero, Extra } = layouts[project.slug];
-  const index = pagedProjects.findIndex((p) => p.slug === project.slug);
-  const next = pagedProjects[(index + 1) % pagedProjects.length];
+  // The next project in the same section, wrapping round to its first
+  const siblings = pagedProjects.filter((p) => p.category === project.category);
+  const next = siblings[(siblings.findIndex((p) => p.slug === project.slug) + 1) % siblings.length];
 
   return (
     <div className="project-page" style={themeVars(project.theme)}>

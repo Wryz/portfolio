@@ -98,7 +98,7 @@ function DetailBadge({
 }
 
 export function Hero() {
-  const { mode, toggleTheme } = useTheme();
+  const { mode } = useTheme();
 
   return (
     <section className="relative" style={{ backgroundColor: 'var(--bg)' }}>
@@ -110,32 +110,6 @@ export function Hero() {
           style={{ background: heroOverlays[mode] }}
           aria-hidden
         />
-        {/* Theme toggle - top right */}
-        <button
-          onClick={toggleTheme}
-          className="absolute top-4 right-4 z-10 p-2.5 rounded-full transition-all duration-200 cursor-pointer hover:scale-105"
-          style={{
-            color: 'rgba(255,255,255,0.95)',
-            backgroundColor: 'rgba(0,0,0,0.4)',
-          }}
-          aria-label="Toggle theme"
-          onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor = 'rgba(0,0,0,0.6)';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.backgroundColor = 'rgba(0,0,0,0.4)';
-          }}
-        >
-          {mode === 'dark' ? (
-            <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v1m0 16v1m8.66-13.66l-.71.71M4.05 19.95l-.71.71M21 12h-1M4 12H3m16.66 7.66l-.71-.71M4.05 4.05l-.71-.71M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-            </svg>
-          ) : (
-            <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.005 9.005 0 0012 21a9.005 9.005 0 008.354-5.646z" />
-            </svg>
-          )}
-        </button>
       </div>
 
       {/* Profile + Info */}

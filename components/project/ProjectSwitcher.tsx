@@ -2,11 +2,13 @@
 
 import Link from 'next/link';
 import { useEffect, useRef } from 'react';
-import { projects, projectHref } from '@/lib/projects';
+import { projects, projectHref, sectionOf } from '@/lib/projects';
 
-/** Fixed bar on every project page: back to the home page, and hop straight to any other project. */
+/** Fixed bar on every project page: back to its section, and hop straight to any other project in it. */
 export function ProjectSwitcher({ current }: { current: string }) {
   const activeRef = useRef<HTMLAnchorElement>(null);
+  const category = projects.find((p) => p.slug === current)!.category;
+  const section = sectionOf(category);
 
   useEffect(() => {
     activeRef.current?.scrollIntoView({ block: 'nearest', inline: 'center' });
@@ -24,15 +26,15 @@ export function ProjectSwitcher({ current }: { current: string }) {
       }}
     >
       <div className="mx-auto flex h-12 max-w-6xl items-center gap-3 px-4 sm:px-6 lg:px-8">
-        <Link href="/#projects" className="switcher-link flex shrink-0 items-center gap-1.5 text-sm font-semibold">
+        <Link href={`/${section.slug}`} className="switcher-link flex shrink-0 items-center gap-1.5 text-sm font-semibold">
           <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden>
             <path strokeLinecap="round" strokeLinejoin="round" d="M19 12H5M11 6l-6 6 6 6" />
           </svg>
-          My Phung
+          {section.title}
         </Link>
         <span className="h-5 w-px shrink-0" style={{ backgroundColor: 'var(--p-line)' }} aria-hidden />
         <ul className="switcher-list scrollbar-hide flex min-w-0 flex-1 items-center gap-0.5 overflow-x-auto">
-          {projects.map((p) => {
+          {projects.filter((p) => p.category === category).map((p) => {
             const isCurrent = p.slug === current;
             const common = {
               className: 'switcher-link flex items-center gap-1.5 whitespace-nowrap rounded-full px-2.5 py-1.5 text-[13px]',
