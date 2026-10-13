@@ -40,7 +40,7 @@ const showcases: Showcase[] = [
       video: '/projects/dungeon-style/gameplay.mp4',
       webm: '/projects/dungeon-style/gameplay.webm',
       poster: '/projects/dungeon-style/gameplay-poster.webp',
-      label: 'DungeonStyle gameplay: a round in the boxing ring, then the Minotaur in the colosseum',
+      label: 'DungeonStyle gameplay: fights on the street, in the grocery store and in the biker bar',
     },
     extras: {
       kind: 'images',

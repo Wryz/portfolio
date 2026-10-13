@@ -205,6 +205,43 @@ export const projects: Project[] = [
       { label: 'Play DungeonStyle', href: 'https://dungeon-style.vercel.app/' },
       { label: 'GitHub', href: 'https://github.com/Wryz/Dungeon-Style' },
     ],
+    mediaSections: [
+      {
+        name: 'Fight clips',
+        media: [
+          {
+            type: 'video',
+            src: '/projects/dungeon-style/clips/street-brawler.mp4',
+            thumbnail: '/projects/dungeon-style/clips/street-brawler.webp',
+            alt: 'Round 2 on the street against the Brawler',
+          },
+          {
+            type: 'video',
+            src: '/projects/dungeon-style/clips/street-brawler-2.mp4',
+            thumbnail: '/projects/dungeon-style/clips/street-brawler-2.webp',
+            alt: 'Round 2 on the street, another fight with the Brawler',
+          },
+          {
+            type: 'video',
+            src: '/projects/dungeon-style/clips/grocery-kicker.mp4',
+            thumbnail: '/projects/dungeon-style/clips/grocery-kicker.webp',
+            alt: 'Round 3 in the grocery store against the Kicker',
+          },
+          {
+            type: 'video',
+            src: '/projects/dungeon-style/clips/bar-brawler.mp4',
+            thumbnail: '/projects/dungeon-style/clips/bar-brawler.webp',
+            alt: 'Round 6 in the biker bar against the Brawler',
+          },
+          {
+            type: 'video',
+            src: '/projects/dungeon-style/clips/bar-boxer.mp4',
+            thumbnail: '/projects/dungeon-style/clips/bar-boxer.webp',
+            alt: 'Round 6 in the biker bar against The Boxer',
+          },
+        ],
+      },
+    ],
   },
   {
     slug: 'hex-hordes',
