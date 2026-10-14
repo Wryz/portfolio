@@ -24,17 +24,24 @@ interface Showcase {
   className?: string;
   /** Leave the logo out (when the one on file predates the game's current look) */
   noLogo?: boolean;
+  /** The name as the game's own wordmark sets it, when it is more than plain text */
+  wordmark?: React.ReactNode;
 }
 
 const showcases: Showcase[] = [
   {
     slug: 'dungeon-style',
     eyebrow: 'Physics brawler · gauntlet',
+    wordmark: (
+      <>
+        Dungeon<span style={{ color: '#FFD36B' }}>Style</span>
+      </>
+    ),
     pitch: 'You choose when to strike; your fighter blocks, ducks and counters on its own. Win the round and the arena changes, until a giant waits in the colosseum.',
     stats: [
       { value: '7', label: 'arenas' },
       { value: '17', label: 'opponents' },
-      { value: '3', label: 'giant bosses' },
+      { value: '4', label: 'giant bosses' },
     ],
     media: {
       video: '/projects/dungeon-style/gameplay.mp4',
@@ -228,7 +235,7 @@ function Band({ showcase, project, flip }: { showcase: Showcase; project: Projec
               className={`text-4xl leading-none sm:text-5xl ${showcase.className === 'hh' ? 'hh-wordmark' : ''}`}
               style={{ fontFamily: theme.display, ...project.band.nameStyle, ...(showcase.className === 'hh' ? { color: '#FBBF24' } : {}) }}
             >
-              {project.name}
+              {showcase.wordmark ?? project.name}
             </h2>
           </div>
           <p className="mt-5 text-lg leading-relaxed" style={{ color: theme.soft }}>{showcase.pitch}</p>

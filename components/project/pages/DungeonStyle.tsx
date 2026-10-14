@@ -16,7 +16,7 @@ export function DungeonStyleHero({ project }: { project: Project }) {
   return (
     <Section className="grid items-center gap-12 lg:grid-cols-[0.9fr_1.1fr]">
       <div>
-        <Image src="/projects/dungeon-style/logo.png" alt="" width={64} height={64} priority className="h-14 w-14" />
+        <Image src="/projects/dungeon-style/mark.png" alt="" width={96} height={96} priority className="h-20 w-20 sm:h-24 sm:w-24" />
         <h1 className="mt-6 text-5xl leading-[1.02] tracking-tight sm:text-6xl lg:text-7xl" style={{ fontWeight: 800 }}>
           Dungeon<span style={{ color: 'var(--p-accent)' }}>Style</span>
         </h1>
@@ -47,7 +47,7 @@ export function DungeonStyleExtra() {
       </h2>
       <p className="mt-3 max-w-2xl text-lg" style={{ color: 'var(--p-soft)' }}>
         Seven arenas take turns, each with its own props, floor sounds and weapons. Every fourth round is a giant in the
-        colosseum: the Champion, the Minotaur or the Cyclops.
+        colosseum: the Champion, the Minotaur, the Cyclops or the Troll.
       </p>
       <ul className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {arenas.map((a) => (
