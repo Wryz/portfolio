@@ -345,9 +345,10 @@ export const projects: Project[] = [
     kind: 'Tycoon game',
     category: 'game',
     tile: {
-      status: 'in-development',
+      href: 'https://shelf-made-web.vercel.app/',
+      action: 'play',
       thumbnail: '/projects/shelf-made/thumb.webp',
-      blurb: 'A grocery store tycoon: ring up customers, stock the shelves and grow a corner shop into a chain of stores.',
+      blurb: 'A cheerful grocery tycoon. Build a shop from bare concrete, stock every shelf, ring up every basket and open a second branch.',
     },
     theme: {
       bg: '#F7F4EA',
@@ -366,15 +367,15 @@ export const projects: Project[] = [
       ink: '#FFFFFF',
       soft: 'rgba(255,255,255,0.9)',
       nameStyle: { fontWeight: 700 },
+      logo: '/projects/shelf-made/logo.png',
     },
     about: [
-      'Shelf Made is a grocery store tycoon I am building for the browser. You start with a tiny corner shop in a small town with rival stores. Customers drive in from the main road, park, shop, queue and pay, and you grow from ringing them up by hand to running a **chain of stores** with managers.',
-      'The economy is meant to be visible: you watch the line back up, the parking lot fill and a rival\'s sale pull shoppers away. Early on you scan items at the register and carry stock to the shelves yourself, and **every chore can later be handed to staff**. The strategy comes from customer types, reputation, rivals, ads, loans, store layout and franchises.',
-      'It is built on a deterministic simulation in **TypeScript**, with **React** for the interface and **three.js** for a bright, chunky low-poly town. A free web beta comes first, then a desktop release on Steam.',
+      'Shelf Made is a grocery store tycoon for the browser. You start with **four bare walls on a busy crossroads** and three rival stores across the street, and pick your corner: Main Road for passing drivers, Elm Street for loyal regulars, or the bus stop for commuters and the after-school crowd. Each has its own traffic and rent.',
+      'Then you build the shop from bare concrete, order stock from three wholesalers and carry the boxes from the pallet to the shelves yourself. You ring up every basket at the till until you can **hire a cashier on day 3**, then stockers, and a manager who reorders, sets prices and runs ads by your rules. Grow far enough and you **open a second branch**.',
+      'It runs on a deterministic simulation in **TypeScript**, with **React** for the interface and **three.js** for a bright, chunky low-poly town. It is a **free beta until December 10, 2026**, with a Sandbox mode that starts you on $50,000 and no rent.',
     ],
     stack: ['TypeScript', 'React', 'three.js', 'Vite'],
-    stackLabel: 'Building with',
-    links: [],
+    links: [{ label: 'Play Shelf Made', href: 'https://shelf-made-web.vercel.app/' }],
   },
   {
     slug: 'siege',

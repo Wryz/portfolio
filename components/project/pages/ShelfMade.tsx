@@ -1,34 +1,35 @@
 import Image from 'next/image';
 import type { Project } from '@/lib/projects';
-import { Section } from '../parts';
+import { ProjectLinks, Section } from '../parts';
 
-/* The brand's own colours, from the game's design notes */
+/* The brand's own colours, from the game */
 const green = '#3FA87A';
 const yellow = '#FFC044';
 const wood = '#C98F4E';
 
-/* What a day in the game looks like, from the corner shop to the chain */
+/* A day in the game, from bare walls to a second branch, in the game's own words */
 const loop = [
-  { title: 'Ring up customers', text: 'Click the register to scan each item, with a beep, the till and a "+$" as they pay.' },
-  { title: 'Stock the shelves', text: 'Order stock, meet the delivery truck at the back door and carry the boxes out to the shelves.' },
-  { title: 'Hire staff', text: 'Cashiers, stockers, cleaners and managers take every chore off your hands, at a price.' },
-  { title: 'Open a chain', text: 'Open more stores around town, each run by a manager you pick, against rivals that play by the same rules.' },
+  { title: 'Pick your corner', text: 'Main Road for passing drivers, Elm Street for loyal regulars, or the bus stop for commuters. Each has its own traffic and rent.' },
+  { title: 'Stock every shelf', text: 'Order from three wholesalers, then carry the boxes from the pallet at the back door out to the shelves.' },
+  { title: 'Ring up every basket', text: 'Scan each item at the till yourself, until you can hire a cashier on day 3.' },
+  { title: 'Open a second branch', text: 'Hire stockers and a manager who reorders, prices and advertises by your rules, then grow into a chain.' },
 ];
-
-const customers = ['Bargain hunters', 'Convenience shoppers', 'Brand loyalists', 'Impulse buyers'];
 
 export function ShelfMadeHero({ project }: { project: Project }) {
   return (
-    <Section className="grid items-center gap-12 lg:grid-cols-[1fr_0.9fr]">
+    <Section className="grid items-center gap-12 lg:grid-cols-[0.85fr_1.15fr]">
       <div>
-        <span
-          className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-sm font-semibold"
-          style={{ backgroundColor: 'var(--p-ink)', color: '#FFFFFF' }}
-        >
-          <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: yellow }} aria-hidden />
-          In development
-        </span>
-        <h1 className="mt-6 text-6xl leading-[0.95] sm:text-7xl lg:text-8xl" style={{ fontWeight: 700 }}>
+        <div className="flex items-center gap-4">
+          <Image src="/projects/shelf-made/logo.png" alt="" width={180} height={180} priority className="h-20 w-20 sm:h-24 sm:w-24" />
+          <span
+            className="inline-flex -rotate-3 flex-col rounded-xl px-4 py-2 leading-tight shadow-md"
+            style={{ backgroundColor: yellow, color: '#38383D' }}
+          >
+            <span className="text-xs font-bold uppercase tracking-[0.14em]">Free beta</span>
+            <span className="font-semibold">until Dec 10, 2026</span>
+          </span>
+        </div>
+        <h1 className="mt-6 text-6xl leading-[0.95] sm:text-7xl" style={{ fontWeight: 700 }}>
           Shelf <span style={{ color: green }}>Made</span>
         </h1>
         {/* The wordmark's shelf-bracket underline */}
@@ -38,17 +39,21 @@ export function ShelfMadeHero({ project }: { project: Project }) {
           <rect x="253" y="6" width="7" height="10" rx="2" fill="#38383D" />
         </svg>
         <p className="mt-6 max-w-md text-xl leading-relaxed" style={{ color: 'var(--p-soft)' }}>
-          {project.tagline}
+          Four bare walls on a busy crossroads, and three rivals across the street. Build the corner everyone shops at, one shelf at a time.
         </p>
+        <ProjectLinks project={project} className="mt-8" />
       </div>
-      <Image
-        src="/projects/shelf-made/shelf.webp"
-        alt="A grocery shelf under a green and white awning, stocked with bottles, boxes, cans and fruit"
-        width={820}
-        height={760}
-        priority
-        className="mx-auto h-auto w-full max-w-md"
-      />
+      <div className="overflow-hidden" style={{ borderRadius: 18, border: `4px solid ${green}`, aspectRatio: '16 / 10', backgroundColor: '#CFE8DA' }}>
+        <Image
+          src="/projects/shelf-made/gameplay.webp"
+          alt="A Shelf Made shop on its first morning: staff stock the shelves while a customer browses and another parks outside"
+          width={1260}
+          height={787}
+          priority
+          sizes="(min-width: 1024px) 640px, 100vw"
+          className="h-full w-full object-cover"
+        />
+      </div>
     </Section>
   );
 }
@@ -57,7 +62,7 @@ export function ShelfMadeExtra() {
   return (
     <Section>
       <h2 className="text-3xl sm:text-4xl" style={{ fontWeight: 700 }}>
-        From the register to a chain of stores
+        From bare concrete to a chain of stores
       </h2>
       <p className="mt-3 max-w-2xl text-lg" style={{ color: 'var(--p-soft)' }}>
         Early on you do the hands-on work yourself. As the shop grows, each job can go to staff, so it never turns into a chore.
@@ -77,10 +82,6 @@ export function ShelfMadeExtra() {
           </li>
         ))}
       </ol>
-      <p className="mt-10 text-lg" style={{ color: 'var(--p-soft)' }}>
-        Every store is scored by four kinds of customer:{' '}
-        <span style={{ color: 'var(--p-ink)', fontWeight: 600 }}>{customers.join(', ')}</span>.
-      </p>
     </Section>
   );
 }

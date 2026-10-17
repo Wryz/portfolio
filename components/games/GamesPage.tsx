@@ -60,6 +60,26 @@ const showcases: Showcase[] = [
     },
   },
   {
+    slug: 'shelf-made',
+    eyebrow: 'Grocery tycoon · free beta',
+    pitch: 'Four bare walls on a busy crossroads, and three rivals across the street. Stock every shelf, ring up every basket, hire a cashier on day 3 and open a second branch.',
+    stats: [
+      { value: '3', label: 'rival stores' },
+      { value: '17', label: 'departments' },
+      { value: '$0', label: 'in the beta' },
+    ],
+    media: { image: '/projects/shelf-made/gameplay.webp', label: 'A Shelf Made shop on its first morning: staff stock the shelves while customers browse' },
+    extras: {
+      kind: 'images',
+      items: [
+        { src: '/projects/shelf-made/shots/town.webp', alt: 'The crossroads town on the title screen' },
+        { src: '/projects/shelf-made/shots/build.webp', alt: 'Building the shop from bare concrete' },
+        { src: '/projects/shelf-made/shots/stock.webp', alt: 'Ordering stock from the wholesalers' },
+        { src: '/projects/shelf-made/shots/staff.webp', alt: 'Hiring cashiers, stockers and a manager' },
+      ],
+    },
+  },
+  {
     slug: 'hex-hordes',
     eyebrow: 'Strategy card game',
     pitch: 'Build a deck of four, read the land and march on the enemy castle. A campaign of fifteen regions, from goblin woods to the dragon’s peak, and it keeps working offline.',
@@ -261,38 +281,20 @@ function Band({ showcase, project, flip }: { showcase: Showcase; project: Projec
   );
 }
 
-/** The game still being built, and the one that has closed */
-function Elsewhere({ shelf, siege }: { shelf: Project; siege: Project }) {
+/** The game that has closed, from the archive */
+function Archive({ siege }: { siege: Project }) {
   return (
-    <section className="mx-auto grid max-w-6xl gap-6 px-4 py-20 sm:px-6 sm:py-24 lg:grid-cols-2 lg:px-8">
-      <Link
-        href={`/${shelf.slug}`}
-        className="section-card group block overflow-hidden rounded-2xl"
-        style={{ ...themeVars(shelf.theme), backgroundColor: shelf.theme.bg, color: shelf.theme.ink, fontFamily: shelf.theme.body, border: `1px solid ${shelf.theme.line}` }}
-      >
-        <div className="relative" style={{ aspectRatio: '16 / 9' }}>
-          <Image src={shelf.tile.thumbnail} alt="" fill sizes="(min-width: 1024px) 560px, 100vw" className="section-card-image object-cover" />
-          <span className="absolute left-4 top-4 rounded-full bg-amber-300 px-3 py-1 text-xs font-bold tracking-wider text-neutral-900">IN DEVELOPMENT</span>
-        </div>
-        <div className="p-6">
-          <p className="text-xs font-semibold uppercase tracking-[0.2em]" style={{ color: shelf.theme.soft }}>In the works</p>
-          <h2 className="mt-2 text-3xl" style={{ fontFamily: shelf.theme.display, fontWeight: 700 }}>{shelf.name}</h2>
-          <p className="mt-2 text-lg leading-relaxed" style={{ color: shelf.theme.soft }}>
-            A grocery store tycoon: ring up customers, stock the shelves and grow a corner shop into a chain. Coming to the browser first.
-          </p>
-        </div>
-      </Link>
-
+    <section className="mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-24 lg:px-8">
       <Link
         href={`/${siege.slug}`}
-        className="section-card group block overflow-hidden rounded-2xl"
+        className="section-card group grid overflow-hidden rounded-2xl md:grid-cols-[1.2fr_1fr]"
         style={{ backgroundColor: siege.theme.bg, color: siege.theme.ink, fontFamily: siege.theme.body, border: `1px solid ${siege.theme.line}` }}
       >
         <div className="relative" style={{ aspectRatio: '16 / 9' }}>
           <AutoVideo src="/banner/siege.mp4" webm="/banner/siege.webm" poster="/banner/siege.webp" className="h-full w-full object-cover" />
           <span className="absolute left-4 top-4 rounded-full bg-red-600 px-3 py-1 text-xs font-bold tracking-wider text-white">CLOSED</span>
         </div>
-        <div className="p-6">
+        <div className="flex flex-col justify-center p-6 sm:p-8">
           <p className="text-xs font-semibold uppercase tracking-[0.2em]" style={{ color: siege.theme.soft }}>From the archive</p>
           <h2 className="mt-2 text-3xl uppercase tracking-wide" style={{ fontFamily: siege.theme.display, fontWeight: 700 }}>{siege.name}</h2>
           <p className="mt-2 text-lg leading-relaxed" style={{ color: siege.theme.soft }}>
@@ -326,7 +328,7 @@ export function GamesPage() {
         {showcases.map((s, i) => (
           <Band key={s.slug} showcase={s} project={getProject(s.slug)!} flip={i % 2 === 1} />
         ))}
-        <Elsewhere shelf={getProject('shelf-made')!} siege={getProject('siege')!} />
+        <Archive siege={getProject('siege')!} />
       </main>
       <Footer />
     </>
